@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}診断結果 — ひろのまっち{% endblock %}
+
+{% block content %}
+<section class="result container">
+    <h1 class="page-title">診断結果</h1>
+
+    <div class="result-main">
+        <p class="result-label">あなたの旅行タイプ</p>
+        <img src="{{ url_for('static', filename=main_type.icon) }}" alt="{{ main_type.name }}" class="type-icon-large">
+        <h2 class="main-type-name">「{{ main_type.name }}」</h2>
+        <p class="main-type-description">{{ main_type.description }}</p>
+    </div>
+
+    {% if percentages %}
+    <section class="result-percentages">
+        <h2 class="section-subtitle">タイプ別の割合</h2>
+        <ul class="percentage-list">
+            {% for item in percentages %}
+            <li class="percentage-item">
+                <span class="percentage-name">{{ item.name }}</span>
+                <div class="percentage-bar-inline">
+                    <div class="percentage-fill" style="width: {{ item.percentage }}%"></div>
+                </div>
+                <span class="percentage-value">{{ item.percentage }}%</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% macro spot_section(title, spots) %}
+    {% if spots %}
+    <section class="recommended-section">
+        <h2 class="section-title">{{ title }}</h2>
+        <div class="spot-grid">
+            {% for spot in spots %}
+            <article class="spot-card" data-spot-id="{{ spot.id }}">
+                <a href="{{ url_for('spot_detail', spot_id=spot.id) }}">
+                    <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
+                    <div class="spot-card-body">
+                        <span class="spot-category">{{ spot.category }}</span>
+                        <h3>{{ spot.name }}</h3>
+                        <p>{{ spot.description[:60] }}…</p>
+                    </div>
+                </a>
+                <button type="button" class="btn-favorite" data-spot-id="{{ spot.id }}"
+                        aria-label="お気に入りに追加">
+                    ♡
+                </button>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    {% endmacro %}
+
+    {{ spot_section("おすすめスポット", recommended_sightseeing) }}
+    {{ spot_section("おすすめ飲食店", recommended_restaurants) }}
+    {{ spot_section("おすすめ宿泊施設", recommended_hotels) }}
+
+    <div class="result-actions">
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-secondary">もう一度診断する</a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">トップに戻る</a>
+    </div>
+</section>
+{% endblock %}

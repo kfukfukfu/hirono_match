@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ spot.name }} — ひろのまっち{% endblock %}
+
+{% block content %}
+<section class="spot-detail container">
+    <a href="javascript:history.back()" class="back-link">&larr; 戻る</a>
+
+    <article class="spot-detail-card">
+        <div class="spot-detail-image">
+            <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
+        </div>
+        <div class="spot-detail-body">
+            <span class="spot-category">{{ spot.category }}</span>
+            <span class="spot-genre">{{ spot.genre }}</span>
+            <h1>{{ spot.name }}</h1>
+            <p class="spot-description">{{ spot.description }}</p>
+
+            <dl class="spot-info">
+                <dt>住所</dt>
+                <dd>{{ spot.address }}</dd>
+                <dt>公式サイト</dt>
+                <dd>
+                    <a href="{{ spot.official_url }}" target="_blank" rel="noopener noreferrer">
+                        公式サイトを見る
+                    </a>
+                </dd>
+            </dl>
+
+            <button type="button" class="btn btn-primary btn-favorite-detail"
+                    data-spot-id="{{ spot.id }}"
+                    data-spot-name="{{ spot.name }}"
+                    data-spot-image="{{ spot.image_url }}"
+                    data-spot-category="{{ spot.category }}">
+                ♡ お気に入りに追加
+            </button>
+        </div>
+    </article>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.querySelector(".btn-favorite-detail");
+        if (btn) {
+            const id = btn.dataset.spotId;
+            if (Favorites.isFavorite(id)) {
+                btn.textContent = "♥ お気に入り済み";
+                btn.classList.add("is-favorite");
+            }
+            btn.addEventListener("click", () => {
+                Favorites.toggle({
+                    id: id,
+                    name: btn.dataset.spotName,
+                    image: btn.dataset.spotImage,
+                    category: btn.dataset.spotCategory,
+                });
+                const added = Favorites.isFavorite(id);
+                btn.textContent = added ? "♥ お気に入り済み" : "♡ お気に入りに追加";
+                btn.classList.toggle("is-favorite", added);
+            });
+        }
+    });
+</script>
+{% endblock %}

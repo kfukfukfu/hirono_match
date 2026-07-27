@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}ひろのまっち — 洋野町の旅を見つけよう{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/hero.svg') }}" alt="洋野町の風景">
+    </div>
+    <div class="hero-content container">
+        <h1 class="hero-title">ひろのまっち</h1>
+        <p class="hero-copy">あなたにぴったりの洋野町の楽しみ方を見つけよう</p>
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">診断を始める</a>
+    </div>
+</section>
+
+<section class="features container">
+    <h2 class="section-title">洋野町の魅力</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <img src="{{ url_for('static', filename='images/icons/star.svg') }}" alt="">
+            <h3>満天の星空</h3>
+            <p>ひろのまきば天文台で、都会では見られない星々を。</p>
+        </div>
+        <div class="feature-card">
+            <img src="{{ url_for('static', filename='images/icons/sea.svg') }}" alt="">
+            <h3>美しい海岸</h3>
+            <p>太平洋に面した種市海岸で、波音に癒やされよう。</p>
+        </div>
+        <div class="feature-card">
+            <img src="{{ url_for('static', filename='images/icons/food.svg') }}" alt="">
+            <h3>新鮮な海の幸</h3>
+            <p>地元の食材を使った料理で、洋野町の味を堪能。</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

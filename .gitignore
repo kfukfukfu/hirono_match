@@ -1,1 +1,4 @@
 .venv
+hirono_match.db
+__pycache__/
+*.pyc

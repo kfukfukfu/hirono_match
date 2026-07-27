@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}お気に入り — ひろのまっち{% endblock %}
+
+{% block content %}
+<section class="favorites container">
+    <h1 class="page-title">お気に入り</h1>
+    <p class="page-lead">保存したスポット一覧です（ブラウザに保存されます）。</p>
+
+    <div id="favorites-list" class="spot-grid">
+        <!-- JavaScript で localStorage から描画 -->
+    </div>
+
+    <p id="favorites-empty" class="empty-message" hidden>
+        お気に入りはまだありません。診断結果やスポット詳細から追加してみましょう。
+    </p>
+
+    <div class="result-actions">
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary">診断を始める</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Favorites.renderList("#favorites-list", "#favorites-empty");
+    });
+</script>
+{% endblock %}
