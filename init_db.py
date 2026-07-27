@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS choices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question_id INTEGER NOT NULL,
     text TEXT NOT NULL,
+    subtitle TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL,
     FOREIGN KEY (question_id) REFERENCES questions(id)
 );
@@ -63,63 +64,95 @@ CREATE TABLE IF NOT EXISTS spot_types (
 """
 
 # --- 旅行タイプ（8種類） ---
+# (名前, タイプ説明, アイコン)
 TRAVEL_TYPES = [
-    ("星空ヒーラー", "自然や星空で癒やされたい人。静かな夜の空を見上げて、心身ともにリフレッシュする旅が向いています。", "images/icons/star.svg"),
-    ("グルメ探究家", "地域の食を楽しみたい人。地元の食材や名物を味わい、食を通じて洋野町の魅力を発見しましょう。", "images/icons/food.svg"),
-    ("シーサイドリラックス", "海辺でゆったり過ごしたい人。波音を聞きながら、のんびりと海の時間を楽しむ旅がぴったりです。", "images/icons/sea.svg"),
-    ("フォトハンター", "写真映えする景色を楽しみたい人。絶景スポットを巡り、思い出に残る一枚を撮りたいあなたに。", "images/icons/photo.svg"),
-    ("アウトドアチャレンジャー", "自然体験やアクティビティを楽しみたい人。体を動かしながら、洋野町の自然を体感しましょう。", "images/icons/outdoor.svg"),
-    ("体験クリエイター", "地域ならではの体験をしたい人。木工や地元文化に触れ、旅先でしかできない体験を求めるタイプです。", "images/icons/experience.svg"),
-    ("のんびり散策派", "自分のペースで町を巡りたい人。決まった予定に縛られず、好きな場所を自由に歩き回る旅が好きです。", "images/icons/walk.svg"),
-    ("カフェブレイク派", "落ち着いた時間を過ごしたい人。カフェで一息つきながら、ゆったりとした時間を大切にします。", "images/icons/cafe.svg"),
+    (
+        "星空ヒーラー",
+        "自然の中で静かな時間を楽しみたいタイプ。洋野町では星空観察や海辺の景色を楽しむ旅がおすすめです。",
+        "images/icons/star.svg",
+    ),
+    (
+        "グルメ探究家",
+        "地域ならではの食や名物を楽しみたいタイプ。洋野町の海産物や郷土料理を味わう旅がおすすめです。",
+        "images/icons/food.svg",
+    ),
+    (
+        "シーサイドリラックス",
+        "海辺の景色やゆったりした時間を楽しみたいタイプ。種市海岸や海浜公園でのんびり過ごす旅がおすすめです。",
+        "images/icons/sea.svg",
+    ),
+    (
+        "フォトハンター",
+        "美しい景色や思い出を写真に残したいタイプ。絶景スポットを巡りながら撮影を楽しむ旅がおすすめです。",
+        "images/icons/photo.svg",
+    ),
+    (
+        "アウトドアチャレンジャー",
+        "自然の中で活動したり挑戦したいタイプ。トレッキングや海辺のアクティビティを楽しむ旅がおすすめです。",
+        "images/icons/outdoor.svg",
+    ),
+    (
+        "体験クリエイター",
+        "その土地ならではの体験を楽しみたいタイプ。木工体験など洋野町ならではの体験がおすすめです。",
+        "images/icons/experience.svg",
+    ),
+    (
+        "のんびり散策派",
+        "町歩きや自分のペースで巡る旅を好むタイプ。路地裏や物産センターを巡る旅がおすすめです。",
+        "images/icons/walk.svg",
+    ),
+    (
+        "カフェブレイク派",
+        "落ち着いた空間でゆっくり過ごしたいタイプ。海を望むカフェで一息つく旅がおすすめです。",
+        "images/icons/cafe.svg",
+    ),
 ]
 
-# --- 診断質問（5問・各問1つ選択） ---
+# --- 診断質問（5問・スマホ向け短文） ---
 QUESTIONS = [
-    ("旅行で重視したいことは？", "images/questions/q1.svg"),
-    ("洋野町で楽しみたい時間の過ごし方は？", "images/questions/q2.svg"),
-    ("旅行の理想のペースは？", "images/questions/q3.svg"),
-    ("洋野町で撮りたい写真は？", "images/questions/q4.svg"),
-    ("あなたの旅行スタイルは？", "images/questions/q5.svg"),
+    ("旅の目的は？", "images/questions/q1.svg"),
+    ("休日の過ごし方は？", "images/questions/q2.svg"),
+    ("旅で大事なのは？", "images/questions/q3.svg"),
+    ("気になる場所は？", "images/questions/q4.svg"),
+    ("理想の旅は？", "images/questions/q5.svg"),
 ]
 
-# 各質問の選択肢: (テキスト, 画像, [(type_id, score), ...])
-# type_id は 1〜8（travel_types の id）
+# 各選択肢: (タイトル, サブタイトル, 画像, [(type_id, score), ...])
 CHOICES = [
-    # Q1
+    # Q1 旅の目的は？
     [
-        ("星空や自然を見る", "images/choices/stargazing.svg", [(1, 3), (4, 1)]),
-        ("美味しいものを食べる", "images/choices/eat.svg", [(2, 3)]),
-        ("写真を撮る", "images/choices/camera.svg", [(4, 3), (3, 1)]),
-        ("地域ならではの体験をする", "images/choices/craft.svg", [(6, 3), (5, 1)]),
+        ("星空・自然", "静かな景色や自然を楽しむ", "images/choices/cards/nature.svg", [(1, 3)]),
+        ("ご当地グルメ", "地域ならではの味を楽しむ", "images/choices/cards/food.svg", [(2, 3)]),
+        ("思い出を残す", "写真や景色で旅を記録する", "images/choices/cards/photo.svg", [(4, 3)]),
+        ("特別な体験", "ここでしかできない思い出", "images/choices/cards/experience.svg", [(6, 3)]),
     ],
-    # Q2
+    # Q2 休日の過ごし方は？
     [
-        ("海辺でゆったり", "images/choices/beach.svg", [(3, 3), (1, 1)]),
-        ("カフェで一息", "images/choices/cafe.svg", [(8, 3), (7, 1)]),
-        ("町を散策", "images/choices/stroll.svg", [(7, 3), (4, 1)]),
-        ("アクティビティ", "images/choices/active.svg", [(5, 3), (6, 1)]),
+        ("自然へ出かける", "緑あふれる場所でリフレッシュ", "images/choices/cards/forest.svg", [(1, 3)]),
+        ("のんびり散策", "好きなペースで街を歩く", "images/choices/cards/walk.svg", [(7, 3)]),
+        ("海辺でゆっくり", "海を眺めながら癒やされる", "images/choices/cards/coast.svg", [(3, 3)]),
+        ("カフェで休息", "落ち着いた時間を過ごす", "images/choices/cards/cafe.svg", [(8, 3)]),
     ],
-    # Q3
+    # Q3 旅で大事なのは？
     [
-        ("のんびり", "images/choices/free.svg", [(7, 3), (8, 1)]),
-        ("計画的に巡る", "images/choices/plan.svg", [(6, 2), (2, 2)]),
-        ("思いきり動く", "images/choices/nature.svg", [(5, 3), (6, 1)]),
-        ("その場の気分で", "images/choices/relax.svg", [(3, 2), (1, 2)]),
+        ("絶景", "印象に残る景色を求める", "images/choices/cards/scenery.svg", [(4, 3)]),
+        ("地元の味", "その土地でしか味わえない食", "images/choices/cards/seafood.svg", [(2, 3)]),
+        ("特別な経験", "新しい体験や発見", "images/choices/cards/workshop.svg", [(6, 3)]),
+        ("リラックス", "ゆったりと心を休める", "images/choices/cards/relax.svg", [(3, 3)]),
     ],
-    # Q4
+    # Q4 気になる場所は？
     [
-        ("星空", "images/choices/night.svg", [(1, 3), (4, 1)]),
-        ("海の景色", "images/choices/ocean.svg", [(3, 3), (4, 1)]),
-        ("料理", "images/choices/dish.svg", [(2, 3)]),
-        ("体験の様子", "images/choices/workshop.svg", [(6, 3), (4, 1)]),
+        ("星空スポット", "夜の空や自然の景観", "images/choices/cards/stars.svg", [(1, 3)]),
+        ("人気のお店", "地元の味を楽しめる場所", "images/choices/cards/restaurant.svg", [(2, 3)]),
+        ("写真スポット", "思い出に残る一枚を", "images/choices/cards/landscape.svg", [(4, 3)]),
+        ("自然体験", "体を動かして自然を感じる", "images/choices/cards/outdoor.svg", [(5, 3)]),
     ],
-    # Q5
+    # Q5 理想の旅は？
     [
-        ("癒やし重視", "images/choices/healing.svg", [(1, 3), (3, 1)]),
-        ("食べ歩き", "images/choices/foodwalk.svg", [(2, 3), (7, 1)]),
-        ("記録に残す", "images/choices/memory.svg", [(4, 3), (6, 1)]),
-        ("新しい発見", "images/choices/new.svg", [(6, 3), (5, 1)]),
+        ("癒やしの旅", "自然の中で心身をリセット", "images/choices/cards/healing.svg", [(1, 3)]),
+        ("グルメ旅", "食べ歩きを楽しむ旅", "images/choices/cards/gourmet.svg", [(2, 3)]),
+        ("写真旅", "絶景を巡って記録する旅", "images/choices/cards/camera.svg", [(4, 3)]),
+        ("アドベンチャー旅", "活動的に楽しむ旅", "images/choices/cards/adventure.svg", [(5, 3)]),
     ],
 ]
 
@@ -257,10 +290,10 @@ def init_db():
         )
         question_id = cursor.lastrowid
 
-        for c_text, c_img, scores in CHOICES[q_idx]:
+        for c_title, c_subtitle, c_img, scores in CHOICES[q_idx]:
             cursor.execute(
-                "INSERT INTO choices (question_id, text, image_url) VALUES (?, ?, ?)",
-                (question_id, c_text, c_img),
+                "INSERT INTO choices (question_id, text, subtitle, image_url) VALUES (?, ?, ?, ?)",
+                (question_id, c_title, c_subtitle, c_img),
             )
             choice_id = cursor.lastrowid
 

@@ -5,11 +5,21 @@ app.py
 URL ルーティング、診断スコア計算、テンプレートへのデータ受け渡しを担当する。
 """
 
+from urllib.parse import quote
+
 from flask import Flask, render_template, request, redirect, url_for, abort
 
 from database import get_db
 
 app = Flask(__name__)
+
+RECOMMENDED_SPOT_LIMIT = 3
+
+
+@app.template_filter("map_url")
+def map_url_filter(address):
+    """住所から Google マップ検索 URL を生成する"""
+    return f"https://www.google.com/maps/search/?api=1&query={quote(address)}"
 
 
 def fetch_questions_with_choices():
@@ -115,17 +125,17 @@ def calculate_scores(choice_ids):
     return ranked
 
 
-def fetch_spots_by_type_and_category(type_id, category, limit=4):
-    """指定した旅行タイプ・カテゴリーに関連するスポットを取得する"""
+def fetch_recommended_spots(type_id, limit=RECOMMENDED_SPOT_LIMIT):
+    """診断タイプに関連するおすすめスポットを取得する（最大3件）"""
     db = get_db()
     spots = db.execute(
         """SELECT s.*
            FROM spots s
            JOIN spot_types st ON st.spot_id = s.id
-           WHERE st.type_id = ? AND s.category = ?
+           WHERE st.type_id = ?
            ORDER BY s.id
            LIMIT ?""",
-        (type_id, category, limit),
+        (type_id, limit),
     ).fetchall()
     db.close()
     return spots
@@ -167,15 +177,13 @@ def result():
         return redirect(url_for("diagnosis"))
 
     main_type = ranked[0]
-    type_id = main_type["id"]
+    type_percentages = ranked[:3]
 
     return render_template(
         "result.html",
         main_type=main_type,
-        percentages=ranked,
-        recommended_sightseeing=fetch_spots_by_type_and_category(type_id, "観光スポット"),
-        recommended_restaurants=fetch_spots_by_type_and_category(type_id, "飲食店"),
-        recommended_hotels=fetch_spots_by_type_and_category(type_id, "宿泊施設"),
+        type_percentages=type_percentages,
+        recommended_spots=fetch_recommended_spots(main_type["id"]),
     )
 
 

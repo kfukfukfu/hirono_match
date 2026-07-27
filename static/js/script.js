@@ -7,7 +7,6 @@
 const Favorites = {
     STORAGE_KEY: "hirono_match_favorites",
 
-    /** localStorage からお気に入り一覧を取得 */
     getAll() {
         try {
             return JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || [];
@@ -16,17 +15,14 @@ const Favorites = {
         }
     },
 
-    /** お気に入り一覧を保存 */
     save(list) {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(list));
     },
 
-    /** 指定 ID がお気に入りか判定 */
     isFavorite(id) {
         return this.getAll().some((item) => String(item.id) === String(id));
     },
 
-    /** お気に入りに追加 */
     add(spot) {
         const list = this.getAll();
         if (!this.isFavorite(spot.id)) {
@@ -35,13 +31,11 @@ const Favorites = {
         }
     },
 
-    /** お気に入りから削除 */
     remove(id) {
         const list = this.getAll().filter((item) => String(item.id) !== String(id));
         this.save(list);
     },
 
-    /** 追加 / 削除を切り替え。追加されたら true */
     toggle(spot) {
         if (this.isFavorite(spot.id)) {
             this.remove(spot.id);
@@ -51,7 +45,6 @@ const Favorites = {
         return true;
     },
 
-    /** お気に入り一覧画面を描画 */
     renderList(listSelector, emptySelector) {
         const container = document.querySelector(listSelector);
         const emptyMsg = document.querySelector(emptySelector);
@@ -94,7 +87,6 @@ const Favorites = {
     },
 };
 
-/* 結果画面のお気に入りボタン */
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".btn-favorite").forEach((btn) => {
         const card = btn.closest(".spot-card");
@@ -109,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             e.stopPropagation();
 
-            const link = card.querySelector("a");
             const img = card.querySelector("img");
             const name = card.querySelector("h3").textContent;
             const category = card.querySelector(".spot-category").textContent;

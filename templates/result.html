@@ -3,66 +3,99 @@
 {% block title %}診断結果 — ひろのまっち{% endblock %}
 
 {% block content %}
-<section class="result container">
-    <h1 class="page-title">診断結果</h1>
+<section class="result-mobile">
+    <header class="result-hero">
+        <p class="result-label">あなたの洋野旅タイプ</p>
+        <h1 class="result-type-name">{{ main_type.name }}</h1>
+        <div class="result-hero-image">
+            <img src="{{ url_for('static', filename=main_type.icon) }}" alt="{{ main_type.name }}">
+        </div>
+    </header>
 
-    <div class="result-main">
-        <p class="result-label">あなたの旅行タイプ</p>
-        <img src="{{ url_for('static', filename=main_type.icon) }}" alt="{{ main_type.name }}" class="type-icon-large">
-        <h2 class="main-type-name">「{{ main_type.name }}」</h2>
-        <p class="main-type-description">{{ main_type.description }}</p>
-    </div>
+    <section class="result-type-desc">
+        <p>{{ main_type.description }}</p>
+    </section>
 
-    {% if percentages %}
-    <section class="result-percentages">
-        <h2 class="section-subtitle">タイプ別の割合</h2>
-        <ul class="percentage-list">
-            {% for item in percentages %}
-            <li class="percentage-item">
-                <span class="percentage-name">{{ item.name }}</span>
-                <div class="percentage-bar-inline">
-                    <div class="percentage-fill" style="width: {{ item.percentage }}%"></div>
-                </div>
-                <span class="percentage-value">{{ item.percentage }}%</span>
+    {% if type_percentages %}
+    <section class="result-percentages-mobile">
+        <h2 class="section-title-mobile">タイプ割合</h2>
+        <ul class="percentage-simple-list">
+            {% for item in type_percentages %}
+            <li class="percentage-simple-item">
+                <span class="percentage-simple-name">{{ item.name }}</span>
+                <span class="percentage-simple-value">{{ item.percentage }}%</span>
             </li>
             {% endfor %}
         </ul>
     </section>
     {% endif %}
 
-    {% macro spot_section(title, spots) %}
-    {% if spots %}
-    <section class="recommended-section">
-        <h2 class="section-title">{{ title }}</h2>
-        <div class="spot-grid">
-            {% for spot in spots %}
-            <article class="spot-card" data-spot-id="{{ spot.id }}">
-                <a href="{{ url_for('spot_detail', spot_id=spot.id) }}">
+    {% if recommended_spots %}
+    <section class="result-spots">
+        <h2 class="section-title-mobile">おすすめスポット</h2>
+        <p class="section-lead-mobile">このタイプに合う洋野町のスポットを厳選しました。</p>
+
+        <div class="result-spot-list">
+            {% for spot in recommended_spots %}
+            <article class="result-spot-card" data-spot-id="{{ spot.id }}">
+                <a href="{{ url_for('spot_detail', spot_id=spot.id) }}" class="result-spot-image-link">
                     <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
-                    <div class="spot-card-body">
-                        <span class="spot-category">{{ spot.category }}</span>
-                        <h3>{{ spot.name }}</h3>
-                        <p>{{ spot.description[:60] }}…</p>
-                    </div>
                 </a>
-                <button type="button" class="btn-favorite" data-spot-id="{{ spot.id }}"
-                        aria-label="お気に入りに追加">
-                    ♡
-                </button>
+                <div class="result-spot-body">
+                    <span class="spot-category">{{ spot.category }}</span>
+                    <h3 class="result-spot-name">
+                        <a href="{{ url_for('spot_detail', spot_id=spot.id) }}">{{ spot.name }}</a>
+                    </h3>
+                    <p class="result-spot-desc">{{ spot.description[:70] }}…</p>
+                    <div class="result-spot-actions">
+                        <a href="{{ spot.official_url }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
+                            公式サイト
+                        </a>
+                        <a href="{{ spot.address | map_url }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
+                            地図
+                        </a>
+                        <button type="button" class="btn-favorite-mobile"
+                                data-spot-id="{{ spot.id }}"
+                                data-spot-name="{{ spot.name }}"
+                                data-spot-image="{{ spot.image_url }}"
+                                data-spot-category="{{ spot.category }}"
+                                aria-label="お気に入りに追加">
+                            ♡
+                        </button>
+                    </div>
+                </div>
             </article>
             {% endfor %}
         </div>
     </section>
     {% endif %}
-    {% endmacro %}
 
-    {{ spot_section("おすすめスポット", recommended_sightseeing) }}
-    {{ spot_section("おすすめ飲食店", recommended_restaurants) }}
-    {{ spot_section("おすすめ宿泊施設", recommended_hotels) }}
-
-    <div class="result-actions">
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-secondary">もう一度診断する</a>
-        <a href="{{ url_for('index') }}" class="btn btn-primary">トップに戻る</a>
+    <div class="result-actions-mobile">
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">もう一度診断する</a>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-favorite-mobile").forEach((btn) => {
+            const id = btn.dataset.spotId;
+            if (Favorites.isFavorite(id)) {
+                btn.textContent = "♥";
+                btn.classList.add("is-favorite");
+            }
+            btn.addEventListener("click", () => {
+                const added = Favorites.toggle({
+                    id: id,
+                    name: btn.dataset.spotName,
+                    image: btn.dataset.spotImage,
+                    category: btn.dataset.spotCategory,
+                });
+                btn.textContent = added ? "♥" : "♡";
+                btn.classList.toggle("is-favorite", added);
+            });
+        });
+    });
+</script>
 {% endblock %}

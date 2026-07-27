@@ -36,6 +36,29 @@ CHOICE_LABELS = [
     "星空", "海産", "海岸", "アウトドア", "癒やし旅", "食べ歩き", "写真旅", "のんびり",
 ]
 
+CARD_IMAGES = [
+    ("nature.svg", "#0f4d66", "#48cae4", "自然"),
+    ("food.svg", "#c44536", "#f4a261", "グルメ"),
+    ("photo.svg", "#5f4b8b", "#a29bfe", "写真"),
+    ("experience.svg", "#8b5a2b", "#dda15e", "体験"),
+    ("forest.svg", "#2d6a4f", "#95d5b2", "森林"),
+    ("walk.svg", "#588157", "#b7e4c7", "散策"),
+    ("coast.svg", "#0077b6", "#90e0ef", "海岸"),
+    ("cafe.svg", "#6f4e37", "#d4a574", "カフェ"),
+    ("scenery.svg", "#1d3557", "#457b9d", "絶景"),
+    ("seafood.svg", "#e76f51", "#f4a261", "海産"),
+    ("workshop.svg", "#bc6c25", "#e9c46a", "工房"),
+    ("relax.svg", "#023e8a", "#caf0f8", "リラックス"),
+    ("stars.svg", "#1a1a2e", "#4cc9f0", "星空"),
+    ("restaurant.svg", "#e63946", "#f4a261", "食事"),
+    ("landscape.svg", "#386641", "#a7c957", "風景"),
+    ("outdoor.svg", "#2d6a4f", "#52b788", "アウトドア"),
+    ("healing.svg", "#1a6b8a", "#90e0ef", "癒やし"),
+    ("gourmet.svg", "#d62828", "#fcbf49", "食べ歩き"),
+    ("camera.svg", "#7209b7", "#b5179e", "カメラ"),
+    ("adventure.svg", "#40916c", "#95d5b2", "冒険"),
+]
+
 
 def svg(bg1, bg2, label, w=400, h=300):
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">
@@ -52,32 +75,22 @@ def svg(bg1, bg2, label, w=400, h=300):
 
 
 def main():
-    dirs = [
-        BASE,
-        BASE / "icons",
-        BASE / "questions",
-        BASE / "choices",
-        BASE / "spots",
-    ]
+    dirs = [BASE, BASE / "icons", BASE / "questions", BASE / "choices", BASE / "choices" / "cards", BASE / "spots"]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)
 
-    # ヒーロー
     (BASE / "hero.svg").write_text(svg(*COLORS["hero"], 800, 420), encoding="utf-8")
 
-    # アイコン
     for name, colors in COLORS.items():
         if name == "hero":
             continue
         (BASE / "icons" / f"{name}.svg").write_text(svg(*colors, 128, 128), encoding="utf-8")
 
-    # 質問画像
     for i in range(1, 11):
         (BASE / "questions" / f"q{i}.svg").write_text(
             svg("#1a6b8a", "#48cae4", f"Q{i}", 400, 200), encoding="utf-8"
         )
 
-    # 選択肢画像
     choice_files = [
         "scenery", "eat", "beach", "active", "camera", "meal", "heal", "craft",
         "stargazing", "cafe", "stroll", "nature", "ocean", "seafood", "snapshot", "activity",
@@ -91,16 +104,17 @@ def main():
             svg("#457b9d", "#a8dadc", label, 160, 160), encoding="utf-8"
         )
 
-    # スポット画像
+    cards_dir = BASE / "choices" / "cards"
+    for fname, c1, c2, label in CARD_IMAGES:
+        (cards_dir / fname).write_text(svg(c1, c2, label, 480, 224), encoding="utf-8")
+
     spot_files = [
         "observatory", "kaihin", "hamanasu", "mokko", "coast",
         "souvenir", "cafe", "minshuku", "hotel", "trail",
     ]
     for i, fname in enumerate(spot_files):
         c = SPOT_COLORS[i]
-        (BASE / "spots" / f"{fname}.svg").write_text(
-            svg(c[0], c[1], c[2], 400, 240), encoding="utf-8"
-        )
+        (BASE / "spots" / f"{fname}.svg").write_text(svg(c[0], c[1], c[2], 400, 240), encoding="utf-8")
 
     print("SVG images generated.")
 

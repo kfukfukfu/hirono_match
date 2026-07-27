@@ -1,137 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}旅行タイプ診断 — ひろのまっち{% endblock %}
+{% block title %}洋野旅タイプ診断 — ひろのまっち{% endblock %}
 
 {% block content %}
-<section class="diagnosis container">
-    <h1 class="page-title">旅行タイプ診断</h1>
-    <p class="page-lead">5問・約1分で完了。各問で最も当てはまるものを1つ選んでください。</p>
+<section class="diagnosis-mobile">
+    <header class="diagnosis-header">
+        <h1 class="diagnosis-title">あなたの洋野旅タイプ診断</h1>
+        <p class="diagnosis-progress">Q<span id="current-num">1</span> / {{ questions|length }}</p>
+    </header>
 
     <div class="progress-bar">
         <div class="progress-fill" id="progress-fill"></div>
     </div>
-    <p class="progress-text"><span id="current-num">1</span> / {{ questions|length }}</p>
 
     <form id="diagnosis-form" method="POST" action="{{ url_for('result') }}">
         {% for item in questions %}
         {% set q_index = loop.index0 %}
         <div class="question-panel{% if loop.first %} active{% endif %}" data-index="{{ q_index }}">
-            <div class="question-image">
-                <img src="{{ url_for('static', filename=item.question.image_url) }}"
-                     alt="質問{{ loop.index }}">
-            </div>
             <h2 class="question-text">{{ item.question.text }}</h2>
 
-            <div class="choices-grid">
+            <div class="choice-cards">
                 {% for choice in item.choices %}
-                <label class="choice-card">
-                    <input type="radio"
-                           name="choice_q{{ item.question.id }}"
-                           value="{{ choice.id }}"
-                           data-question="{{ q_index }}">
-                    <div class="choice-inner">
+                <button type="button"
+                        class="choice-card-btn"
+                        data-choice-id="{{ choice.id }}"
+                        data-question="{{ q_index }}"
+                        aria-label="{{ choice.text }}">
+                    <div class="choice-card-image">
                         <img src="{{ url_for('static', filename=choice.image_url) }}"
                              alt="{{ choice.text }}">
-                        <span>{{ choice.text }}</span>
                     </div>
-                </label>
+                    <div class="choice-card-body">
+                        <h3 class="choice-card-title">{{ choice.text }}</h3>
+                        <p class="choice-card-subtitle">{{ choice.subtitle }}</p>
+                    </div>
+                </button>
                 {% endfor %}
-            </div>
-
-            <div class="question-nav">
-                {% if not loop.first %}
-                <button type="button" class="btn btn-secondary btn-prev">前へ</button>
-                {% else %}
-                <span></span>
-                {% endif %}
-
-                {% if loop.last %}
-                <button type="submit" class="btn btn-primary btn-submit" disabled>結果を見る</button>
-                {% else %}
-                <button type="button" class="btn btn-primary btn-next" disabled>次へ</button>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
     </form>
+
+    <div class="diagnosis-nav diagnosis-nav-first" id="diagnosis-nav">
+        <button type="button" class="btn-diagnosis-nav btn-diagnosis-back" id="btn-back" hidden>
+            ← 前の質問へ
+        </button>
+        <button type="button" class="btn-diagnosis-nav btn-diagnosis-next" id="btn-next" disabled>
+            次へ →
+        </button>
+    </div>
 </section>
 {% endblock %}
 
 {% block scripts %}
-<script>
-    /* 診断画面: 5問・ラジオボタン（1問1選択） */
-    document.addEventListener("DOMContentLoaded", function () {
-        const panels = document.querySelectorAll(".question-panel");
-        const form = document.getElementById("diagnosis-form");
-        const progressFill = document.getElementById("progress-fill");
-        const currentNum = document.getElementById("current-num");
-        const total = panels.length;
-
-        function isAnswered(panel) {
-            return panel.querySelector('input[type="radio"]:checked') !== null;
-        }
-
-        function syncHiddenInput(radio) {
-            const qIndex = radio.dataset.question;
-            let hidden = form.querySelector(`input[name="choice_id"][data-q="${qIndex}"]`);
-            if (!hidden) {
-                hidden = document.createElement("input");
-                hidden.type = "hidden";
-                hidden.name = "choice_id";
-                hidden.dataset.q = qIndex;
-                form.appendChild(hidden);
-            }
-            hidden.value = radio.value;
-        }
-
-        function updateNavButtons(panel) {
-            const enabled = isAnswered(panel);
-            const nextBtn = panel.querySelector(".btn-next");
-            const submitBtn = panel.querySelector(".btn-submit");
-            if (nextBtn) nextBtn.disabled = !enabled;
-            if (submitBtn) submitBtn.disabled = !enabled;
-        }
-
-        function showPanel(index) {
-            panels.forEach((p, i) => p.classList.toggle("active", i === index));
-            currentNum.textContent = index + 1;
-            progressFill.style.width = ((index + 1) / total * 100) + "%";
-        }
-
-        panels.forEach((panel, index) => {
-            const radios = panel.querySelectorAll('input[type="radio"]');
-            const nextBtn = panel.querySelector(".btn-next");
-            const prevBtn = panel.querySelector(".btn-prev");
-
-            radios.forEach(radio => {
-                radio.addEventListener("change", () => {
-                    syncHiddenInput(radio);
-                    updateNavButtons(panel);
-                });
-            });
-
-            if (nextBtn) {
-                nextBtn.addEventListener("click", () => {
-                    if (!isAnswered(panel)) {
-                        alert("1つ選んでから次へ進んでください。");
-                        return;
-                    }
-                    if (index < total - 1) showPanel(index + 1);
-                });
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener("click", () => showPanel(index - 1));
-            }
-        });
-
-        form.addEventListener("submit", (e) => {
-            const hiddenInputs = form.querySelectorAll('input[name="choice_id"]');
-            if (hiddenInputs.length < total) {
-                e.preventDefault();
-                alert("すべての質問に回答してください。");
-            }
-        });
-    });
-</script>
+<script src="{{ url_for('static', filename='js/diagnosis.js') }}"></script>
 {% endblock %}
