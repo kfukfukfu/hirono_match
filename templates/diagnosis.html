@@ -19,21 +19,17 @@
         <div class="question-panel{% if loop.first %} active{% endif %}" data-index="{{ q_index }}">
             <h2 class="question-text">{{ item.question.text }}</h2>
 
-            <div class="choice-cards">
+            <div class="choice-list">
                 {% for choice in item.choices %}
                 <button type="button"
-                        class="choice-card-btn"
+                        class="choice-btn"
                         data-choice-id="{{ choice.id }}"
                         data-question="{{ q_index }}"
                         aria-label="{{ choice.text }}">
-                    <div class="choice-card-image">
-                        <img src="{{ url_for('static', filename=choice.image_url) }}"
-                             alt="{{ choice.text }}">
-                    </div>
-                    <div class="choice-card-body">
-                        <h3 class="choice-card-title">{{ choice.text }}</h3>
-                        <p class="choice-card-subtitle">{{ choice.subtitle }}</p>
-                    </div>
+                    <span class="choice-btn-text">{{ choice.text }}</span>
+                    {% if choice.subtitle %}
+                    <span class="choice-btn-sub">{{ choice.subtitle }}</span>
+                    {% endif %}
                 </button>
                 {% endfor %}
             </div>

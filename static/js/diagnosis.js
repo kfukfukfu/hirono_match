@@ -1,7 +1,7 @@
 /**
  * diagnosis.js
  * ------------
- * スマホ向けカード型診断 UI。
+ * スマホ向けシンプル選択 UI。
  * タップで選択 → 自動で次の質問へ（最終問は結果送信）。
  * 2問目以降は「前の質問へ」で戻れる。
  */
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function restoreSelection(panel, qIndex) {
         const choiceId = getSelectedChoiceId(qIndex);
-        panel.querySelectorAll(".choice-card-btn").forEach((card) => {
+        panel.querySelectorAll(".choice-btn").forEach((card) => {
             card.classList.toggle("selected", choiceId !== null && card.dataset.choiceId === choiceId);
         });
     }
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const choiceId = card.dataset.choiceId;
         const qIndex = card.dataset.question;
 
-        panel.querySelectorAll(".choice-card-btn").forEach((c) => c.classList.remove("selected"));
+        panel.querySelectorAll(".choice-btn").forEach((c) => c.classList.remove("selected"));
         card.classList.add("selected");
         syncHiddenInput(choiceId, qIndex);
         updateNav(index);
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     panels.forEach((panel, index) => {
-        panel.querySelectorAll(".choice-card-btn").forEach((card) => {
+        panel.querySelectorAll(".choice-btn").forEach((card) => {
             card.addEventListener("click", () => selectCard(card, panel, index));
         });
     });
