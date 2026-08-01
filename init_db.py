@@ -51,7 +51,8 @@ CREATE TABLE IF NOT EXISTS spots (
     description TEXT NOT NULL,
     image_url TEXT NOT NULL,
     address TEXT NOT NULL,
-    official_url TEXT NOT NULL
+    official_url TEXT NOT NULL,
+    map_url TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS spot_types (
@@ -157,7 +158,7 @@ CHOICES = [
 ]
 
 # --- 洋野町スポット ---
-# 最終項目: official_url（各施設の個別ページ）
+# 最終項目: official_url, map_url（map_url が空なら住所から Google マップ検索）
 SPOTS = [
     (
         "ひろのまきば天文台",
@@ -167,6 +168,7 @@ SPOTS = [
         "images/spots/observatory.jpg",
         "岩手県九戸郡洋野町大野66-8-142",
         "https://ohnocampus.jp/search_facility/hirono-makiba-tenmondai/",
+        "https://maps.app.goo.gl/DbPupFwt5GXorRpY9",
     ),
     (
         "種市海浜公園",
@@ -176,6 +178,7 @@ SPOTS = [
         "images/spots/kaihin.jpg",
         "岩手県九戸郡洋野町種市18-105",
         "https://portal.town.hirono.iwate.jp/tour/tour-6744/",
+        "https://maps.app.goo.gl/rz4xbTwpxxqDbm4CA",
     ),
     (
         "はまなす亭",
@@ -185,6 +188,7 @@ SPOTS = [
         "images/spots/hamanasu.jpg",
         "岩手県九戸郡洋野町種市22-131-3",
         "https://uninosato-hamanasutei.com/",
+        "https://maps.app.goo.gl/XgYVzU532nXc2sjEA",
     ),
     (
         "大野木工",
@@ -194,6 +198,7 @@ SPOTS = [
         "images/spots/mokko.jpg",
         "岩手県九戸郡洋野町大野58-12-30",
         "https://ohnocampus.jp/search_facility/mokkohin/",
+        "",
     ),
     (
         "種市海岸",
@@ -203,6 +208,7 @@ SPOTS = [
         "images/spots/coast.jpg",
         "岩手県九戸郡洋野町種市 窓岩",
         "https://www.town.hirono.iwate.jp/doc/2006010101001/",
+        "",
     ),
     (
         "道の駅おおの",
@@ -212,6 +218,7 @@ SPOTS = [
         "images/spots/oono.jpg",
         "岩手県九戸郡洋野町種市22-133-11",
         "https://www.town.hirono.iwate.jp/doc/2015070700031/",
+        "https://maps.app.goo.gl/RCDF9SgNqN9AJvXo8",
     ),
     (
         "マリンサイドスパ種市",
@@ -221,6 +228,7 @@ SPOTS = [
         "images/spots/marin.jpg",
         "岩手県九戸郡洋野町種市23-27-19",
         "https://www.marin-taneichi.com/",
+        "https://maps.app.goo.gl/8kuT9yQCG3BjcaJ47",
     ),
     (
         "ヒロノット",
@@ -230,6 +238,7 @@ SPOTS = [
         "images/spots/hironott.jpg",
         "岩手県九戸郡洋野町種市7-116-21",
         "https://hirono-nigiwai.com/",
+        "https://maps.app.goo.gl/5KdoknEo1TLirogn7",
     ),
     (
         "グリーンヒル大野",
@@ -239,6 +248,7 @@ SPOTS = [
         "images/spots/hotel.jpg",
         "岩手県九戸郡洋野町大野58-12-30",
         "https://ohnocampus.jp/search_facility/greenhill-ohno/",
+        "https://maps.app.goo.gl/MVGUGu9eB7n8NFLv9",
     ),
     (
         "洋野トレイル",
@@ -248,6 +258,7 @@ SPOTS = [
         "images/spots/trail.jpg",
         "岩手県九戸郡洋野町角浜",
         "https://hirono-kankou.jp/topic/topic-156/",
+        "",
     ),
 ]
 
@@ -308,8 +319,8 @@ def init_db():
     for spot in SPOTS:
         cursor.execute(
             """INSERT INTO spots
-               (name, category, genre, description, image_url, address, official_url)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+               (name, category, genre, description, image_url, address, official_url, map_url)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
             spot,
         )
 
