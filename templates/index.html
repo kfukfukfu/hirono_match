@@ -12,9 +12,16 @@
         <p class="hero-copy">あなたにぴったりの洋野町の楽しみ方を見つけよう</p>
         <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">診断を始める</a>
     </div>
+    <p class="hero-scroll-hint" aria-hidden="true">
+        <span>スクロール</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </p>
 </section>
 
-<section class="features container">
+<section class="features-panel">
+    <div class="container features">
     <h2 class="section-title">洋野町の魅力</h2>
     <div class="feature-grid">
         <div class="feature-card feature-card-photo">
@@ -45,5 +52,10 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
