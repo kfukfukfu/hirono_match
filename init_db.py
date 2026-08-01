@@ -165,7 +165,7 @@ SPOTS = [
         "天文台",
         "標高約300mの丘の上にあり、満天の星空を楽しめる洋野町の人気スポット。天体観望会も開催されています。",
         "images/spots/observatory.jpg",
-        "岩手県九戸郡洋野町中野字大野43-1",
+        "岩手県九戸郡洋野町大野66-8-142",
         "https://ohnocampus.jp/search_facility/hirono-makiba-tenmondai/",
     ),
     (
@@ -174,7 +174,7 @@ SPOTS = [
         "公園",
         "太平洋に面した広い海浜公園。キャンプ場や海水浴場があり、海辺でのんびり過ごせます。",
         "images/spots/kaihin.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市18-105",
         "https://portal.town.hirono.iwate.jp/tour/tour-6744/",
     ),
     (
@@ -183,7 +183,7 @@ SPOTS = [
         "海鮮料理",
         "洋野町の新鮮な海の幸を味わえる食事処。地元の食材を使った定食や海鮮丼が人気です。",
         "images/spots/hamanasu.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市22-131-3",
         "https://uninosato-hamanasutei.com/",
     ),
     (
@@ -192,7 +192,7 @@ SPOTS = [
         "体験施設",
         "地域の木工文化に触れられる施設。木工体験や作品展示を楽しめ、お土産も購入できます。",
         "images/spots/mokko.jpg",
-        "岩手県九戸郡洋野町中野字大野",
+        "岩手県九戸郡洋野町大野58-12-30",
         "https://ohnocampus.jp/search_facility/mokkohin/",
     ),
     (
@@ -201,7 +201,7 @@ SPOTS = [
         "海岸",
         "美しい海岸線が続く絶景スポット。夕日や波の音を楽しみながら、ゆったりとした時間を過ごせます。",
         "images/spots/coast.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市 窓岩",
         "https://www.town.hirono.iwate.jp/doc/2006010101001/",
     ),
     (
@@ -210,7 +210,7 @@ SPOTS = [
         "物産",
         "地元の特産品やお土産が揃うセンター。洋野町の魅力を知る入り口として最適です。",
         "images/spots/souvenir.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市22-133-11",
         "https://www.town.hirono.iwate.jp/doc/2015070700031/",
     ),
     (
@@ -219,7 +219,7 @@ SPOTS = [
         "カフェ",
         "海を望むカフェ。地元のコーヒーやスイーツを楽しみながら、穏やかな時間を過ごせます。",
         "images/spots/cafe.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市23-27-19",
         "https://www.marin-taneichi.com/",
     ),
     (
@@ -228,7 +228,7 @@ SPOTS = [
         "民宿",
         "海の近くに位置する民宿。地元の家庭的なおもてなしと、新鮮な朝食が魅力です。",
         "images/spots/minshuku.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町種市7-116-21",
         "https://hirono-nigiwai.com/",
     ),
     (
@@ -237,7 +237,7 @@ SPOTS = [
         "ホテル",
         "太平洋を一望できるリゾートホテル。温泉施設もあり、のんびりとした滞在に最適です。",
         "images/spots/hotel.jpg",
-        "岩手県九戸郡洋野町種市",
+        "岩手県九戸郡洋野町大野58-12-30",
         "https://ohnocampus.jp/search_facility/greenhill-ohno/",
     ),
     (
@@ -246,7 +246,7 @@ SPOTS = [
         "ハイキング",
         "自然豊かなトレッキングコース。四季折々の景色を楽しみながら、体を動かして町を巡れます。",
         "images/spots/trail.jpg",
-        "岩手県九戸郡洋野町",
+        "岩手県九戸郡洋野町角浜",
         "https://hirono-kankou.jp/topic/topic-156/",
     ),
 ]
