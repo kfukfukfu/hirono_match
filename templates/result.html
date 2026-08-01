@@ -4,8 +4,7 @@
 
 {% block content %}
 <section class="result-mobile">
-    {% if main_type.name in ["星空ヒーラー", "体験クリエイター"] %}
-    <header class="result-hero result-hero-photo">
+    <header class="result-hero">
         <div class="result-hero-bg" aria-hidden="true">
             <img src="{{ url_for('static', filename=main_type.icon) }}" alt="">
         </div>
@@ -14,15 +13,6 @@
             <h1 class="result-type-name">{{ main_type.name }}</h1>
         </div>
     </header>
-    {% else %}
-    <header class="result-hero">
-        <p class="result-label">あなたの洋野旅タイプ</p>
-        <h1 class="result-type-name">{{ main_type.name }}</h1>
-        <div class="result-hero-image">
-            <img src="{{ url_for('static', filename=main_type.icon) }}" alt="{{ main_type.name }}">
-        </div>
-    </header>
-    {% endif %}
 
     <section class="result-type-desc">
         <p>{{ main_type.description }}</p>
