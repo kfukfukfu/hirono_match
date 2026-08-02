@@ -198,7 +198,7 @@ SPOTS = [
         "images/spots/mokko.jpg",
         "岩手県九戸郡洋野町大野58-12-30",
         "https://ohnocampus.jp/search_facility/mokkohin/",
-        "",
+        "https://maps.app.goo.gl/WZ6PoepXf83Yt7xk8",
     ),
     (
         "種市海岸",
