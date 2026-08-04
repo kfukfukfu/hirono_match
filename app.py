@@ -5,15 +5,44 @@ app.py
 URL ルーティング、診断スコア計算、テンプレートへのデータ受け渡しを担当する。
 """
 
+import os
 from urllib.parse import quote
 
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
 
 from database import get_db
+from i18n import get_lang, translate, translate_value, localize_row, SUPPORTED_LANGS
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
 
 RECOMMENDED_SPOT_LIMIT = 3
+
+
+@app.context_processor
+def inject_i18n():
+    """
+    すべてのテンプレートで使える変数を注入する。
+    _(...) … 翻訳関数（例: {{ _('nav.diagnosis') }}）
+    lang   … 現在の言語コード（"ja" または "en"）
+    """
+    return {
+        "_": translate,
+        "tv": translate_value,
+        "lang": get_lang(),
+        "supported_langs": SUPPORTED_LANGS,
+    }
+
+
+@app.route("/set-language/<lang_code>")
+def set_language(lang_code):
+    """ヘッダーの言語切替ボタン用。選択を session に保存して元のページへ戻る。"""
+    if lang_code in SUPPORTED_LANGS:
+        session["lang"] = lang_code
+    referrer = request.referrer
+    if referrer:
+        return redirect(referrer)
+    return redirect(url_for("index"))
 
 
 @app.template_filter("map_url")
@@ -33,7 +62,10 @@ def fetch_questions_with_choices():
             "SELECT * FROM choices WHERE question_id = ? ORDER BY id",
             (q["id"],),
         ).fetchall()
-        result.append({"question": q, "choices": choices})
+        result.append({
+            "question": localize_row(q, ("text",)),
+            "choices": [localize_row(c, ("text", "subtitle")) for c in choices],
+        })
 
     db.close()
     return result
@@ -90,7 +122,8 @@ def calculate_scores(choice_ids):
 
     for choice_id in choice_ids:
         rows = db.execute(
-            """SELECT cs.type_id, cs.score, tt.name, tt.description, tt.icon
+            """SELECT cs.type_id, cs.score, tt.name, tt.description, tt.icon,
+                      tt.name_en, tt.description_en
                FROM choice_scores cs
                JOIN travel_types tt ON tt.id = cs.type_id
                WHERE cs.choice_id = ?""",
@@ -99,11 +132,12 @@ def calculate_scores(choice_ids):
 
         for row in rows:
             type_id = row["type_id"]
+            localized = localize_row(row, ("name", "description"))
             if type_id not in scores:
                 scores[type_id] = {
                     "id": type_id,
-                    "name": row["name"],
-                    "description": row["description"],
+                    "name": localized["name"],
+                    "description": localized["description"],
                     "icon": row["icon"],
                     "score": 0,
                 }
@@ -138,7 +172,10 @@ def fetch_recommended_spots(type_id, limit=RECOMMENDED_SPOT_LIMIT):
         (type_id, limit),
     ).fetchall()
     db.close()
-    return spots
+    return [
+        localize_row(spot, ("name", "category", "genre", "description"))
+        for spot in spots
+    ]
 
 
 def fetch_spot(spot_id):
@@ -146,7 +183,9 @@ def fetch_spot(spot_id):
     db = get_db()
     spot = db.execute("SELECT * FROM spots WHERE id = ?", (spot_id,)).fetchone()
     db.close()
-    return spot
+    if spot is None:
+        return None
+    return localize_row(spot, ("name", "category", "genre", "description"))
 
 
 @app.route("/")
@@ -194,6 +233,31 @@ def spot_detail(spot_id):
     if spot is None:
         abort(404)
     return render_template("spot_detail.html", spot=spot)
+
+
+@app.route("/api/spots")
+def api_spots():
+    """お気に入り一覧用。IDリストから現在の表示言語でスポット情報を返す。"""
+    ids_param = request.args.get("ids", "")
+    if not ids_param:
+        return jsonify([])
+
+    try:
+        spot_ids = [int(x.strip()) for x in ids_param.split(",") if x.strip()]
+    except ValueError:
+        abort(400)
+
+    spots = []
+    for spot_id in spot_ids:
+        spot = fetch_spot(spot_id)
+        if spot:
+            spots.append({
+                "id": spot["id"],
+                "name": spot["name"],
+                "category": spot["category"],
+                "image_url": spot["image_url"],
+            })
+    return jsonify(spots)
 
 
 @app.route("/favorites")

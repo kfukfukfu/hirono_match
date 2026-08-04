@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}お気に入り — ひろのまっち{% endblock %}
+{% block title %}{{ _('favorites.page_title') }}{% endblock %}
 
 {% block content %}
 <section class="favorites container">
-    <h1 class="page-title">お気に入り</h1>
-    <p class="page-lead">保存したスポット一覧です（ブラウザに保存されます）。</p>
+    <h1 class="page-title">{{ _('favorites.title') }}</h1>
+    <p class="page-lead">{{ _('favorites.lead') }}</p>
 
     <div id="favorites-list" class="spot-grid">
         <!-- JavaScript で localStorage から描画 -->
     </div>
 
     <p id="favorites-empty" class="empty-message" hidden>
-        お気に入りはまだありません。診断結果やスポット詳細から追加してみましょう。
+        {{ _('favorites.empty') }}
     </p>
 
     <div class="result-actions">
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary">診断を始める</a>
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary">{{ _('favorites.start_diagnosis') }}</a>
     </div>
 </section>
 {% endblock %}

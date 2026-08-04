@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}{{ spot.name }} — ひろのまっち{% endblock %}
+{% block title %}{{ spot.name }}{{ _('spot.page_title_suffix') }}{% endblock %}
 
 {% block content %}
 <section class="spot-detail container">
-    <a href="javascript:history.back()" class="back-link">&larr; 戻る</a>
+    <a href="javascript:history.back()" class="back-link">{{ _('spot.back') }}</a>
 
     <article class="spot-detail-card">
         <div class="spot-detail-image">
@@ -17,22 +17,21 @@
             <p class="spot-description">{{ spot.description }}</p>
 
             <dl class="spot-info">
-                <dt>住所</dt>
+                <dt>{{ _('spot.address') }}</dt>
                 <dd>{{ spot.address }}</dd>
-                <dt>公式サイト</dt>
+                <dt>{{ _('spot.official_site') }}</dt>
                 <dd>
                     <a href="{{ spot.official_url }}" target="_blank" rel="noopener noreferrer">
-                        公式サイトを見る
+                        {{ _('spot.official_link') }}
                     </a>
                 </dd>
             </dl>
 
             <button type="button" class="btn btn-primary btn-favorite-detail"
                     data-spot-id="{{ spot.id }}"
-                    data-spot-name="{{ spot.name }}"
-                    data-spot-image="{{ spot.image_url }}"
-                    data-spot-category="{{ spot.category }}">
-                ♡ お気に入りに追加
+                    data-label-add="{{ _('spot.favorite_add') }}"
+                    data-label-done="{{ _('spot.favorite_done') }}">
+                {{ _('spot.favorite_add') }}
             </button>
         </div>
     </article>
@@ -45,19 +44,16 @@
         const btn = document.querySelector(".btn-favorite-detail");
         if (btn) {
             const id = btn.dataset.spotId;
+            const labelAdd = btn.dataset.labelAdd;
+            const labelDone = btn.dataset.labelDone;
             if (Favorites.isFavorite(id)) {
-                btn.textContent = "♥ お気に入り済み";
+                btn.textContent = labelDone;
                 btn.classList.add("is-favorite");
             }
             btn.addEventListener("click", () => {
-                Favorites.toggle({
-                    id: id,
-                    name: btn.dataset.spotName,
-                    image: btn.dataset.spotImage,
-                    category: btn.dataset.spotCategory,
-                });
+                Favorites.toggle(id);
                 const added = Favorites.isFavorite(id);
-                btn.textContent = added ? "♥ お気に入り済み" : "♡ お気に入りに追加";
+                btn.textContent = added ? labelDone : labelAdd;
                 btn.classList.toggle("is-favorite", added);
             });
         }

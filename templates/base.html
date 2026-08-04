@@ -1,19 +1,30 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ひろのまっち{% endblock %}</title>
+    <title>{% block title %}{{ _('app.name') }}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header class="site-header">
         <div class="container header-inner">
-            <a href="{{ url_for('index') }}" class="logo">ひろのまっち</a>
-            <nav class="nav-links">
-                <a href="{{ url_for('diagnosis') }}">診断</a>
-                <a href="{{ url_for('favorites') }}">お気に入り</a>
-            </nav>
+            <a href="{{ url_for('index') }}" class="logo">{{ _('app.name') }}</a>
+            <div class="header-actions">
+                <nav class="lang-switch" aria-label="{{ _('lang.switch_label') }}">
+                    <a href="{{ url_for('set_language', lang_code='ja') }}"
+                       class="lang-switch-btn{% if lang == 'ja' %} is-active{% endif %}"
+                       lang="ja">{{ _('lang.ja') }}</a>
+                    <span class="lang-switch-sep" aria-hidden="true">|</span>
+                    <a href="{{ url_for('set_language', lang_code='en') }}"
+                       class="lang-switch-btn{% if lang == 'en' %} is-active{% endif %}"
+                       lang="en">{{ _('lang.en') }}</a>
+                </nav>
+                <nav class="nav-links">
+                    <a href="{{ url_for('diagnosis') }}">{{ _('nav.diagnosis') }}</a>
+                    <a href="{{ url_for('favorites') }}">{{ _('nav.favorites') }}</a>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -23,10 +34,15 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 ひろのまっち — 洋野町の旅を見つけよう</p>
+            <p>{{ _('footer.copyright') }}</p>
         </div>
     </footer>
 
+    <script>
+        window.HIRONO_I18N = {
+            favoritesRemove: {{ _('favorites.remove') | tojson }}
+        };
+    </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>

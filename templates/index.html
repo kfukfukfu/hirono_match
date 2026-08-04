@@ -1,19 +1,41 @@
 {% extends "base.html" %}
 
-{% block title %}ひろのまっち — 洋野町の旅を見つけよう{% endblock %}
+{% block title %}{{ _('index.page_title') }}{% endblock %}
 
 {% block content %}
+{% set feature_images = [
+    'images/types/star.jpg',
+    'images/types/sea.jpg',
+    'images/types/food.jpg',
+    'images/spots/hotel.jpg',
+    'images/spots/kaihin.jpg',
+    'images/spots/oono.jpg',
+    'images/types/experience.jpg',
+    'images/spots/trail.jpg'
+] %}
+{% set gallery_images = [
+    'images/spots/coast.jpg',
+    'images/types/star.jpg',
+    'images/spots/hamanasu.jpg',
+    'images/spots/kaihin.jpg',
+    'images/spots/observatory.jpg',
+    'images/spots/trail.jpg',
+    'images/spots/mokko.jpg',
+    'images/spots/oono.jpg',
+    'images/spots/marin.jpg'
+] %}
+
 <section class="hero">
     <div class="hero-bg" aria-hidden="true">
         <img src="{{ url_for('static', filename='images/hero-beach.png') }}" alt="">
     </div>
     <div class="hero-content container">
-        <h1 class="hero-title">ひろのまっち</h1>
-        <p class="hero-copy">たった30秒の診断で、あなたにぴったりの洋野町体験をご提案します。</p>
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">診断を始める</a>
+        <h1 class="hero-title">{{ _('app.name') }}</h1>
+        <p class="hero-copy">{{ _('index.hero_copy') }}</p>
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">{{ _('index.start_diagnosis') }}</a>
     </div>
     <p class="hero-scroll-hint" aria-hidden="true">
-        <span>スクロール</span>
+        <span>{{ _('index.scroll_hint') }}</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -21,287 +43,143 @@
 </section>
 
 <div class="features-panel">
-    {# ② 共感セクション #}
     <section class="lp-section container">
-        <h2 class="section-title">こんな方におすすめ</h2>
-        <p class="section-lead">あなたの旅のスタイルに合わせて、洋野町の楽しみ方を提案します。</p>
+        <h2 class="section-title">{{ _('index.empathy.title') }}</h2>
+        <p class="section-lead">{{ _('index.empathy.lead') }}</p>
         <div class="empathy-grid">
+            {% for item in tv('index.empathy.items') %}
             <div class="empathy-card">
-                <p>旅行先を探している</p>
+                <p>{{ item }}</p>
             </div>
-            <div class="empathy-card">
-                <p>自然が好き</p>
-            </div>
-            <div class="empathy-card">
-                <p>グルメを楽しみたい</p>
-            </div>
-            <div class="empathy-card">
-                <p>星空を見たい</p>
-            </div>
-            <div class="empathy-card">
-                <p>家族で遊びたい</p>
-            </div>
-            <div class="empathy-card">
-                <p>思い出を残したい</p>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
-    {# ③ 診断すると分かること #}
     <section class="lp-section lp-section-alt container">
-        <h2 class="section-title">診断すると分かること</h2>
-        <p class="section-lead">5問の質問に答えるだけで、あなただけの洋野町プランが見えてきます。</p>
+        <h2 class="section-title">{{ _('index.benefits.title') }}</h2>
+        <p class="section-lead">{{ _('index.benefits.lead') }}</p>
         <div class="benefit-grid">
+            {% for card in tv('index.benefits.cards') %}
             <article class="benefit-card">
                 <span class="benefit-check" aria-hidden="true"></span>
-                <h3>あなたに合うスポット</h3>
-                <p>8つの旅行タイプから、あなたにぴったりの観光スポットを最大3件ご提案。</p>
+                <h3>{{ card.title }}</h3>
+                <p>{{ card.body }}</p>
             </article>
-            <article class="benefit-card">
-                <span class="benefit-check" aria-hidden="true"></span>
-                <h3>おすすめグルメ</h3>
-                <p>海鮮料理やカフェなど、タイプに合った味わい方がわかります。</p>
-            </article>
-            <article class="benefit-card">
-                <span class="benefit-check" aria-hidden="true"></span>
-                <h3>季節に合う楽しみ方</h3>
-                <p>星空・海岸・体験など、今のあなたに合う過ごし方が見つかります。</p>
-            </article>
+            {% endfor %}
         </div>
     </section>
 
-    {# ④ 洋野町の魅力 #}
     <section class="lp-section container">
-        <h2 class="section-title">洋野町の魅力</h2>
-        <p class="section-lead">太平洋に面した自然豊かな町で、多彩な体験が待っています。</p>
+        <h2 class="section-title">{{ _('index.features.title') }}</h2>
+        <p class="section-lead">{{ _('index.features.lead') }}</p>
         <div class="feature-grid feature-grid-wide">
+            {% for card in tv('index.features.cards') %}
             <div class="feature-card feature-card-photo">
                 <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/types/star.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename=feature_images[loop.index0]) }}" alt="">
                 </div>
                 <div class="feature-card-content">
-                    <h3>満天の星空</h3>
-                    <p>ひろのまきば天文台で、都会では見られない星々を。</p>
+                    <h3>{{ card.title }}</h3>
+                    <p>{{ card.body }}</p>
                 </div>
             </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/types/sea.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>美しい海岸</h3>
-                    <p>種市海岸の絶景と、波音に癒やされる時間。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/types/food.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>新鮮な海の幸</h3>
-                    <p>はまなす亭など、地元の味を堪能。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/spots/hotel.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>温泉・スパ</h3>
-                    <p>マリンサイドスパ種市やグリーンヒル大野でリラックス。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/spots/kaihin.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>キャンプ</h3>
-                    <p>種市海浜公園で海辺キャンプを楽しもう。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/spots/oono.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>道の駅</h3>
-                    <p>道の駅おおので特産品とお土産を。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/types/experience.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>体験・木工</h3>
-                    <p>大野木工で地域の文化に触れる。</p>
-                </div>
-            </div>
-            <div class="feature-card feature-card-photo">
-                <div class="feature-card-bg" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='images/spots/trail.jpg') }}" alt="">
-                </div>
-                <div class="feature-card-content">
-                    <h3>トレイル</h3>
-                    <p>洋野トレイルで自然を感じながら町を巡る。</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
-    {# ⑤ 診断結果サンプル #}
     <section class="lp-section lp-section-alt container">
-        <h2 class="section-title">診断結果のイメージ</h2>
-        <p class="section-lead">こんな結果が届きます。あなたはどのタイプ？</p>
+        <h2 class="section-title">{{ _('index.sample.title') }}</h2>
+        <p class="section-lead">{{ _('index.sample.lead') }}</p>
         <article class="sample-result-card">
             <div class="sample-result-hero">
                 <img src="{{ url_for('static', filename='images/types/sea.jpg') }}" alt="">
                 <div class="sample-result-hero-text">
-                    <p class="sample-result-label">あなたは…</p>
-                    <h3 class="sample-result-type">シーサイドリラックス</h3>
+                    <p class="sample-result-label">{{ _('index.sample.label') }}</p>
+                    <h3 class="sample-result-type">{{ tv('index.sample.type_name') }}</h3>
                 </div>
             </div>
             <div class="sample-result-body">
-                <p class="sample-result-desc">海辺の景色やゆったりした時間を楽しみたいタイプ。種市海岸や海浜公園でのんびり過ごす旅がおすすめです。</p>
-                <h4 class="sample-result-spots-title">おすすめスポット</h4>
+                <p class="sample-result-desc">{{ tv('index.sample.description') }}</p>
+                <h4 class="sample-result-spots-title">{{ _('index.sample.spots_title') }}</h4>
                 <ul class="sample-result-spots">
-                    <li>種市海浜公園</li>
-                    <li>種市海岸</li>
-                    <li>マリンサイドスパ種市</li>
-                    <li>グリーンヒル大野</li>
+                    {% for spot in tv('index.sample.spots') %}
+                    <li>{{ spot }}</li>
+                    {% endfor %}
                 </ul>
-                <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">自分のタイプを診断する</a>
+                <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">{{ _('index.sample.cta') }}</a>
             </div>
         </article>
     </section>
 
-    {# ⑥ 写真ギャラリー #}
     <section class="lp-section container">
-        <h2 class="section-title">洋野町フォトギャラリー</h2>
-        <p class="section-lead">写真で感じる、洋野町の魅力。</p>
+        <h2 class="section-title">{{ _('index.gallery.title') }}</h2>
+        <p class="section-lead">{{ _('index.gallery.lead') }}</p>
         <div class="photo-gallery">
-            <img src="{{ url_for('static', filename='images/spots/coast.jpg') }}" alt="種市海岸">
-            <img src="{{ url_for('static', filename='images/types/star.jpg') }}" alt="星空">
-            <img src="{{ url_for('static', filename='images/spots/hamanasu.jpg') }}" alt="海の幸">
-            <img src="{{ url_for('static', filename='images/spots/kaihin.jpg') }}" alt="海浜公園">
-            <img src="{{ url_for('static', filename='images/spots/observatory.jpg') }}" alt="天文台">
-            <img src="{{ url_for('static', filename='images/spots/trail.jpg') }}" alt="トレイル">
-            <img src="{{ url_for('static', filename='images/spots/mokko.jpg') }}" alt="大野木工">
-            <img src="{{ url_for('static', filename='images/spots/oono.jpg') }}" alt="道の駅おおの">
-            <img src="{{ url_for('static', filename='images/spots/marin.jpg') }}" alt="マリンサイドスパ">
+            {% for alt in tv('index.gallery.alts') %}
+            <img src="{{ url_for('static', filename=gallery_images[loop.index0]) }}" alt="{{ alt }}">
+            {% endfor %}
         </div>
     </section>
 
-    {# ⑦ モデルコース #}
     <section class="lp-section lp-section-alt container">
-        <h2 class="section-title">モデルコース</h2>
-        <p class="section-lead">シーン別の過ごし方イメージ。診断結果と合わせて参考にしてください。</p>
+        <h2 class="section-title">{{ _('index.courses.title') }}</h2>
+        <p class="section-lead">{{ _('index.courses.lead') }}</p>
         <div class="course-grid">
+            {% for course in tv('index.courses.items') %}
             <article class="course-card">
-                <h3 class="course-title">カップル向け</h3>
+                <h3 class="course-title">{{ course.title }}</h3>
                 <ol class="course-steps">
-                    <li><span class="course-time">10:00</span> 種市海岸を散策</li>
-                    <li><span class="course-time">12:00</span> はまなす亭で海鮮丼</li>
-                    <li><span class="course-time">14:00</span> マリンサイドスパ種市</li>
-                    <li><span class="course-time">19:00</span> ひろのまきば天文台</li>
+                    {% for step in course.steps %}
+                    <li><span class="course-time">{{ step.time }}</span> {{ step.text }}</li>
+                    {% endfor %}
                 </ol>
             </article>
-            <article class="course-card">
-                <h3 class="course-title">家族向け</h3>
-                <ol class="course-steps">
-                    <li><span class="course-time">10:00</span> 種市海浜公園</li>
-                    <li><span class="course-time">12:00</span> 道の駅おおのでランチ</li>
-                    <li><span class="course-time">14:00</span> 大野木工体験</li>
-                    <li><span class="course-time">16:00</span> ヒロノットで休憩</li>
-                </ol>
-            </article>
-            <article class="course-card">
-                <h3 class="course-title">一人旅</h3>
-                <ol class="course-steps">
-                    <li><span class="course-time">9:00</span> 洋野トレイルをハイキング</li>
-                    <li><span class="course-time">12:00</span> 種市海岸で昼食</li>
-                    <li><span class="course-time">15:00</span> グリーンヒル大野</li>
-                    <li><span class="course-time">19:00</span> 星空観察</li>
-                </ol>
-            </article>
+            {% endfor %}
         </div>
     </section>
 
-    {# 数字で見る洋野町 #}
     <section class="lp-section container">
-        <h2 class="section-title">数字で見る洋野町</h2>
+        <h2 class="section-title">{{ _('index.stats.title') }}</h2>
         <div class="stats-grid">
+            {% for stat in tv('index.stats.items') %}
             <div class="stat-card">
-                <span class="stat-number">8</span>
-                <span class="stat-label">旅行タイプ</span>
+                <span class="stat-number">{{ stat.number }}{% if stat.unit %}<span class="stat-unit">{{ stat.unit }}</span>{% endif %}</span>
+                <span class="stat-label">{{ stat.label }}</span>
             </div>
-            <div class="stat-card">
-                <span class="stat-number">10</span>
-                <span class="stat-label">おすすめスポット</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number">5</span>
-                <span class="stat-label">問の簡単診断</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number">30<span class="stat-unit">秒</span></span>
-                <span class="stat-label">で完了</span>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
-    {# ⑧ 利用者の声 #}
     <section class="lp-section lp-section-alt container">
-        <h2 class="section-title">利用者の声</h2>
+        <h2 class="section-title">{{ _('index.voices.title') }}</h2>
         <div class="voice-grid">
+            {% for voice in tv('index.voices.items') %}
             <blockquote class="voice-card">
-                <p class="voice-label">利用者の声</p>
-                <p>「診断のおかげで知らなかった場所に行けました！種市海岸が特にお気に入りです。」</p>
-                <footer>20代・女性</footer>
+                <p class="voice-label">{{ _('index.voices.label') }}</p>
+                <p>{{ voice.quote }}</p>
+                <footer>{{ voice.author }}</footer>
             </blockquote>
-            <blockquote class="voice-card">
-                <p class="voice-label">利用者の声</p>
-                <p>「家族で診断してみたら、子どもが海浜公園に大はしゃぎ。洋野町をもっと好きになりました！」</p>
-                <footer>30代・ご家族</footer>
-            </blockquote>
-            <blockquote class="voice-card">
-                <p class="voice-label">利用者の声</p>
-                <p>「30秒で終わるのに、おすすめが的確でした。次は天文台に行きたいです。」</p>
-                <footer>40代・男性</footer>
-            </blockquote>
+            {% endfor %}
         </div>
     </section>
 
-    {# ⑨ FAQ #}
     <section class="lp-section container">
-        <h2 class="section-title">よくある質問</h2>
+        <h2 class="section-title">{{ _('index.faq.title') }}</h2>
         <div class="faq-list">
+            {% for item in tv('index.faq.items') %}
             <details class="faq-item">
-                <summary>無料ですか？</summary>
-                <p>はい、診断は完全無料でご利用いただけます。</p>
+                <summary>{{ item.question }}</summary>
+                <p>{{ item.answer }}</p>
             </details>
-            <details class="faq-item">
-                <summary>会員登録は必要ですか？</summary>
-                <p>不要です。すぐに診断を始められます。</p>
-            </details>
-            <details class="faq-item">
-                <summary>所要時間はどのくらいですか？</summary>
-                <p>5問・約30秒で完了します。スマホから気軽にお試しください。</p>
-            </details>
-            <details class="faq-item">
-                <summary>家族でも使えますか？</summary>
-                <p>はい。ご家族それぞれで診断して、タイプの違いを楽しむ方も多いです。</p>
-            </details>
+            {% endfor %}
         </div>
     </section>
 
-    {# ⑩ 最後のCTA #}
     <section class="lp-final-cta">
         <div class="container lp-final-cta-inner">
-            <h2 class="lp-final-cta-title">あなたにぴったりの<br>洋野町を見つけよう</h2>
-            <p class="lp-final-cta-lead">30秒で診断</p>
-            <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">診断を始める</a>
+            <h2 class="lp-final-cta-title">{{ _('index.final_cta.title_line1') }}<br>{{ _('index.final_cta.title_line2') }}</h2>
+            <p class="lp-final-cta-lead">{{ _('index.final_cta.lead') }}</p>
+            <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-large">{{ _('index.start_diagnosis') }}</a>
         </div>
     </section>
 </div>

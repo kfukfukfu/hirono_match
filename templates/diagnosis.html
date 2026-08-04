@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}洋野旅タイプ診断 — ひろのまっち{% endblock %}
+{% block title %}{{ _('diagnosis.page_title') }}{% endblock %}
 
 {% block content %}
 <section class="diagnosis-mobile">
     <header class="diagnosis-header">
-        <h1 class="diagnosis-title">あなたの洋野旅タイプ診断</h1>
+        <h1 class="diagnosis-title">{{ _('diagnosis.title') }}</h1>
         <p class="diagnosis-progress">Q<span id="current-num">1</span> / {{ questions|length }}</p>
     </header>
 
@@ -39,10 +39,10 @@
 
     <div class="diagnosis-nav diagnosis-nav-first" id="diagnosis-nav">
         <button type="button" class="btn-diagnosis-nav btn-diagnosis-back" id="btn-back" hidden>
-            ← 前の質問へ
+            {{ _('diagnosis.back') }}
         </button>
         <button type="button" class="btn-diagnosis-nav btn-diagnosis-next" id="btn-next" disabled>
-            次へ →
+            {{ _('diagnosis.next') }}
         </button>
     </div>
 </section>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}診断結果 — ひろのまっち{% endblock %}
+{% block title %}{{ _('result.page_title') }}{% endblock %}
 
 {% block content %}
 <section class="result-mobile">
@@ -9,7 +9,7 @@
             <img src="{{ url_for('static', filename=main_type.icon) }}" alt="">
         </div>
         <div class="result-hero-content">
-            <p class="result-label">あなたの洋野旅タイプ</p>
+            <p class="result-label">{{ _('result.label') }}</p>
             <h1 class="result-type-name">{{ main_type.name }}</h1>
         </div>
     </header>
@@ -20,7 +20,7 @@
 
     {% if type_percentages %}
     <section class="result-percentages-mobile">
-        <h2 class="section-title-mobile">タイプ割合</h2>
+        <h2 class="section-title-mobile">{{ _('result.type_ratio') }}</h2>
         <ul class="percentage-simple-list">
             {% for item in type_percentages %}
             <li class="percentage-simple-item">
@@ -34,8 +34,8 @@
 
     {% if recommended_spots %}
     <section class="result-spots">
-        <h2 class="section-title-mobile">おすすめスポット</h2>
-        <p class="section-lead-mobile">このタイプに合う洋野町のスポットを厳選しました。</p>
+        <h2 class="section-title-mobile">{{ _('result.recommended_spots') }}</h2>
+        <p class="section-lead-mobile">{{ _('result.spots_lead') }}</p>
 
         <div class="result-spot-list">
             {% for spot in recommended_spots %}
@@ -51,17 +51,14 @@
                     <p class="result-spot-desc">{{ spot.description[:70] }}…</p>
                     <div class="result-spot-actions">
                         <a href="{{ spot.official_url }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
-                            公式サイト
+                            {{ _('result.official_site') }}
                         </a>
                         <a href="{{ spot.map_url if spot.map_url else (spot.address | map_url) }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
-                            地図
+                            {{ _('result.map') }}
                         </a>
                         <button type="button" class="btn-favorite-mobile"
                                 data-spot-id="{{ spot.id }}"
-                                data-spot-name="{{ spot.name }}"
-                                data-spot-image="{{ spot.image_url }}"
-                                data-spot-category="{{ spot.category }}"
-                                aria-label="お気に入りに追加">
+                                aria-label="{{ _('result.favorite_add') }}">
                             ♡
                         </button>
                     </div>
@@ -73,7 +70,7 @@
     {% endif %}
 
     <div class="result-actions-mobile">
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">もう一度診断する</a>
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">{{ _('result.retry') }}</a>
     </div>
 </section>
 {% endblock %}
@@ -88,12 +85,7 @@
                 btn.classList.add("is-favorite");
             }
             btn.addEventListener("click", () => {
-                const added = Favorites.toggle({
-                    id: id,
-                    name: btn.dataset.spotName,
-                    image: btn.dataset.spotImage,
-                    category: btn.dataset.spotCategory,
-                });
+                const added = Favorites.toggle(id);
                 btn.textContent = added ? "♥" : "♡";
                 btn.classList.toggle("is-favorite", added);
             });

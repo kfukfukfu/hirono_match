@@ -1,0 +1,242 @@
+{
+  "app": {
+    "name": "Hirono Match",
+    "tagline": "Discover your trip in Hirono Town"
+  },
+  "nav": {
+    "diagnosis": "Diagnosis",
+    "favorites": "Favorites"
+  },
+  "footer": {
+    "copyright": "© 2026 Hirono Match — Discover your trip in Hirono Town, Iwate"
+  },
+  "lang": {
+    "switch_label": "Language",
+    "ja": "日本語",
+    "en": "EN"
+  },
+  "diagnosis": {
+    "page_title": "Hirono Travel Type Quiz — Hirono Match",
+    "title": "Find Your Hirono Travel Type",
+    "back": "← Previous",
+    "next": "Next →"
+  },
+  "result": {
+    "page_title": "Your Result — Hirono Match",
+    "label": "Your Hirono Travel Type",
+    "type_ratio": "Type Breakdown",
+    "recommended_spots": "Recommended Spots",
+    "spots_lead": "Hand-picked places in Hirono Town that match your travel type.",
+    "official_site": "Official Site",
+    "map": "Map",
+    "favorite_add": "Add to favorites",
+    "retry": "Take the quiz again"
+  },
+  "spot": {
+    "page_title_suffix": " — Hirono Match",
+    "back": "← Back",
+    "address": "Address",
+    "official_site": "Official Website",
+    "official_link": "Visit official website",
+    "favorite_add": "♡ Add to favorites",
+    "favorite_done": "♥ Saved to favorites"
+  },
+  "favorites": {
+    "page_title": "Favorites — Hirono Match",
+    "title": "Favorites",
+    "lead": "Your saved spots (stored in this browser).",
+    "empty": "No favorites yet. Add spots from your quiz result or spot details.",
+    "remove": "Remove from favorites",
+    "start_diagnosis": "Start the quiz"
+  },
+  "index": {
+    "page_title": "Hirono Match — Discover your trip in Hirono Town",
+    "hero_copy": "A 30-second quiz to find the Hirono Town experience that's perfect for you.",
+    "start_diagnosis": "Start the quiz",
+    "scroll_hint": "Scroll",
+    "empathy": {
+      "title": "Perfect for travelers who…",
+      "lead": "We suggest ways to enjoy Hirono Town based on your travel style.",
+      "items": [
+        "Are looking for a destination",
+        "Love nature",
+        "Want great local food",
+        "Want to see the stars",
+        "Travel with family",
+        "Want lasting memories"
+      ]
+    },
+    "benefits": {
+      "title": "What you'll discover",
+      "lead": "Answer 5 quick questions and see a Hirono plan made for you.",
+      "cards": [
+        {
+          "title": "Spots that fit you",
+          "body": "From 8 travel types, we recommend up to 3 places you'll love."
+        },
+        {
+          "title": "Food you'll enjoy",
+          "body": "Find seafood, cafes, and local flavors that match your type."
+        },
+        {
+          "title": "Ways to spend your time",
+          "body": "Stars, coastlines, hands-on experiences — discover what suits you now."
+        }
+      ]
+    },
+    "features": {
+      "title": "Why Hirono Town",
+      "lead": "A nature-rich town on the Pacific Ocean with experiences for every traveler.",
+      "cards": [
+        {
+          "title": "Starry skies",
+          "body": "See stars you can't find in the city at Hirono Makiba Observatory."
+        },
+        {
+          "title": "Beautiful coast",
+          "body": "Take in Taneichi Coast and unwind to the sound of the waves."
+        },
+        {
+          "title": "Fresh seafood",
+          "body": "Savor local flavors at Hamanasu-tei and other favorites."
+        },
+        {
+          "title": "Hot springs & spa",
+          "body": "Relax at Marine Side Spa Taneichi or Green Hill Ohno."
+        },
+        {
+          "title": "Camping",
+          "body": "Enjoy seaside camping at Taneichi Seaside Park."
+        },
+        {
+          "title": "Roadside station",
+          "body": "Pick up local specialties at Michi-no-Eki Ohno."
+        },
+        {
+          "title": "Workshops",
+          "body": "Experience local woodworking culture at Ohno Woodcraft Center."
+        },
+        {
+          "title": "Trails",
+          "body": "Explore the town on the Hirono Trail surrounded by nature."
+        }
+      ]
+    },
+    "sample": {
+      "title": "Sample result",
+      "lead": "Here's what you might get. Which type are you?",
+      "label": "You are…",
+      "type_name": "Seaside Relax",
+      "description": "For travelers who want ocean views and unhurried time. Relax at Taneichi Coast or the seaside park.",
+      "spots_title": "Recommended spots",
+      "spots": [
+        "Taneichi Seaside Park",
+        "Taneichi Coast",
+        "Marine Side Spa Taneichi",
+        "Green Hill Ohno"
+      ],
+      "cta": "Find your travel type"
+    },
+    "gallery": {
+      "title": "Hirono Photo Gallery",
+      "lead": "Feel the charm of Hirono Town through photos.",
+      "alts": [
+        "Taneichi Coast",
+        "Starry sky",
+        "Seafood",
+        "Seaside park",
+        "Observatory",
+        "Trail",
+        "Ohno Woodcraft Center",
+        "Michi-no-Eki Ohno",
+        "Marine Side Spa"
+      ]
+    },
+    "courses": {
+      "title": "Sample itineraries",
+      "lead": "Ideas by travel style. Use them alongside your quiz result.",
+      "items": [
+        {
+          "title": "For couples",
+          "steps": [
+            { "time": "10:00", "text": "Stroll Taneichi Coast" },
+            { "time": "12:00", "text": "Seafood bowl at Hamanasu-tei" },
+            { "time": "14:00", "text": "Marine Side Spa Taneichi" },
+            { "time": "19:00", "text": "Hirono Makiba Observatory" }
+          ]
+        },
+        {
+          "title": "For families",
+          "steps": [
+            { "time": "10:00", "text": "Taneichi Seaside Park" },
+            { "time": "12:00", "text": "Lunch at Michi-no-Eki Ohno" },
+            { "time": "14:00", "text": "Woodcraft workshop at Ohno Woodcraft Center" },
+            { "time": "16:00", "text": "Break at Hironott" }
+          ]
+        },
+        {
+          "title": "Solo travel",
+          "steps": [
+            { "time": "9:00", "text": "Hike the Hirono Trail" },
+            { "time": "12:00", "text": "Lunch at Taneichi Coast" },
+            { "time": "15:00", "text": "Green Hill Ohno" },
+            { "time": "19:00", "text": "Stargazing" }
+          ]
+        }
+      ]
+    },
+    "stats": {
+      "title": "Hirono by the numbers",
+      "items": [
+        { "number": "8", "label": "Travel types" },
+        { "number": "10", "label": "Recommended spots" },
+        { "number": "5", "label": "Quick questions" },
+        { "number": "30", "unit": "sec", "label": "to finish" }
+      ]
+    },
+    "voices": {
+      "title": "What visitors say",
+      "label": "Visitor review",
+      "items": [
+        {
+          "quote": "\"The quiz helped me find places I didn't know! Taneichi Coast is my favorite.\"",
+          "author": "Woman in her 20s"
+        },
+        {
+          "quote": "\"We tried it as a family and the kids loved the seaside park. We love Hirono even more now!\"",
+          "author": "Family in their 30s"
+        },
+        {
+          "quote": "\"It only took 30 seconds, but the recommendations were spot on. Next stop: the observatory.\"",
+          "author": "Man in his 40s"
+        }
+      ]
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "question": "Is it free?",
+          "answer": "Yes — the quiz is completely free to use."
+        },
+        {
+          "question": "Do I need to sign up?",
+          "answer": "No registration required. You can start right away."
+        },
+        {
+          "question": "How long does it take?",
+          "answer": "5 questions, about 30 seconds. Try it easily on your phone."
+        },
+        {
+          "question": "Can families use it?",
+          "answer": "Yes. Many families take the quiz together and compare their travel types."
+        }
+      ]
+    },
+    "final_cta": {
+      "title_line1": "Find the Hirono Town",
+      "title_line2": "that's perfect for you",
+      "lead": "30-second quiz"
+    }
+  }
+}
