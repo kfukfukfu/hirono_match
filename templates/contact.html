@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('contact.page_title') }}{% endblock %}
+
+{% block content %}
+<section class="contact container">
+    <h1 class="page-title">{{ _('contact.title') }}</h1>
+    <p class="page-lead">{{ _('contact.lead') }}</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="contact-alerts">
+        {% for category, message in messages %}
+        <p class="contact-alert contact-alert-{{ category }}" role="alert">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form class="contact-form" method="POST" action="{{ url_for('contact') }}" novalidate>
+        <div class="form-group">
+            <label for="contact-name">{{ _('contact.name_label') }}</label>
+            <input type="text"
+                   id="contact-name"
+                   name="name"
+                   class="form-input"
+                   value="{{ form.name }}"
+                   autocomplete="name"
+                   placeholder="{{ _('contact.name_placeholder') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="contact-email">{{ _('contact.email_label') }}</label>
+            <input type="email"
+                   id="contact-email"
+                   name="email"
+                   class="form-input"
+                   value="{{ form.email }}"
+                   autocomplete="email"
+                   placeholder="{{ _('contact.email_placeholder') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="contact-message">{{ _('contact.message_label') }} <span class="form-required">{{ _('contact.required') }}</span></label>
+            <textarea id="contact-message"
+                      name="message"
+                      class="form-textarea"
+                      rows="6"
+                      required
+                      placeholder="{{ _('contact.message_placeholder') }}">{{ form.message }}</textarea>
+        </div>
+
+        <p class="contact-note">{{ _('contact.note') }}</p>
+
+        <button type="submit" class="btn btn-primary btn-block">{{ _('contact.submit') }}</button>
+    </form>
+</section>
+{% endblock %}

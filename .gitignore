@@ -2,3 +2,4 @@
 hirono_match.db
 __pycache__/
 *.pyc
+data/inquiries.jsonl

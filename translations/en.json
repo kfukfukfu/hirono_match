@@ -5,10 +5,12 @@
   },
   "nav": {
     "diagnosis": "Diagnosis",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "contact": "Contact"
   },
   "footer": {
-    "copyright": "© 2026 Hirono Match — Discover your trip in Hirono Town, Iwate"
+    "copyright": "© 2026 Hirono Match — Discover your trip in Hirono Town, Iwate",
+    "nav_label": "Footer navigation"
   },
   "lang": {
     "switch_label": "Language",
@@ -238,5 +240,22 @@
       "title_line2": "that's perfect for you",
       "lead": "30-second quiz"
     }
+  },
+  "contact": {
+    "page_title": "Contact — Hirono Match",
+    "title": "Contact Us",
+    "lead": "Questions about the app, improvement ideas, or correction requests — we'd love to hear from you.",
+    "name_label": "Name",
+    "name_placeholder": "e.g. Taro Yamada",
+    "email_label": "Email",
+    "email_placeholder": "e.g. example@email.com",
+    "message_label": "Message",
+    "message_placeholder": "Please enter your message",
+    "required": "Required",
+    "note": "Name and email are optional. Please include your email if you would like a reply.",
+    "submit": "Send message",
+    "success": "Thank you — your message has been received.",
+    "error_message_required": "Please enter your message.",
+    "error_email_invalid": "Please enter a valid email address."
   }
 }

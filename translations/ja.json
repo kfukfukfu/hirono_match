@@ -5,10 +5,12 @@
   },
   "nav": {
     "diagnosis": "診断",
-    "favorites": "お気に入り"
+    "favorites": "お気に入り",
+    "contact": "お問い合わせ"
   },
   "footer": {
-    "copyright": "© 2026 ひろのまっち — 洋野町の旅を見つけよう"
+    "copyright": "© 2026 ひろのまっち — 洋野町の旅を見つけよう",
+    "nav_label": "フッターナビゲーション"
   },
   "lang": {
     "switch_label": "言語",
@@ -238,5 +240,22 @@
       "title_line2": "洋野町を見つけよう",
       "lead": "30秒で診断"
     }
+  },
+  "contact": {
+    "page_title": "お問い合わせ — ひろのまっち",
+    "title": "お問い合わせ",
+    "lead": "アプリに関するご質問・改善のご要望・情報修正のご依頼など、お気軽にお送りください。",
+    "name_label": "お名前",
+    "name_placeholder": "例：山田 太郎",
+    "email_label": "メールアドレス",
+    "email_placeholder": "例：example@email.com",
+    "message_label": "お問い合わせ内容",
+    "message_placeholder": "お問い合わせ内容をご記入ください",
+    "required": "必須",
+    "note": "※ お名前・メールアドレスは任意です。返信が必要な場合はメールアドレスをご入力ください。",
+    "submit": "送信する",
+    "success": "お問い合わせを受け付けました。ありがとうございます。",
+    "error_message_required": "お問い合わせ内容を入力してください。",
+    "error_email_invalid": "メールアドレスの形式が正しくありません。"
   }
 }

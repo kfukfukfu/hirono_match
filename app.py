@@ -8,9 +8,10 @@ URL ルーティング、診断スコア計算、テンプレートへのデー�
 import os
 from urllib.parse import quote
 
-from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, flash
 
 from database import get_db
+from contact import is_valid_email, save_inquiry
 from i18n import get_lang, translate, translate_value, localize_row, SUPPORTED_LANGS
 
 app = Flask(__name__)
@@ -264,6 +265,35 @@ def api_spots():
 def favorites():
     """お気に入り一覧画面（localStorage で管理）"""
     return render_template("favorites.html")
+
+
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    """お問い合わせ画面"""
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        message = request.form.get("message", "").strip()
+
+        if not message:
+            flash(translate("contact.error_message_required"), "error")
+            return render_template(
+                "contact.html",
+                form={"name": name, "email": email, "message": message},
+            )
+
+        if email and not is_valid_email(email):
+            flash(translate("contact.error_email_invalid"), "error")
+            return render_template(
+                "contact.html",
+                form={"name": name, "email": email, "message": message},
+            )
+
+        save_inquiry(name, email, message, get_lang())
+        flash(translate("contact.success"), "success")
+        return redirect(url_for("contact"))
+
+    return render_template("contact.html", form={"name": "", "email": "", "message": ""})
 
 
 if __name__ == "__main__":
