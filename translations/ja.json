@@ -32,7 +32,19 @@
     "official_site": "公式サイト",
     "map": "地図",
     "favorite_add": "お気に入りに追加",
-    "retry": "もう一度診断する"
+    "retry": "もう一度診断する",
+    "share": {
+      "button": "Instagramでシェア",
+      "optional": "任意 · 画像を保存して投稿できます",
+      "app_subtitle": "Travel Diagnosis",
+      "footer_line": "あなたにおすすめの旅スタイル",
+      "hashtags": "#HIRONOMATCH #HironoJapan",
+      "location": "Hirono Town, Iwate, Japan 🇯🇵",
+      "generating": "画像を作成中…",
+      "success": "画像を保存しました。Instagramアプリから投稿してください。",
+      "error": "画像の作成に失敗しました。もう一度お試しください。",
+      "preview_alt": "Instagramシェア用の診断結果画像プレビュー"
+    }
   },
     "spot": {
     "page_title_suffix": " — ひろのまっち",

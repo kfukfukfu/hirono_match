@@ -32,7 +32,19 @@
     "official_site": "Official Site",
     "map": "Map",
     "favorite_add": "Add to favorites",
-    "retry": "Take the quiz again"
+    "retry": "Take the quiz again",
+    "share": {
+      "button": "Share on Instagram",
+      "optional": "Optional · Save the image and post it yourself",
+      "app_subtitle": "Travel Diagnosis",
+      "footer_line": "Your recommended travel style",
+      "hashtags": "#HIRONOMATCH #HironoJapan",
+      "location": "Hirono Town, Iwate, Japan 🇯🇵",
+      "generating": "Creating image…",
+      "success": "Image saved. Open Instagram and post it from your gallery.",
+      "error": "Could not create the image. Please try again.",
+      "preview_alt": "Preview of your Instagram share image"
+    }
   },
   "spot": {
     "page_title_suffix": " — Hirono Match",
