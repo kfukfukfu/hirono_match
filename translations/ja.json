@@ -26,20 +26,60 @@
   "result": {
     "page_title": "診断結果 — ひろのまっち",
     "label": "あなたの洋野旅タイプ",
-    "type_ratio": "タイプ割合",
+    "tags_label": "旅のキーワード",
+    "footer_location": "Hirono Town, Iwate",
+    "picks_title": "For You",
+    "picks_lead_suffix": "に合うスポット",
+    "type_ratio_lead": "あなたの旅タイプの内訳（上位3）",
+    "view_spot": "詳しく見る",
+    "type_ratio": "タイプ内訳",
     "recommended_spots": "おすすめスポット",
     "spots_lead": "このタイプに合う洋野町のスポットを厳選しました。",
     "official_site": "公式サイト",
     "map": "地図",
     "favorite_add": "お気に入りに追加",
     "retry": "もう一度診断する",
+    "types": {
+      "1": {
+        "tagline": "静かな夜空に、心を預ける旅へ",
+        "tags": ["星空", "自然", "スロー旅"]
+      },
+      "2": {
+        "tagline": "海の幸と、土地の味を求めて",
+        "tags": ["グルメ", "海鮮", "食べ歩き"]
+      },
+      "3": {
+        "tagline": "波の音と、ゆったりした時間",
+        "tags": ["海岸", "リラックス", "絶景"]
+      },
+      "4": {
+        "tagline": "光と景色を、一枚に残す",
+        "tags": ["写真", "絶景", "記録"]
+      },
+      "5": {
+        "tagline": "自然の中で、体を動かす",
+        "tags": ["アウトドア", "トレイル", "冒険"]
+      },
+      "6": {
+        "tagline": "ここでしかできない体験を",
+        "tags": ["体験", "木工", "発見"]
+      },
+      "7": {
+        "tagline": "自分のペースで、町を巡る",
+        "tags": ["散策", "町歩き", "のんびり"]
+      },
+      "8": {
+        "tagline": "海を望む、ひと休みの時間",
+        "tags": ["カフェ", "海辺", "癒やし"]
+      }
+    },
     "share": {
       "button": "Instagramでシェア",
       "optional": "任意 · 画像を保存して投稿できます",
       "app_subtitle": "Travel Diagnosis",
       "footer_line": "あなたにおすすめの旅スタイル",
       "hashtags": "#HIRONOMATCH #HironoJapan",
-      "location": "Hirono Town, Iwate, Japan 🇯🇵",
+      "location": "Hirono Town, Iwate, Japan JP",
       "generating": "画像を作成中…",
       "success": "画像を保存しました。Instagramアプリから投稿してください。",
       "error": "画像の作成に失敗しました。もう一度お試しください。",

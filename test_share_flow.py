@@ -6,6 +6,8 @@ with app.test_client() as client:
     assert "result-share" in text
     assert "data-share-action" in text
     assert "HIRONOMATCH" in text
-    assert "結果をシェアする" in text
-    assert text.index("result-type-desc") < text.index("result-share") < text.index("result-actions-mobile")
+    assert "Instagram" in text
+    assert "result-story-card" in text
+    assert "result-story-category" in text
+    assert text.index("result-story-desc") < text.index("result-type-mix") < text.index("result-actions-bar")
     print("Share flow checks passed")

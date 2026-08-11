@@ -3,65 +3,96 @@
 {% block title %}{{ _('result.page_title') }}{% endblock %}
 
 {% block content %}
-<section class="result-mobile">
-    <header class="result-hero">
-        <div class="result-hero-bg" aria-hidden="true">
-            <img src="{{ url_for('static', filename=main_type.icon) }}" alt="">
-        </div>
-        <div class="result-hero-content">
-            <p class="result-label">{{ _('result.label') }}</p>
-            <h1 class="result-type-name">{{ main_type.name }}</h1>
-        </div>
-    </header>
+{% set type_key = main_type.id | string %}
+{% set type_tagline = tv('result.types.' ~ type_key ~ '.tagline') %}
+{% set type_tags = tv('result.types.' ~ type_key ~ '.tags') %}
 
-    <section class="result-type-desc">
-        <p>{{ main_type.description }}</p>
-    </section>
+<section class="result-page">
+    <article class="result-story-card" id="result-card">
+        <img src="{{ url_for('static', filename=main_type.icon) }}"
+             alt=""
+             class="result-story-bg">
+        <div class="result-story-gradient" aria-hidden="true"></div>
+
+        <div class="result-story-inner">
+            <p class="result-story-brand">HIRONOMATCH</p>
+
+            <div class="result-story-main">
+                <div class="result-story-head">
+                    <p class="result-story-category">{{ _('result.share.app_subtitle') }}</p>
+                    <h1 class="result-story-title">{{ main_type.name }}</h1>
+                </div>
+
+                {% if type_tagline %}
+                <p class="result-story-tagline">{{ type_tagline }}</p>
+                {% endif %}
+
+                <p class="result-story-desc">{{ main_type.description }}</p>
+
+                {% if type_tags %}
+                <ul class="result-story-tags" aria-label="{{ _('result.tags_label') }}">
+                    {% for tag in type_tags %}
+                    <li>{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            <footer class="result-story-footer">
+                <span class="result-story-footer-brand">HIRONOMATCH</span>
+                <span class="result-story-footer-loc">{{ _('result.share.location') }}</span>
+                <span class="result-story-footer-tags">{{ _('result.share.hashtags') }}</span>
+            </footer>
+        </div>
+    </article>
 
     {% if type_percentages %}
-    <section class="result-percentages-mobile">
-        <h2 class="section-title-mobile">{{ _('result.type_ratio') }}</h2>
-        <ul class="percentage-simple-list">
+    <section class="result-type-mix" aria-labelledby="result-type-mix-title">
+        <h2 id="result-type-mix-title" class="result-type-mix-title">{{ _('result.type_ratio') }}</h2>
+        <p class="result-type-mix-lead">{{ _('result.type_ratio_lead') }}</p>
+        <ol class="result-type-mix-list">
             {% for item in type_percentages %}
-            <li class="percentage-simple-item">
-                <span class="percentage-simple-name">{{ item.name }}</span>
-                <span class="percentage-simple-value">{{ item.percentage }}%</span>
+            <li class="result-type-mix-item{% if loop.first %} is-primary{% endif %}">
+                <div class="result-type-mix-row">
+                    <span class="result-type-mix-rank" aria-hidden="true">{{ loop.index }}</span>
+                    <span class="result-type-mix-name">{{ item.name }}</span>
+                    <span class="result-type-mix-value">{{ item.percentage }}%</span>
+                </div>
+                <span class="result-type-mix-bar" aria-hidden="true">
+                    <span class="result-type-mix-fill" style="width: {{ item.percentage }}%"></span>
+                </span>
             </li>
             {% endfor %}
-        </ul>
+        </ol>
     </section>
     {% endif %}
 
     {% if recommended_spots %}
-    <section class="result-spots">
-        <h2 class="section-title-mobile">{{ _('result.recommended_spots') }}</h2>
-        <p class="section-lead-mobile">{{ _('result.spots_lead') }}</p>
-
-        <div class="result-spot-list">
+    <section class="result-picks" aria-labelledby="result-picks-title">
+        <div class="result-picks-header">
+            <h2 id="result-picks-title" class="result-picks-title">{{ _('result.recommended_spots') }}</h2>
+            <p class="result-picks-lead">
+                <span class="result-picks-type">{{ main_type.name }}</span>{{ _('result.picks_lead_suffix') }}
+            </p>
+        </div>
+        <div class="result-picks-scroll">
             {% for spot in recommended_spots %}
-            <article class="result-spot-card" data-spot-id="{{ spot.id }}">
-                <a href="{{ url_for('spot_detail', spot_id=spot.id) }}" class="result-spot-image-link">
+            <article class="result-pick-card" data-spot-id="{{ spot.id }}">
+                <a href="{{ url_for('spot_detail', spot_id=spot.id) }}" class="result-pick-link">
                     <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
-                </a>
-                <div class="result-spot-body">
-                    <span class="spot-category">{{ spot.category }}</span>
-                    <h3 class="result-spot-name">
-                        <a href="{{ url_for('spot_detail', spot_id=spot.id) }}">{{ spot.name }}</a>
-                    </h3>
-                    <p class="result-spot-desc">{{ spot.description[:70] }}…</p>
-                    <div class="result-spot-actions">
-                        <a href="{{ spot.official_url }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
-                            {{ _('result.official_site') }}
-                        </a>
-                        <a href="{{ spot.map_url if spot.map_url else (spot.address | map_url) }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
-                            {{ _('result.map') }}
-                        </a>
-                        <button type="button" class="btn-favorite-mobile"
-                                data-spot-id="{{ spot.id }}"
-                                aria-label="{{ _('result.favorite_add') }}">
-                            ♡
-                        </button>
+                    <div class="result-pick-overlay">
+                        <span class="result-pick-category">{{ spot.category }}</span>
+                        <h3 class="result-pick-name">{{ spot.name }}</h3>
                     </div>
+                </a>
+                <div class="result-pick-actions">
+                    <a href="{{ url_for('spot_detail', spot_id=spot.id) }}" class="result-pick-detail">
+                        {{ _('result.view_spot') }}
+                    </a>
+                    <button type="button"
+                            class="btn-favorite-mobile result-pick-fav"
+                            data-spot-id="{{ spot.id }}"
+                            aria-label="{{ _('result.favorite_add') }}">♡</button>
                 </div>
             </article>
             {% endfor %}
@@ -69,7 +100,7 @@
     </section>
     {% endif %}
 
-    <div class="result-actions-mobile">
+    <div class="result-actions-bar">
         <div class="result-share">
             <button type="button" class="btn btn-share-instagram btn-block" data-share-action>
                 {{ _('result.share.button') }}
@@ -83,12 +114,15 @@
                      alt="{{ _('result.share.preview_alt') }}">
             </div>
         </div>
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">{{ _('result.retry') }}</a>
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-result-retry btn-block">{{ _('result.retry') }}</a>
     </div>
 
     <script id="result-share-data" type="application/json">
     {
         "typeName": {{ main_type.name | tojson }},
+        "description": {{ main_type.description | tojson }},
+        "tagline": {{ type_tagline | tojson }},
+        "tags": {{ type_tags | tojson }},
         "imageUrl": {{ url_for('static', filename=main_type.icon) | tojson }},
         "appSubtitle": {{ _('result.share.app_subtitle') | tojson }},
         "footerLine": {{ _('result.share.footer_line') | tojson }},
@@ -116,7 +150,9 @@
                 btn.textContent = "♥";
                 btn.classList.add("is-favorite");
             }
-            btn.addEventListener("click", () => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const added = Favorites.toggle(id);
                 btn.textContent = added ? "♥" : "♡";
                 btn.classList.toggle("is-favorite", added);

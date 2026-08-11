@@ -25,21 +25,61 @@
   },
   "result": {
     "page_title": "Your Result — Hirono Match",
-    "label": "Your Hirono Travel Type",
-    "type_ratio": "Type Breakdown",
+    "label": "Your Travel Type",
+    "tags_label": "Travel keywords",
+    "footer_location": "Hirono Town, Iwate",
+    "picks_title": "For You",
+    "picks_lead_suffix": " picks for you",
+    "type_ratio_lead": "Your top 3 travel types",
+    "view_spot": "View details",
+    "type_ratio": "Type breakdown",
     "recommended_spots": "Recommended Spots",
     "spots_lead": "Hand-picked places in Hirono Town that match your travel type.",
     "official_site": "Official Site",
     "map": "Map",
     "favorite_add": "Add to favorites",
     "retry": "Take the quiz again",
+    "types": {
+      "1": {
+        "tagline": "Under quiet stars, find your calm",
+        "tags": ["Stargazing", "Nature", "Slow travel"]
+      },
+      "2": {
+        "tagline": "Chase the taste of land and sea",
+        "tags": ["Food", "Seafood", "Local eats"]
+      },
+      "3": {
+        "tagline": "Ocean views, unhurried time",
+        "tags": ["Coast", "Relax", "Scenery"]
+      },
+      "4": {
+        "tagline": "Capture light, keep the memory",
+        "tags": ["Photo", "Views", "Moments"]
+      },
+      "5": {
+        "tagline": "Move through nature, feel alive",
+        "tags": ["Outdoor", "Trail", "Adventure"]
+      },
+      "6": {
+        "tagline": "Experiences only found here",
+        "tags": ["Workshop", "Local", "Discover"]
+      },
+      "7": {
+        "tagline": "Explore town at your pace",
+        "tags": ["Stroll", "Walk", "Easy pace"]
+      },
+      "8": {
+        "tagline": "Pause by the sea, breathe out",
+        "tags": ["Cafe", "Seaside", "Calm"]
+      }
+    },
     "share": {
       "button": "Share on Instagram",
       "optional": "Optional · Save the image and post it yourself",
       "app_subtitle": "Travel Diagnosis",
       "footer_line": "Your recommended travel style",
       "hashtags": "#HIRONOMATCH #HironoJapan",
-      "location": "Hirono Town, Iwate, Japan 🇯🇵",
+      "location": "Hirono Town, Iwate, Japan JP",
       "generating": "Creating image…",
       "success": "Image saved. Open Instagram and post it from your gallery.",
       "error": "Could not create the image. Please try again.",
