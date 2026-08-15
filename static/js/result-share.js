@@ -1,6 +1,6 @@
 /**
  * result-share.js — Instagram 向けシェア画像（1080×1920）
- * ダークグラデーション・ストーリーカード（画面表示とは別デザイン）
+ * 額縁カード + フッター構成（参考モック準拠）
  */
 
 const ResultShare = {
@@ -10,6 +10,9 @@ const ResultShare = {
     FONT: '"Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif',
 
     COLORS: {
+        canvas: "#101014",
+        cardBorder: "#d9cdb5",
+        cardInner: "#121218",
         white: "#ffffff",
         category: "rgba(255, 255, 255, 0.72)",
         tagline: "rgba(255, 255, 255, 0.94)",
@@ -19,37 +22,44 @@ const ResultShare = {
         tagFill: "rgba(255, 255, 255, 0.14)",
         tagBorder: "rgba(255, 255, 255, 0.28)",
         divider: "rgba(255, 255, 255, 0.14)",
+        panelFill: "rgba(20, 22, 30, 0.84)",
+        panelStroke: "rgba(255, 255, 255, 0.1)",
     },
 
     TYPOGRAPHY: {
-        header: 32,
-        subtitle: 28,
-        title: 88,
-        tagline: 46,
-        desc: 34,
-        tag: 28,
+        header: 30,
+        subtitle: 26,
+        title: 80,
+        tagline: 42,
+        desc: 32,
+        tag: 26,
         footerBrand: 28,
         footerLoc: 26,
         footerTags: 24,
     },
 
     LAYOUT: {
-        padX: 144,
-        headerLeft: 156,
-        headerTop: 128,
-        footerBottomPad: 40,
+        cardMarginX: 72,
+        cardMarginTop: 96,
+        cardBorder: 12,
+        cardPhotoRatio: 0.58,
+        cardFooterGap: 64,
+        footerBottomPad: 48,
         footerBlockHeight: 118,
-        gapMainToFooter: 48,
-        headerToMainMin: 140,
-        mainPreferredY: 1040,
-        mainGapAfterSubtitle: 16,
-        mainGapAfterTitle: 28,
-        mainGapAfterTagline: 20,
-        mainGapAfterDesc: 24,
+        panelInset: 36,
+        panelPad: 44,
+        panelRadius: 24,
+        panelPhotoOverlap: 56,
+        logoInsetX: 40,
+        logoInsetY: 44,
+        mainGapAfterSubtitle: 14,
+        mainGapAfterTitle: 24,
+        mainGapAfterTagline: 18,
+        mainGapAfterDesc: 22,
         mainLineGap: 8,
-        tagHeight: 52,
-        tagPadX: 28,
-        tagGap: 18,
+        tagHeight: 50,
+        tagPadX: 26,
+        tagGap: 16,
     },
 
     init(containerSelector) {
@@ -107,12 +117,15 @@ const ResultShare = {
         canvas.height = this.HEIGHT;
         const ctx = canvas.getContext("2d");
         const heroImage = await this.loadImage(data.imageUrl);
+        const card = this.getCardRect();
 
-        this.drawPhoto(ctx, heroImage);
-        this.drawGradient(ctx);
-        this.drawBrand(ctx);
-        this.drawContent(ctx, data);
-        this.drawFooter(ctx, data);
+        this.drawBackground(ctx);
+        this.drawCardFrame(ctx, card);
+        this.drawCardPhoto(ctx, heroImage, card);
+        this.drawPhotoFade(ctx, card);
+        this.drawBrand(ctx, card);
+        this.drawContent(ctx, data, card);
+        this.drawFooter(ctx, data, card);
 
         return canvas;
     },
@@ -127,39 +140,87 @@ const ResultShare = {
         });
     },
 
-    drawPhoto(ctx, img) {
-        this.drawCover(ctx, img, 0, 0, this.WIDTH, this.HEIGHT, 0.14);
+    getCardRect() {
+        const footerReserve =
+            this.LAYOUT.cardFooterGap + this.LAYOUT.footerBlockHeight + this.LAYOUT.footerBottomPad;
+        return {
+            x: this.LAYOUT.cardMarginX,
+            y: this.LAYOUT.cardMarginTop,
+            w: this.WIDTH - this.LAYOUT.cardMarginX * 2,
+            h: this.HEIGHT - this.LAYOUT.cardMarginTop - footerReserve,
+        };
     },
 
-    drawGradient(ctx) {
-        const topG = ctx.createLinearGradient(0, 0, 0, 520);
-        topG.addColorStop(0, "rgba(18, 20, 30, 0.48)");
-        topG.addColorStop(0.55, "rgba(18, 20, 30, 0.1)");
-        topG.addColorStop(1, "rgba(18, 20, 30, 0)");
-        ctx.fillStyle = topG;
+    getCardInner(card) {
+        const b = this.LAYOUT.cardBorder;
+        return {
+            x: card.x + b,
+            y: card.y + b,
+            w: card.w - b * 2,
+            h: card.h - b * 2,
+        };
+    },
+
+    getFooterTop(card) {
+        return card.y + card.h + this.LAYOUT.cardFooterGap;
+    },
+
+    drawBackground(ctx) {
+        ctx.fillStyle = this.COLORS.canvas;
         ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
-
-        const scrimStart = this.HEIGHT * 0.36;
-        const bottomG = ctx.createLinearGradient(0, scrimStart, 0, this.HEIGHT);
-        bottomG.addColorStop(0, "rgba(10, 12, 20, 0)");
-        bottomG.addColorStop(0.28, "rgba(10, 12, 20, 0.42)");
-        bottomG.addColorStop(0.52, "rgba(8, 10, 18, 0.72)");
-        bottomG.addColorStop(0.76, "rgba(6, 8, 16, 0.88)");
-        bottomG.addColorStop(1, "rgba(4, 6, 14, 0.94)");
-        ctx.fillStyle = bottomG;
-        ctx.fillRect(0, scrimStart, this.WIDTH, this.HEIGHT - scrimStart);
     },
 
-    getFooterTop() {
-        return this.HEIGHT - this.LAYOUT.footerBottomPad - this.LAYOUT.footerBlockHeight;
+    drawCardFrame(ctx, card) {
+        ctx.save();
+        ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+        ctx.shadowBlur = 48;
+        ctx.shadowOffsetY = 12;
+        ctx.fillStyle = this.COLORS.cardBorder;
+        this.roundRect(ctx, card.x, card.y, card.w, card.h, 8);
+        ctx.fill();
+        ctx.restore();
+
+        const inner = this.getCardInner(card);
+        ctx.fillStyle = this.COLORS.cardInner;
+        this.roundRect(ctx, inner.x, inner.y, inner.w, inner.h, 4);
+        ctx.fill();
     },
 
-    drawBrand(ctx) {
+    drawCardPhoto(ctx, img, card) {
+        const inner = this.getCardInner(card);
+        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
+
+        ctx.save();
+        this.roundRect(ctx, inner.x, inner.y, inner.w, inner.h, 4);
+        ctx.clip();
+        this.drawCover(ctx, img, inner.x, inner.y, inner.w, photoH + this.LAYOUT.panelPhotoOverlap, 0.12);
+        ctx.restore();
+    },
+
+    drawPhotoFade(ctx, card) {
+        const inner = this.getCardInner(card);
+        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
+        const fadeY = inner.y + photoH - this.LAYOUT.panelPhotoOverlap;
+
+        const g = ctx.createLinearGradient(0, fadeY, 0, fadeY + this.LAYOUT.panelPhotoOverlap + 80);
+        g.addColorStop(0, "rgba(18, 18, 24, 0)");
+        g.addColorStop(0.55, "rgba(18, 18, 24, 0.55)");
+        g.addColorStop(1, "rgba(18, 18, 24, 0.88)");
+        ctx.fillStyle = g;
+        ctx.fillRect(inner.x, fadeY, inner.w, inner.h - photoH + this.LAYOUT.panelPhotoOverlap + 80);
+    },
+
+    drawBrand(ctx, card) {
+        const inner = this.getCardInner(card);
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-        ctx.font = `700 ${this.TYPOGRAPHY.header}px ${this.FONT}`;
-        ctx.fillText(this.APP_NAME, this.LAYOUT.headerLeft, this.LAYOUT.headerTop);
+        ctx.font = this.font(700, this.TYPOGRAPHY.header);
+        ctx.fillText(
+            this.APP_NAME,
+            inner.x + this.LAYOUT.logoInsetX,
+            inner.y + this.LAYOUT.logoInsetY,
+        );
     },
 
     font(weight, size) {
@@ -190,12 +251,7 @@ const ResultShare = {
         return metrics.height;
     },
 
-    drawContent(ctx, data) {
-        const pad = this.LAYOUT.padX;
-        const maxWidth = this.WIDTH - pad * 2;
-        const footerTop = this.getFooterTop();
-        const mainBottom = footerTop - this.LAYOUT.gapMainToFooter;
-
+    buildContentBlocks(ctx, data, maxWidth) {
         const subtitleFont = this.font(600, this.TYPOGRAPHY.subtitle);
         const titleFont = this.font(600, this.TYPOGRAPHY.title);
         const taglineFont = this.font(500, this.TYPOGRAPHY.tagline);
@@ -203,7 +259,6 @@ const ResultShare = {
         const tagFont = this.font(600, this.TYPOGRAPHY.tag);
         const tagHeight = this.LAYOUT.tagHeight;
         const lineGap = this.LAYOUT.mainLineGap;
-
         const blocks = [];
 
         blocks.push({
@@ -290,12 +345,12 @@ const ResultShare = {
                     tags.forEach((tag) => {
                         const metrics = this.getMetrics(ctx, tag, tagFont);
                         const tw = metrics.width + this.LAYOUT.tagPadX * 2;
-                        if (tagX + tw > this.WIDTH - pad) return;
+                        if (tagX + tw > x + maxWidth) return;
 
                         ctx.fillStyle = this.COLORS.tagFill;
                         ctx.strokeStyle = this.COLORS.tagBorder;
                         ctx.lineWidth = 2;
-                        this.roundRect(ctx, tagX, topY, tw, tagHeight, 26);
+                        this.roundRect(ctx, tagX, topY, tw, tagHeight, 24);
                         ctx.fill();
                         ctx.stroke();
 
@@ -313,33 +368,60 @@ const ResultShare = {
             });
         }
 
+        return blocks;
+    },
+
+    measureBlocks(blocks) {
         let totalHeight = 0;
         blocks.forEach((block) => {
             totalHeight += block.gapBefore + block.height;
         });
+        return totalHeight;
+    },
 
-        const headerBottom = this.LAYOUT.headerTop + this.TYPOGRAPHY.header + 8;
-        let startY = this.LAYOUT.mainPreferredY;
-        if (startY + totalHeight > mainBottom) {
-            startY = mainBottom - totalHeight;
-        }
-        if (startY < headerBottom + this.LAYOUT.headerToMainMin) {
-            startY = headerBottom + this.LAYOUT.headerToMainMin;
+    drawContent(ctx, data, card) {
+        const inner = this.getCardInner(card);
+        const inset = this.LAYOUT.panelInset;
+        const pad = this.LAYOUT.panelPad;
+        const panelX = inner.x + inset;
+        const panelW = inner.w - inset * 2;
+        const maxWidth = panelW - pad * 2;
+        const panelBottom = inner.y + inner.h - inset;
+
+        const blocks = this.buildContentBlocks(ctx, data, maxWidth);
+        const contentHeight = this.measureBlocks(blocks);
+        const panelH = contentHeight + pad * 2;
+        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
+        let panelY = inner.y + photoH - this.LAYOUT.panelPhotoOverlap;
+
+        const minPanelY = inner.y + photoH - 120;
+        if (panelY < minPanelY) panelY = minPanelY;
+        if (panelY + panelH > panelBottom) {
+            panelY = panelBottom - panelH;
         }
 
-        let y = startY;
+        ctx.save();
+        this.roundRect(ctx, panelX, panelY, panelW, panelH, this.LAYOUT.panelRadius);
+        ctx.fillStyle = this.COLORS.panelFill;
+        ctx.fill();
+        ctx.strokeStyle = this.COLORS.panelStroke;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+
+        let y = panelY + pad;
         blocks.forEach((block) => {
             y += block.gapBefore;
-            block.draw(pad, y);
+            block.draw(panelX + pad, y);
             y += block.height;
         });
     },
 
-    drawFooter(ctx, data) {
-        const pad = this.LAYOUT.padX;
+    drawFooter(ctx, data, card) {
+        const pad = this.LAYOUT.cardMarginX;
         const centerX = this.WIDTH / 2;
         const bottomPad = this.LAYOUT.footerBottomPad;
-        const footerTop = this.getFooterTop();
+        const footerTop = this.getFooterTop(card);
 
         ctx.strokeStyle = this.COLORS.divider;
         ctx.lineWidth = 2;
@@ -362,8 +444,7 @@ const ResultShare = {
 
         ctx.fillStyle = this.COLORS.footerTags;
         ctx.font = this.font(600, this.TYPOGRAPHY.footerTags);
-        const tagsY = this.HEIGHT - bottomPad;
-        ctx.fillText(data.hashtags, centerX, tagsY);
+        ctx.fillText(data.hashtags, centerX, this.HEIGHT - bottomPad);
     },
 
     splitTypeNameLines(ctx, typeName, maxWidth, lang) {
