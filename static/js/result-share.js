@@ -22,16 +22,18 @@ const ResultShare = {
     },
 
     LAYOUT: {
-        padX: 72,
-        brandTop: 88,
-        contentStartY: 780,
-        footerHeight: 124,
-        gapAfterSubtitle: 14,
-        gapAfterTitle: 32,
-        gapAfterTagline: 22,
-        gapAfterDesc: 28,
-        gapBeforeFooter: 40,
-        lineGap: 8,
+        padX: 144,
+        headerTop: 112,
+        footerBottomPad: 40,
+        footerBlockHeight: 108,
+        gapMainToFooter: 52,
+        headerToMainMin: 160,
+        mainPreferredY: 1040,
+        mainGapAfterSubtitle: 12,
+        mainGapAfterTitle: 22,
+        mainGapAfterTagline: 16,
+        mainGapAfterDesc: 20,
+        mainLineGap: 6,
     },
 
     init(containerSelector) {
@@ -110,19 +112,30 @@ const ResultShare = {
     },
 
     drawPhoto(ctx, img) {
-        this.drawCover(ctx, img, 0, 0, this.WIDTH, this.HEIGHT);
+        this.drawCover(ctx, img, 0, 0, this.WIDTH, this.HEIGHT, 0.14);
     },
 
     drawGradient(ctx) {
-        const g = ctx.createLinearGradient(0, 0, 0, this.HEIGHT);
-        g.addColorStop(0, "rgba(26, 26, 46, 0.78)");
-        g.addColorStop(0.3, "rgba(26, 26, 46, 0.32)");
-        g.addColorStop(0.46, "rgba(26, 26, 46, 0.12)");
-        g.addColorStop(0.66, "rgba(28, 28, 38, 0.58)");
-        g.addColorStop(0.84, "rgba(24, 24, 32, 0.9)");
-        g.addColorStop(1, "rgba(20, 20, 28, 0.96)");
-        ctx.fillStyle = g;
+        const topG = ctx.createLinearGradient(0, 0, 0, 520);
+        topG.addColorStop(0, "rgba(18, 20, 30, 0.48)");
+        topG.addColorStop(0.55, "rgba(18, 20, 30, 0.1)");
+        topG.addColorStop(1, "rgba(18, 20, 30, 0)");
+        ctx.fillStyle = topG;
         ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+
+        const scrimStart = this.HEIGHT * 0.36;
+        const bottomG = ctx.createLinearGradient(0, scrimStart, 0, this.HEIGHT);
+        bottomG.addColorStop(0, "rgba(10, 12, 20, 0)");
+        bottomG.addColorStop(0.28, "rgba(10, 12, 20, 0.42)");
+        bottomG.addColorStop(0.52, "rgba(8, 10, 18, 0.72)");
+        bottomG.addColorStop(0.76, "rgba(6, 8, 16, 0.88)");
+        bottomG.addColorStop(1, "rgba(4, 6, 14, 0.94)");
+        ctx.fillStyle = bottomG;
+        ctx.fillRect(0, scrimStart, this.WIDTH, this.HEIGHT - scrimStart);
+    },
+
+    getFooterTop() {
+        return this.HEIGHT - this.LAYOUT.footerBottomPad - this.LAYOUT.footerBlockHeight;
     },
 
     drawBrand(ctx) {
@@ -130,7 +143,7 @@ const ResultShare = {
         ctx.textBaseline = "alphabetic";
         ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
         ctx.font = `700 26px ${this.FONT}`;
-        ctx.fillText(this.APP_NAME, this.LAYOUT.padX, this.LAYOUT.brandTop);
+        ctx.fillText(this.APP_NAME, this.LAYOUT.padX, this.LAYOUT.headerTop);
     },
 
     getMetrics(ctx, text, font) {
@@ -160,8 +173,8 @@ const ResultShare = {
     drawContent(ctx, data) {
         const pad = this.LAYOUT.padX;
         const maxWidth = this.WIDTH - pad * 2;
-        const footerTop = this.HEIGHT - this.LAYOUT.footerHeight;
-        const maxBottom = footerTop - this.LAYOUT.gapBeforeFooter;
+        const footerTop = this.getFooterTop();
+        const mainBottom = footerTop - this.LAYOUT.gapMainToFooter;
 
         const subtitleFont = `600 24px ${this.FONT}`;
         const titleFont = `600 72px ${this.FONT}`;
@@ -169,6 +182,7 @@ const ResultShare = {
         const descFont = `400 30px ${this.FONT}`;
         const tagFont = `600 24px ${this.FONT}`;
         const tagHeight = 44;
+        const lineGap = this.LAYOUT.mainLineGap;
 
         const blocks = [];
 
@@ -192,15 +206,15 @@ const ResultShare = {
         let titleHeight = 0;
         titleLines.forEach((line, index) => {
             titleHeight += this.getMetrics(ctx, line, titleFont).height;
-            if (index > 0) titleHeight += this.LAYOUT.lineGap;
+            if (index > 0) titleHeight += lineGap;
         });
         blocks.push({
             height: titleHeight,
-            gapBefore: this.LAYOUT.gapAfterSubtitle,
+            gapBefore: this.LAYOUT.mainGapAfterSubtitle,
             draw: (x, topY) => {
                 let y = topY;
                 titleLines.forEach((line, index) => {
-                    if (index > 0) y += this.LAYOUT.lineGap;
+                    if (index > 0) y += lineGap;
                     y += this.drawTextLine(ctx, line, x, y, titleFont, this.COLORS.white);
                 });
             },
@@ -212,15 +226,15 @@ const ResultShare = {
             let taglineHeight = 0;
             tagLines.forEach((line, index) => {
                 taglineHeight += this.getMetrics(ctx, line, taglineFont).height;
-                if (index > 0) taglineHeight += this.LAYOUT.lineGap;
+                if (index > 0) taglineHeight += lineGap;
             });
             blocks.push({
                 height: taglineHeight,
-                gapBefore: this.LAYOUT.gapAfterTitle,
+                gapBefore: this.LAYOUT.mainGapAfterTitle,
                 draw: (x, topY) => {
                     let y = topY;
                     tagLines.forEach((line, index) => {
-                        if (index > 0) y += this.LAYOUT.lineGap;
+                        if (index > 0) y += lineGap;
                         y += this.drawTextLine(ctx, line, x, y, taglineFont, this.COLORS.tagline);
                     });
                 },
@@ -232,15 +246,15 @@ const ResultShare = {
         let descHeight = 0;
         descLines.forEach((line, index) => {
             descHeight += this.getMetrics(ctx, line, descFont).height;
-            if (index > 0) descHeight += this.LAYOUT.lineGap;
+            if (index > 0) descHeight += lineGap;
         });
         blocks.push({
             height: descHeight,
-            gapBefore: data.tagline ? this.LAYOUT.gapAfterTagline : this.LAYOUT.gapAfterTitle,
+            gapBefore: data.tagline ? this.LAYOUT.mainGapAfterTagline : this.LAYOUT.mainGapAfterTitle,
             draw: (x, topY) => {
                 let y = topY;
                 descLines.forEach((line, index) => {
-                    if (index > 0) y += this.LAYOUT.lineGap;
+                    if (index > 0) y += lineGap;
                     y += this.drawTextLine(ctx, line, x, y, descFont, this.COLORS.desc);
                 });
             },
@@ -250,7 +264,7 @@ const ResultShare = {
         if (tags.length) {
             blocks.push({
                 height: tagHeight,
-                gapBefore: this.LAYOUT.gapAfterDesc,
+                gapBefore: this.LAYOUT.mainGapAfterDesc,
                 draw: (x, topY) => {
                     let tagX = x;
                     tags.forEach((tag) => {
@@ -277,10 +291,13 @@ const ResultShare = {
             totalHeight += block.gapBefore + block.height;
         });
 
-        let startY = this.LAYOUT.contentStartY;
-        const overflow = startY + totalHeight - maxBottom;
-        if (overflow > 0) {
-            startY = Math.max(this.LAYOUT.brandTop + 48, startY - overflow);
+        const headerBottom = this.LAYOUT.headerTop + 36;
+        let startY = this.LAYOUT.mainPreferredY;
+        if (startY + totalHeight > mainBottom) {
+            startY = mainBottom - totalHeight;
+        }
+        if (startY < headerBottom + this.LAYOUT.headerToMainMin) {
+            startY = headerBottom + this.LAYOUT.headerToMainMin;
         }
 
         let y = startY;
@@ -292,32 +309,34 @@ const ResultShare = {
     },
 
     drawFooter(ctx, data) {
-        const footerTop = this.HEIGHT - this.LAYOUT.footerHeight;
+        const pad = this.LAYOUT.padX;
         const centerX = this.WIDTH / 2;
-        const lineY = footerTop + 14;
+        const bottomPad = this.LAYOUT.footerBottomPad;
+        const footerTop = this.getFooterTop();
 
         ctx.strokeStyle = this.COLORS.divider;
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(this.LAYOUT.padX, lineY);
-        ctx.lineTo(this.WIDTH - this.LAYOUT.padX, lineY);
+        ctx.moveTo(pad, footerTop);
+        ctx.lineTo(this.WIDTH - pad, footerTop);
         ctx.stroke();
 
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
 
-        const brandY = lineY + 38;
+        const brandY = footerTop + 36;
         ctx.fillStyle = this.COLORS.white;
         ctx.font = `700 24px ${this.FONT}`;
         ctx.fillText(this.APP_NAME, centerX, brandY);
 
         ctx.fillStyle = this.COLORS.footerLoc;
         ctx.font = `500 22px ${this.FONT}`;
-        ctx.fillText(data.location, centerX, brandY + 30);
+        ctx.fillText(data.location, centerX, brandY + 28);
 
         ctx.fillStyle = this.COLORS.footerTags;
         ctx.font = `600 20px ${this.FONT}`;
-        ctx.fillText(data.hashtags, centerX, brandY + 58);
+        const tagsY = this.HEIGHT - bottomPad;
+        ctx.fillText(data.hashtags, centerX, tagsY);
     },
 
     splitTypeNameLines(ctx, typeName, maxWidth, lang) {
@@ -371,11 +390,13 @@ const ResultShare = {
         ctx.closePath();
     },
 
-    drawCover(ctx, img, x, y, w, h) {
+    drawCover(ctx, img, x, y, w, h, focalBias = 0.5) {
         const scale = Math.max(w / img.width, h / img.height);
         const dw = img.width * scale;
         const dh = img.height * scale;
-        ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+        const dx = x + (w - dw) / 2;
+        const dy = y + (h - dh) * focalBias;
+        ctx.drawImage(img, dx, dy, dw, dh);
     },
 
     download(canvas, filename) {
