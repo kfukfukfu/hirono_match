@@ -21,19 +21,35 @@ const ResultShare = {
         divider: "rgba(255, 255, 255, 0.14)",
     },
 
+    TYPOGRAPHY: {
+        header: 32,
+        subtitle: 28,
+        title: 88,
+        tagline: 46,
+        desc: 34,
+        tag: 28,
+        footerBrand: 28,
+        footerLoc: 26,
+        footerTags: 24,
+    },
+
     LAYOUT: {
         padX: 144,
-        headerTop: 112,
+        headerLeft: 156,
+        headerTop: 128,
         footerBottomPad: 40,
-        footerBlockHeight: 108,
-        gapMainToFooter: 52,
-        headerToMainMin: 160,
+        footerBlockHeight: 118,
+        gapMainToFooter: 48,
+        headerToMainMin: 140,
         mainPreferredY: 1040,
-        mainGapAfterSubtitle: 12,
-        mainGapAfterTitle: 22,
-        mainGapAfterTagline: 16,
-        mainGapAfterDesc: 20,
-        mainLineGap: 6,
+        mainGapAfterSubtitle: 16,
+        mainGapAfterTitle: 28,
+        mainGapAfterTagline: 20,
+        mainGapAfterDesc: 24,
+        mainLineGap: 8,
+        tagHeight: 52,
+        tagPadX: 28,
+        tagGap: 18,
     },
 
     init(containerSelector) {
@@ -142,8 +158,12 @@ const ResultShare = {
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-        ctx.font = `700 26px ${this.FONT}`;
-        ctx.fillText(this.APP_NAME, this.LAYOUT.padX, this.LAYOUT.headerTop);
+        ctx.font = `700 ${this.TYPOGRAPHY.header}px ${this.FONT}`;
+        ctx.fillText(this.APP_NAME, this.LAYOUT.headerLeft, this.LAYOUT.headerTop);
+    },
+
+    font(weight, size) {
+        return `${weight} ${size}px ${this.FONT}`;
     },
 
     getMetrics(ctx, text, font) {
@@ -176,12 +196,12 @@ const ResultShare = {
         const footerTop = this.getFooterTop();
         const mainBottom = footerTop - this.LAYOUT.gapMainToFooter;
 
-        const subtitleFont = `600 24px ${this.FONT}`;
-        const titleFont = `600 72px ${this.FONT}`;
-        const taglineFont = `500 38px ${this.FONT}`;
-        const descFont = `400 30px ${this.FONT}`;
-        const tagFont = `600 24px ${this.FONT}`;
-        const tagHeight = 44;
+        const subtitleFont = this.font(600, this.TYPOGRAPHY.subtitle);
+        const titleFont = this.font(600, this.TYPOGRAPHY.title);
+        const taglineFont = this.font(500, this.TYPOGRAPHY.tagline);
+        const descFont = this.font(400, this.TYPOGRAPHY.desc);
+        const tagFont = this.font(600, this.TYPOGRAPHY.tag);
+        const tagHeight = this.LAYOUT.tagHeight;
         const lineGap = this.LAYOUT.mainLineGap;
 
         const blocks = [];
@@ -269,18 +289,25 @@ const ResultShare = {
                     let tagX = x;
                     tags.forEach((tag) => {
                         const metrics = this.getMetrics(ctx, tag, tagFont);
-                        const tw = metrics.width + 48;
+                        const tw = metrics.width + this.LAYOUT.tagPadX * 2;
                         if (tagX + tw > this.WIDTH - pad) return;
 
                         ctx.fillStyle = this.COLORS.tagFill;
                         ctx.strokeStyle = this.COLORS.tagBorder;
                         ctx.lineWidth = 2;
-                        this.roundRect(ctx, tagX, topY, tw, tagHeight, 22);
+                        this.roundRect(ctx, tagX, topY, tw, tagHeight, 26);
                         ctx.fill();
                         ctx.stroke();
 
-                        this.drawTextLine(ctx, tag, tagX + 24, topY + 6, tagFont, this.COLORS.white);
-                        tagX += tw + 16;
+                        this.drawTextLine(
+                            ctx,
+                            tag,
+                            tagX + this.LAYOUT.tagPadX,
+                            topY + 8,
+                            tagFont,
+                            this.COLORS.white,
+                        );
+                        tagX += tw + this.LAYOUT.tagGap;
                     });
                 },
             });
@@ -291,7 +318,7 @@ const ResultShare = {
             totalHeight += block.gapBefore + block.height;
         });
 
-        const headerBottom = this.LAYOUT.headerTop + 36;
+        const headerBottom = this.LAYOUT.headerTop + this.TYPOGRAPHY.header + 8;
         let startY = this.LAYOUT.mainPreferredY;
         if (startY + totalHeight > mainBottom) {
             startY = mainBottom - totalHeight;
@@ -324,17 +351,17 @@ const ResultShare = {
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
 
-        const brandY = footerTop + 36;
+        const brandY = footerTop + 38;
         ctx.fillStyle = this.COLORS.white;
-        ctx.font = `700 24px ${this.FONT}`;
+        ctx.font = this.font(700, this.TYPOGRAPHY.footerBrand);
         ctx.fillText(this.APP_NAME, centerX, brandY);
 
         ctx.fillStyle = this.COLORS.footerLoc;
-        ctx.font = `500 22px ${this.FONT}`;
-        ctx.fillText(data.location, centerX, brandY + 28);
+        ctx.font = this.font(500, this.TYPOGRAPHY.footerLoc);
+        ctx.fillText(data.location, centerX, brandY + 32);
 
         ctx.fillStyle = this.COLORS.footerTags;
-        ctx.font = `600 20px ${this.FONT}`;
+        ctx.font = this.font(600, this.TYPOGRAPHY.footerTags);
         const tagsY = this.HEIGHT - bottomPad;
         ctx.fillText(data.hashtags, centerX, tagsY);
     },
