@@ -406,6 +406,48 @@ SPOTS = [
         "Farm & Hot Spring",
         "A countryside exchange facility with day-use baths, local cuisine, soba-making, and fishing experiences.",
     ),
+    (
+        "café Cocoyo（ここよ）",
+        "飲食店",
+        "カフェ",
+        "洋野町大野にあるアットホームなカフェ。グリーンカレーや手作りランチ定食など、地元の食材を使った料理が楽しめます。",
+        "images/spots/cocoyo.jpg",
+        "岩手県九戸郡洋野町大野71-3-8",
+        "https://www.instagram.com/cafe.cocoyo",
+        "https://maps.app.goo.gl/search/café+Cocoyo+洋野町",
+        "café Cocoyo",
+        "Restaurant",
+        "Cafe",
+        "A welcoming cafe in Ohno serving homemade lunches including green curry and set meals with local ingredients.",
+    ),
+    (
+        "きのこの駅",
+        "飲食店",
+        "きのこ料理",
+        "天然きのこを扱う長根商店が運営するきのこ料理専門店。自社栽培のきのこを使ったラーメンや鍋など、珍しいきのこ料理が味わえます。",
+        "images/spots/kinoko_eki.jpg",
+        "岩手県九戸郡洋野町有家9-13-7",
+        "https://naganekinoko.wixsite.com/website",
+        "https://maps.app.goo.gl/search/きのこの駅+洋野町",
+        "Kinoko no Eki",
+        "Restaurant",
+        "Mushroom Cuisine",
+        "A mushroom specialty restaurant run by Nagane Foods, offering rare mushroom dishes from their own cultivation.",
+    ),
+    (
+        "大谷温泉",
+        "観光スポット",
+        "温泉",
+        "久慈平岳の麓にある洋野町唯一の天然温泉。ラドン泉の名湯として、日帰り入浴や宿泊でゆったり過ごせます。",
+        "images/spots/ooya_onsen.jpg",
+        "岩手県九戸郡洋野町種市74-137-14",
+        "http://www.ooyaonsen.com/",
+        "https://maps.app.goo.gl/search/大谷温泉+洋野町",
+        "Ooya Onsen",
+        "Sightseeing",
+        "Hot Spring",
+        "Hirono's only natural hot spring at the foot of Mt. Kuji-Hira, known for its radon-rich waters and day-use baths.",
+    ),
 ]
 
 SPOT_TYPES = {
@@ -425,6 +467,9 @@ SPOT_TYPES = {
     13: [8, 2],
     14: [2, 7],
     15: [6, 5, 1],
+    16: [8, 2, 7],
+    17: [2, 6],
+    18: [1, 3, 8],
 }
 
 

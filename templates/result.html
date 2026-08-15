@@ -8,7 +8,7 @@
 {% set type_tags = tv('result.types.' ~ type_key ~ '.tags') %}
 
 <section class="result-page">
-    <div class="result-top" id="result-card">
+    <div class="result-top">
         <header class="result-hero">
             <div class="result-hero-media" aria-hidden="true">
                 <img src="{{ url_for('static', filename=main_type.icon) }}"
@@ -116,6 +116,15 @@
 
     <script id="result-share-data" type="application/json">
     {
+        "typeName": {{ main_type.name | tojson }},
+        "description": {{ main_type.description | tojson }},
+        "tagline": {{ type_tagline | tojson }},
+        "tags": {{ type_tags | tojson }},
+        "imageUrl": {{ url_for('static', filename=main_type.icon) | tojson }},
+        "appSubtitle": {{ _('result.share.app_subtitle') | tojson }},
+        "location": {{ _('result.share.location') | tojson }},
+        "hashtags": {{ _('result.share.hashtags') | tojson }},
+        "lang": {{ lang | tojson }},
         "filename": "hironomatch-instagram.png",
         "labels": {
             "generating": {{ _('result.share.generating') | tojson }},
@@ -128,7 +137,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/result-share.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
