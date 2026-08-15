@@ -8,43 +8,40 @@
 {% set type_tags = tv('result.types.' ~ type_key ~ '.tags') %}
 
 <section class="result-page">
-    <article class="result-story-card" id="result-card">
-        <img src="{{ url_for('static', filename=main_type.icon) }}"
-             alt=""
-             class="result-story-bg">
-        <div class="result-story-gradient" aria-hidden="true"></div>
-
-        <div class="result-story-inner">
-            <p class="result-story-brand">HIRONOMATCH</p>
-
-            <div class="result-story-main">
-                <div class="result-story-head">
-                    <p class="result-story-category">{{ _('result.share.app_subtitle') }}</p>
-                    <h1 class="result-story-title">{{ main_type.name }}</h1>
-                </div>
-
-                {% if type_tagline %}
-                <p class="result-story-tagline">{{ type_tagline }}</p>
-                {% endif %}
-
-                <p class="result-story-desc">{{ main_type.description }}</p>
-
-                {% if type_tags %}
-                <ul class="result-story-tags" aria-label="{{ _('result.tags_label') }}">
-                    {% for tag in type_tags %}
-                    <li>{{ tag }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+    <div class="result-top" id="result-card">
+        <header class="result-hero">
+            <div class="result-hero-media" aria-hidden="true">
+                <img src="{{ url_for('static', filename=main_type.icon) }}"
+                     alt=""
+                     class="result-hero-photo"
+                     crossorigin="anonymous">
+                <div class="result-hero-overlay"></div>
             </div>
+            <div class="result-hero-content">
+                <p class="result-hero-label">{{ _('result.label') }}</p>
+                <h1 class="result-hero-type">{{ main_type.name }}</h1>
+            </div>
+        </header>
 
-            <footer class="result-story-footer">
-                <span class="result-story-footer-brand">HIRONOMATCH</span>
-                <span class="result-story-footer-loc">{{ _('result.share.location') }}</span>
-                <span class="result-story-footer-tags">{{ _('result.share.hashtags') }}</span>
-            </footer>
+        <div class="result-desc-card">
+            <p class="result-desc-text">{{ main_type.description }}</p>
         </div>
-    </article>
+    </div>
+
+    {% if type_tagline or type_tags %}
+    <section class="result-meta" aria-label="{{ _('result.tags_label') }}">
+        {% if type_tagline %}
+        <p class="result-meta-tagline">{{ type_tagline }}</p>
+        {% endif %}
+        {% if type_tags %}
+        <ul class="result-meta-tags">
+            {% for tag in type_tags %}
+            <li>{{ tag }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    {% endif %}
 
     {% if type_percentages %}
     <section class="result-type-mix" aria-labelledby="result-type-mix-title">
@@ -119,16 +116,6 @@
 
     <script id="result-share-data" type="application/json">
     {
-        "typeName": {{ main_type.name | tojson }},
-        "description": {{ main_type.description | tojson }},
-        "tagline": {{ type_tagline | tojson }},
-        "tags": {{ type_tags | tojson }},
-        "imageUrl": {{ url_for('static', filename=main_type.icon) | tojson }},
-        "appSubtitle": {{ _('result.share.app_subtitle') | tojson }},
-        "footerLine": {{ _('result.share.footer_line') | tojson }},
-        "location": {{ _('result.share.location') | tojson }},
-        "hashtags": {{ _('result.share.hashtags') | tojson }},
-        "lang": {{ lang | tojson }},
         "filename": "hironomatch-instagram.png",
         "labels": {
             "generating": {{ _('result.share.generating') | tojson }},
@@ -141,6 +128,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/result-share.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

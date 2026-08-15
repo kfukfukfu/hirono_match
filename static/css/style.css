@@ -1183,177 +1183,130 @@ a:hover {
     align-items: center;
 }
 
-/* --- 結果画面（Instagramストーリー・カード） --- */
+/* --- 結果画面（トップ：ヒーロー + 説明カード） --- */
 .result-page {
     max-width: var(--mobile-max);
     margin: 0 auto;
-    padding: 0 0 2.5rem;
-    background: #f0eeeb;
+    padding: 0 1rem 2.5rem;
+    background: var(--color-bg);
     min-height: calc(100vh - var(--header-height));
 }
 
-.result-story-card {
-    position: relative;
-    aspect-ratio: 9 / 16;
-    max-height: min(72vh, 680px);
-    margin: 0.75rem 1rem 2rem;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow:
-        0 24px 56px rgba(10, 12, 24, 0.38),
-        0 8px 24px rgba(10, 12, 24, 0.22),
-        0 0 0 1px rgba(255, 255, 255, 0.06);
+.result-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin: 0.75rem 0 1.25rem;
 }
 
-.result-story-bg {
+.result-hero {
+    position: relative;
+    min-height: 280px;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-hero-media {
     position: absolute;
     inset: 0;
+}
+
+.result-hero-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 28%;
+    object-position: center 35%;
     display: block;
 }
 
-.result-story-gradient {
+.result-hero-overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
     background: linear-gradient(
         180deg,
-        rgba(26, 26, 46, 0.78) 0%,
-        rgba(26, 26, 46, 0.32) 30%,
-        rgba(26, 26, 46, 0.12) 46%,
-        rgba(28, 28, 38, 0.58) 66%,
-        rgba(24, 24, 32, 0.9) 84%,
-        rgba(20, 20, 28, 0.96) 100%
+        rgba(15, 77, 102, 0.28) 0%,
+        rgba(15, 77, 102, 0.52) 45%,
+        rgba(15, 77, 102, 0.68) 100%
     );
-    pointer-events: none;
 }
 
-.result-story-inner {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    padding: 1.25rem 1.375rem 1.35rem;
-    color: #fff;
+.result-hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 2.75rem 1.5rem;
+    text-align: center;
 }
 
-.result-story-brand {
-    margin: 0 0 0.5rem;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.92);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+.result-hero-label {
+    margin: 0 0 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
 
-.result-story-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.875rem;
-    padding: 0.25rem 0 0.75rem;
-}
-
-.result-story-head {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-}
-
-.result-story-category {
+.result-hero-type {
     margin: 0;
-    font-size: 0.625rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.72);
-}
-
-.result-story-title {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 600;
+    font-size: 2.25rem;
+    font-weight: 800;
     line-height: 1.28;
     letter-spacing: 0.02em;
     color: #fff;
-    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.28);
+    word-break: keep-all;
 }
 
-.result-story-tagline {
+.result-desc-card {
+    background: var(--color-white);
+    border-radius: 20px;
+    padding: 1.5rem 1.375rem 1.5rem 1.25rem;
+    border-left: 5px solid var(--color-accent);
+    box-shadow: var(--shadow-card);
+}
+
+.result-desc-text {
     margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.85;
+    color: var(--color-text);
+}
+
+.result-meta {
+    margin: 0 0 1.5rem;
+    padding: 0 0.25rem;
+}
+
+.result-meta-tagline {
+    margin: 0 0 0.75rem;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.94);
+    color: var(--color-primary);
 }
 
-.result-story-desc {
-    margin: 0;
-    font-size: 0.8125rem;
-    line-height: 1.75;
-    color: rgba(255, 255, 255, 0.78);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.result-story-tags {
+.result-meta-tags {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 0.125rem 0 0;
+    margin: 0;
     padding: 0;
 }
 
-.result-story-tags li {
-    font-size: 0.6875rem;
+.result-meta-tags li {
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    padding: 0.38rem 0.8rem;
+    color: var(--color-primary-dark);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    backdrop-filter: blur(6px);
-}
-
-.result-story-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    margin-top: auto;
-    padding-top: 0.875rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    text-align: center;
-}
-
-.result-story-footer-brand {
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #fff;
-}
-
-.result-story-footer-loc {
-    font-size: 0.5625rem;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.68);
-}
-
-.result-story-footer-tags {
-    font-size: 0.5625rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.82);
 }
 
 /* --- タイプ内訳（常時表示） --- */
