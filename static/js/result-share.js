@@ -103,8 +103,15 @@ const ResultShare = {
                     preview.closest(".result-share-preview-wrap")?.classList.add("is-visible");
                     teaser?.classList.add("is-hidden");
                 }
-                this.download(canvas, data.filename);
-                setStatus(data.labels.success);
+
+                const outcome = await this.share(canvas, data);
+                if (outcome === "shared") {
+                    setStatus(data.labels.success_share);
+                } else if (outcome === "opened") {
+                    setStatus(data.labels.success_open);
+                } else if (outcome !== "cancelled") {
+                    setStatus(data.labels.success);
+                }
             } catch {
                 setStatus(data.labels.error, true);
             } finally {
@@ -444,17 +451,92 @@ const ResultShare = {
         ctx.drawImage(img, dx, dy, dw, dh);
     },
 
+    canvasToBlob(canvas) {
+        return new Promise((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (blob) resolve(blob);
+                else reject(new Error("Failed to create image blob"));
+            }, "image/png");
+        });
+    },
+
+    canShareFiles(file) {
+        if (!navigator.share) return false;
+        if (typeof navigator.canShare === "function") {
+            return navigator.canShare({ files: [file] });
+        }
+        return true;
+    },
+
+    async shareViaWebShare(file, data) {
+        await navigator.share({
+            files: [file],
+            title: this.APP_NAME,
+            text: data.hashtags || "",
+        });
+    },
+
+    isMobile() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    },
+
+    openInstagramApp() {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (isAndroid) {
+            window.location.href =
+                "intent://story-camera/#Intent;package=com.instagram.android;scheme=instagram;end";
+            return;
+        }
+
+        if (isIOS) {
+            window.location.href = "instagram://story-camera";
+            return;
+        }
+
+        window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+    },
+
+    downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    },
+
+    async share(canvas, data) {
+        const blob = await this.canvasToBlob(canvas);
+        const file = new File([blob], data.filename, { type: "image/png" });
+
+        if (this.canShareFiles(file)) {
+            try {
+                await this.shareViaWebShare(file, data);
+                return "shared";
+            } catch (err) {
+                if (err?.name === "AbortError") return "cancelled";
+            }
+        }
+
+        this.downloadBlob(blob, data.filename);
+
+        if (this.isMobile()) {
+            window.setTimeout(() => this.openInstagramApp(), 400);
+            return "opened";
+        }
+
+        this.openInstagramApp();
+        return "downloaded";
+    },
+
     download(canvas, filename) {
         canvas.toBlob((blob) => {
             if (!blob) return;
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            URL.revokeObjectURL(url);
+            this.downloadBlob(blob, filename);
         }, "image/png");
     },
 };
