@@ -13,9 +13,11 @@ from flask import Flask, render_template, request, redirect, url_for, abort, ses
 from database import get_db
 from contact import is_valid_email, save_inquiry
 from i18n import get_lang, translate, translate_value, localize_row, SUPPORTED_LANGS
+from basic_auth import init_basic_auth
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
+init_basic_auth(app)
 
 RECOMMENDED_SPOT_LIMIT = 3
 
@@ -187,6 +189,12 @@ def fetch_spot(spot_id):
     if spot is None:
         return None
     return localize_row(spot, ("name", "category", "genre", "description"))
+
+
+@app.route("/health")
+def health():
+    """Render のヘルスチェック用（Basic 認証の対象外）"""
+    return "ok", 200
 
 
 @app.route("/")
