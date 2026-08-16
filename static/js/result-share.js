@@ -69,7 +69,9 @@ const ResultShare = {
         const shareBtn = container.querySelector("[data-share-action]");
         const preview = container.querySelector("[data-share-preview]");
         const statusEl = container.querySelector("[data-share-status]");
-        const defaultLabel = shareBtn?.textContent?.trim() || "";
+        const labelEl = shareBtn?.querySelector("[data-share-label]");
+        const teaser = container.querySelector(".result-share-teaser");
+        const defaultLabel = labelEl?.textContent?.trim() || shareBtn?.textContent?.trim() || "";
 
         const setStatus = (message, isError = false) => {
             if (!statusEl) return;
@@ -78,9 +80,19 @@ const ResultShare = {
             statusEl.classList.toggle("result-share-status-error", isError);
         };
 
+        const setGenerating = (isGenerating) => {
+            if (!shareBtn) return;
+            shareBtn.disabled = isGenerating;
+            const text = isGenerating ? data.labels.generating : defaultLabel;
+            if (labelEl) {
+                labelEl.textContent = text;
+            } else {
+                shareBtn.textContent = text;
+            }
+        };
+
         shareBtn?.addEventListener("click", async () => {
-            shareBtn.disabled = true;
-            shareBtn.textContent = data.labels.generating;
+            setGenerating(true);
             setStatus("");
 
             try {
@@ -89,14 +101,14 @@ const ResultShare = {
                     preview.src = canvas.toDataURL("image/png");
                     preview.hidden = false;
                     preview.closest(".result-share-preview-wrap")?.classList.add("is-visible");
+                    teaser?.classList.add("is-hidden");
                 }
                 this.download(canvas, data.filename);
                 setStatus(data.labels.success);
             } catch {
                 setStatus(data.labels.error, true);
             } finally {
-                shareBtn.disabled = false;
-                shareBtn.textContent = defaultLabel;
+                setGenerating(false);
             }
         });
     },

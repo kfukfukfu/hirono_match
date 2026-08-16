@@ -75,7 +75,10 @@
     },
     "share": {
       "button": "Instagramでシェア",
-      "optional": "任意 · 画像を保存して投稿できます",
+      "kicker": "Stories",
+      "title": "診断結果を投稿しよう",
+      "cta": "タップして画像を保存",
+      "optional": "保存した画像を Instagram から投稿できます",
       "app_subtitle": "Travel Diagnosis",
       "footer_line": "あなたにおすすめの旅スタイル",
       "hashtags": "#HIRONOMATCH #HironoJapan",

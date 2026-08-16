@@ -75,7 +75,10 @@
     },
     "share": {
       "button": "Share on Instagram",
-      "optional": "Optional · Save the image and post it yourself",
+      "kicker": "Stories",
+      "title": "Post your result",
+      "cta": "Tap to save image",
+      "optional": "Save the image, then post it from Instagram",
       "app_subtitle": "Travel Diagnosis",
       "footer_line": "Your recommended travel style",
       "hashtags": "#HIRONOMATCH #HironoJapan",
