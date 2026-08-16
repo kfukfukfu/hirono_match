@@ -20,6 +20,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
 init_basic_auth(app)
 
 RECOMMENDED_SPOT_LIMIT = 3
+QUESTION_COUNT = 5
 
 
 @app.context_processor
@@ -57,7 +58,10 @@ def map_url_filter(address):
 def fetch_questions_with_choices():
     """診断用の質問と選択肢を DB から取得する"""
     db = get_db()
-    questions = db.execute("SELECT * FROM questions ORDER BY id").fetchall()
+    questions = db.execute(
+        "SELECT * FROM questions ORDER BY id LIMIT ?",
+        (QUESTION_COUNT,),
+    ).fetchall()
     result = []
 
     for q in questions:
@@ -74,14 +78,6 @@ def fetch_questions_with_choices():
     return result
 
 
-def get_question_count():
-    """診断の質問数を DB から取得する"""
-    db = get_db()
-    count = db.execute("SELECT COUNT(*) AS c FROM questions").fetchone()["c"]
-    db.close()
-    return count
-
-
 def validate_answers(choice_ids):
     """
     回答の妥当性を検証する。
@@ -96,8 +92,7 @@ def validate_answers(choice_ids):
     except ValueError:
         return False
 
-    question_count = get_question_count()
-    if len(choice_ids) != question_count:
+    if len(choice_ids) != QUESTION_COUNT:
         return False
 
     placeholders = ",".join("?" * len(choice_ids))
@@ -112,7 +107,7 @@ def validate_answers(choice_ids):
         return False
 
     question_ids = {row["question_id"] for row in rows}
-    return len(question_ids) == question_count
+    return len(question_ids) == QUESTION_COUNT
 
 
 def calculate_scores(choice_ids):
@@ -207,6 +202,8 @@ def index():
 def diagnosis():
     """診断画面（5問・1問ずつ表示・1つ選択）"""
     questions = fetch_questions_with_choices()
+    if len(questions) < QUESTION_COUNT:
+        abort(503)
     return render_template("diagnosis.html", questions=questions)
 
 

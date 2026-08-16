@@ -75,21 +75,21 @@
       }
     },
     "share": {
-      "button": "Share on Instagram",
-      "kicker": "Stories",
+      "button": "Share on SNS",
+      "kicker": "SNS",
       "title": "Post your result",
-      "cta": "Post to Instagram Stories",
-      "optional": "On mobile, choose Instagram from the share menu",
+      "cta": "Post to SNS",
+      "optional": "On mobile, choose your SNS app from the share menu",
       "app_subtitle": "Travel Diagnosis",
       "footer_line": "Your recommended travel style",
       "hashtags": "#HIRONOMATCH #HironoJapan",
       "location": "Hirono Town, Iwate, Japan JP",
       "generating": "Creating image…",
-      "success": "Image saved. Post it from Instagram.",
-      "success_share": "Choose Instagram in the share menu to post to Stories.",
-      "success_open": "Opening Instagram. Add the saved image to your Story.",
+      "success": "Image saved. Post it from your SNS app.",
+      "success_share": "Choose an SNS app in the share menu to post.",
+      "success_open": "Opening your SNS app. Add the saved image to your post.",
       "error": "Could not create the image. Please try again.",
-      "preview_alt": "Preview of your Instagram share image"
+      "preview_alt": "Preview of your SNS share image"
     }
   },
   "spot": {
