@@ -1,6 +1,6 @@
 /**
- * result-share.js — Instagram 向けシェア画像（1080×1920）
- * 額縁カード + フッター構成（参考モック準拠）
+ * result-share.js — Instagram Stories シェア画像（1080×1920）
+ * 「旅の表紙」エディトリアルデザイン
  */
 
 const ResultShare = {
@@ -10,56 +10,46 @@ const ResultShare = {
     FONT: '"Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif',
 
     COLORS: {
-        canvas: "#101014",
-        cardBorder: "#d9cdb5",
-        cardInner: "#121218",
+        cream: "#fef3c7",
+        gold: "#e8c468",
+        goldDeep: "#c9a227",
         white: "#ffffff",
-        category: "rgba(255, 255, 255, 0.72)",
-        tagline: "rgba(255, 255, 255, 0.94)",
-        desc: "rgba(255, 255, 255, 0.78)",
-        footerLoc: "rgba(255, 255, 255, 0.68)",
-        footerTags: "rgba(255, 255, 255, 0.82)",
-        tagFill: "rgba(255, 255, 255, 0.14)",
-        tagBorder: "rgba(255, 255, 255, 0.28)",
-        divider: "rgba(255, 255, 255, 0.14)",
-        panelFill: "rgba(20, 22, 30, 0.84)",
-        panelStroke: "rgba(255, 255, 255, 0.1)",
+        muted: "rgba(255, 255, 255, 0.72)",
+        soft: "rgba(255, 255, 255, 0.88)",
+        footer: "rgba(255, 255, 255, 0.55)",
+        tagPrimary: "rgba(232, 196, 104, 0.92)",
+        tagPrimaryText: "#1a1408",
+        tagGhost: "rgba(255, 255, 255, 0.14)",
+        tagGhostBorder: "rgba(255, 255, 255, 0.32)",
     },
 
     TYPOGRAPHY: {
-        header: 30,
-        subtitle: 26,
-        title: 80,
-        tagline: 42,
-        desc: 32,
-        tag: 26,
-        footerBrand: 28,
-        footerLoc: 26,
-        footerTags: 24,
+        brand: 24,
+        label: 18,
+        category: 20,
+        title: 100,
+        tagline: 38,
+        desc: 27,
+        tag: 22,
+        footer: 21,
     },
 
     LAYOUT: {
-        cardMarginX: 72,
-        cardMarginTop: 96,
-        cardBorder: 12,
-        cardPhotoRatio: 0.58,
-        cardFooterGap: 64,
-        footerBottomPad: 48,
-        footerBlockHeight: 118,
-        panelInset: 36,
-        panelPad: 44,
-        panelRadius: 24,
-        panelPhotoOverlap: 56,
-        logoInsetX: 40,
-        logoInsetY: 44,
-        mainGapAfterSubtitle: 14,
-        mainGapAfterTitle: 24,
-        mainGapAfterTagline: 18,
-        mainGapAfterDesc: 22,
-        mainLineGap: 8,
-        tagHeight: 50,
+        padX: 56,
+        headerTop: 72,
+        accentBarW: 5,
+        accentBarH: 52,
+        contentBottom: 108,
+        footerBottom: 52,
+        gapLabelToCategory: 28,
+        gapCategoryToTitle: 14,
+        gapTitleToTagline: 18,
+        gapTaglineToDesc: 22,
+        gapDescToTags: 28,
+        titleLineGap: 4,
+        tagHeight: 46,
         tagPadX: 26,
-        tagGap: 16,
+        tagGap: 12,
     },
 
     init(containerSelector) {
@@ -117,15 +107,12 @@ const ResultShare = {
         canvas.height = this.HEIGHT;
         const ctx = canvas.getContext("2d");
         const heroImage = await this.loadImage(data.imageUrl);
-        const card = this.getCardRect();
 
-        this.drawBackground(ctx);
-        this.drawCardFrame(ctx, card);
-        this.drawCardPhoto(ctx, heroImage, card);
-        this.drawPhotoFade(ctx, card);
-        this.drawBrand(ctx, card);
-        this.drawContent(ctx, data, card);
-        this.drawFooter(ctx, data, card);
+        this.drawPhoto(ctx, heroImage);
+        this.drawOverlays(ctx);
+        this.drawHeader(ctx);
+        this.drawMainContent(ctx, data);
+        this.drawFooter(ctx, data);
 
         return canvas;
     },
@@ -140,91 +127,212 @@ const ResultShare = {
         });
     },
 
-    getCardRect() {
-        const footerReserve =
-            this.LAYOUT.cardFooterGap + this.LAYOUT.footerBlockHeight + this.LAYOUT.footerBottomPad;
-        return {
-            x: this.LAYOUT.cardMarginX,
-            y: this.LAYOUT.cardMarginTop,
-            w: this.WIDTH - this.LAYOUT.cardMarginX * 2,
-            h: this.HEIGHT - this.LAYOUT.cardMarginTop - footerReserve,
-        };
+    drawPhoto(ctx, img) {
+        this.drawCover(ctx, img, 0, 0, this.WIDTH, this.HEIGHT, 0.34);
     },
 
-    getCardInner(card) {
-        const b = this.LAYOUT.cardBorder;
-        return {
-            x: card.x + b,
-            y: card.y + b,
-            w: card.w - b * 2,
-            h: card.h - b * 2,
-        };
+    drawOverlays(ctx) {
+        const top = ctx.createLinearGradient(0, 0, 0, 420);
+        top.addColorStop(0, "rgba(0, 0, 0, 0.48)");
+        top.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = top;
+        ctx.fillRect(0, 0, this.WIDTH, 420);
+
+        const scrimStart = this.HEIGHT * 0.48;
+        const bottom = ctx.createLinearGradient(0, scrimStart, 0, this.HEIGHT);
+        bottom.addColorStop(0, "rgba(0, 0, 0, 0)");
+        bottom.addColorStop(0.25, "rgba(0, 0, 0, 0.35)");
+        bottom.addColorStop(0.55, "rgba(0, 0, 0, 0.72)");
+        bottom.addColorStop(1, "rgba(0, 0, 0, 0.88)");
+        ctx.fillStyle = bottom;
+        ctx.fillRect(0, scrimStart, this.WIDTH, this.HEIGHT - scrimStart);
+
+        const warm = ctx.createRadialGradient(
+            this.WIDTH * 0.15,
+            this.HEIGHT * 0.82,
+            0,
+            this.WIDTH * 0.15,
+            this.HEIGHT * 0.82,
+            this.WIDTH * 0.55,
+        );
+        warm.addColorStop(0, "rgba(201, 162, 39, 0.07)");
+        warm.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = warm;
+        ctx.fillRect(0, scrimStart, this.WIDTH, this.HEIGHT - scrimStart);
     },
 
-    getFooterTop(card) {
-        return card.y + card.h + this.LAYOUT.cardFooterGap;
-    },
+    drawHeader(ctx) {
+        const pad = this.LAYOUT.padX;
+        const y = this.LAYOUT.headerTop;
 
-    drawBackground(ctx) {
-        ctx.fillStyle = this.COLORS.canvas;
-        ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
-    },
-
-    drawCardFrame(ctx, card) {
-        ctx.save();
-        ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
-        ctx.shadowBlur = 48;
-        ctx.shadowOffsetY = 12;
-        ctx.fillStyle = this.COLORS.cardBorder;
-        this.roundRect(ctx, card.x, card.y, card.w, card.h, 8);
-        ctx.fill();
-        ctx.restore();
-
-        const inner = this.getCardInner(card);
-        ctx.fillStyle = this.COLORS.cardInner;
-        this.roundRect(ctx, inner.x, inner.y, inner.w, inner.h, 4);
-        ctx.fill();
-    },
-
-    drawCardPhoto(ctx, img, card) {
-        const inner = this.getCardInner(card);
-        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
-
-        ctx.save();
-        this.roundRect(ctx, inner.x, inner.y, inner.w, inner.h, 4);
-        ctx.clip();
-        this.drawCover(ctx, img, inner.x, inner.y, inner.w, photoH + this.LAYOUT.panelPhotoOverlap, 0.12);
-        ctx.restore();
-    },
-
-    drawPhotoFade(ctx, card) {
-        const inner = this.getCardInner(card);
-        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
-        const fadeY = inner.y + photoH - this.LAYOUT.panelPhotoOverlap;
-
-        const g = ctx.createLinearGradient(0, fadeY, 0, fadeY + this.LAYOUT.panelPhotoOverlap + 80);
-        g.addColorStop(0, "rgba(18, 18, 24, 0)");
-        g.addColorStop(0.55, "rgba(18, 18, 24, 0.55)");
-        g.addColorStop(1, "rgba(18, 18, 24, 0.88)");
-        ctx.fillStyle = g;
-        ctx.fillRect(inner.x, fadeY, inner.w, inner.h - photoH + this.LAYOUT.panelPhotoOverlap + 80);
-    },
-
-    drawBrand(ctx, card) {
-        const inner = this.getCardInner(card);
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
-        ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-        ctx.font = this.font(700, this.TYPOGRAPHY.header);
-        ctx.fillText(
-            this.APP_NAME,
-            inner.x + this.LAYOUT.logoInsetX,
-            inner.y + this.LAYOUT.logoInsetY,
+        ctx.fillStyle = "rgba(255, 255, 255, 0.88)";
+        ctx.font = this.font(700, this.TYPOGRAPHY.brand);
+        this.drawTrackedText(ctx, this.APP_NAME, pad, y, this.TYPOGRAPHY.brand * 0.22);
+
+        ctx.strokeStyle = "rgba(232, 196, 104, 0.55)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pad, y + 14);
+        ctx.lineTo(pad + 72, y + 14);
+        ctx.stroke();
+    },
+
+    measureContent(ctx, data, maxWidth) {
+        const titleFont = this.font(900, this.TYPOGRAPHY.title);
+        const taglineFont = this.font(600, this.TYPOGRAPHY.tagline);
+        const descFont = this.font(400, this.TYPOGRAPHY.desc);
+        const categoryFont = this.font(600, this.TYPOGRAPHY.category);
+
+        ctx.font = titleFont;
+        const titleLines = this.splitTypeNameLines(ctx, data.typeName, maxWidth, data.lang);
+        let h = this.LAYOUT.accentBarH + this.LAYOUT.gapLabelToCategory;
+        h += this.getMetrics(ctx, data.appSubtitle.toUpperCase(), categoryFont).height;
+        h += this.LAYOUT.gapCategoryToTitle;
+        titleLines.forEach((line, i) => {
+            h += this.getMetrics(ctx, line, titleFont).height;
+            if (i > 0) h += this.LAYOUT.titleLineGap;
+        });
+
+        let taglineLines = [];
+        if (data.tagline) {
+            ctx.font = taglineFont;
+            taglineLines = this.wrapText(ctx, data.tagline, maxWidth, 2, data.lang === "en");
+            h += this.LAYOUT.gapTitleToTagline;
+            taglineLines.forEach((line, i) => {
+                h += this.getMetrics(ctx, line, taglineFont).height;
+                if (i > 0) h += 6;
+            });
+        }
+
+        ctx.font = descFont;
+        const descLines = this.wrapText(ctx, data.description || "", maxWidth, 2, data.lang === "en");
+        h += data.tagline ? this.LAYOUT.gapTaglineToDesc : this.LAYOUT.gapTitleToTagline;
+        descLines.forEach((line, i) => {
+            h += this.getMetrics(ctx, line, descFont).height;
+            if (i > 0) h += 8;
+        });
+
+        const tags = Array.isArray(data.tags) ? data.tags.slice(0, 3) : [];
+        if (tags.length) h += this.LAYOUT.gapDescToTags + this.LAYOUT.tagHeight;
+
+        return { titleLines, taglineLines, descLines, tags, totalHeight: h };
+    },
+
+    drawMainContent(ctx, data) {
+        const pad = this.LAYOUT.padX;
+        const textX = pad + this.LAYOUT.accentBarW + 20;
+        const maxWidth = this.WIDTH - textX - pad;
+        const footerReserve = this.LAYOUT.footerBottom + 56;
+        const content = this.measureContent(ctx, data, maxWidth);
+
+        let blockTop = this.HEIGHT - this.LAYOUT.contentBottom - footerReserve - content.totalHeight;
+        if (blockTop < 200) blockTop = 200;
+
+        const barX = pad;
+        const barY = blockTop;
+        const barGrad = ctx.createLinearGradient(barX, barY, barX, barY + this.LAYOUT.accentBarH);
+        barGrad.addColorStop(0, this.COLORS.gold);
+        barGrad.addColorStop(1, this.COLORS.goldDeep);
+        ctx.fillStyle = barGrad;
+        ctx.fillRect(barX, barY, this.LAYOUT.accentBarW, this.LAYOUT.accentBarH);
+
+        let y = blockTop + this.LAYOUT.gapLabelToCategory;
+        const categoryFont = this.font(600, this.TYPOGRAPHY.category);
+        y += this.drawGlowText(
+            ctx,
+            data.appSubtitle.toUpperCase(),
+            textX,
+            y,
+            categoryFont,
+            this.COLORS.gold,
+            4,
         );
+
+        y += this.LAYOUT.gapCategoryToTitle;
+        const titleFont = this.font(900, this.TYPOGRAPHY.title);
+        content.titleLines.forEach((line, index) => {
+            if (index > 0) y += this.LAYOUT.titleLineGap;
+            y += this.drawGlowText(ctx, line, textX, y, titleFont, this.COLORS.white, 10);
+        });
+
+        if (content.taglineLines.length) {
+            y += this.LAYOUT.gapTitleToTagline;
+            const taglineFont = this.font(600, this.TYPOGRAPHY.tagline);
+            content.taglineLines.forEach((line, index) => {
+                if (index > 0) y += 6;
+                y += this.drawGlowText(ctx, line, textX, y, taglineFont, this.COLORS.cream, 6);
+            });
+        }
+
+        y += content.taglineLines.length
+            ? this.LAYOUT.gapTaglineToDesc
+            : this.LAYOUT.gapTitleToTagline;
+        const descFont = this.font(400, this.TYPOGRAPHY.desc);
+        content.descLines.forEach((line, index) => {
+            if (index > 0) y += 8;
+            y += this.drawGlowText(ctx, line, textX, y, descFont, this.COLORS.soft, 4);
+        });
+
+        if (content.tags.length) {
+            y += this.LAYOUT.gapDescToTags;
+            let tagX = textX;
+            content.tags.forEach((tag, index) => {
+                const tagFont = this.font(600, this.TYPOGRAPHY.tag);
+                ctx.font = tagFont;
+                const tw = ctx.measureText(tag).width + this.LAYOUT.tagPadX * 2;
+                const th = this.LAYOUT.tagHeight;
+                const isPrimary = index === 0;
+
+                this.roundRect(ctx, tagX, y, tw, th, th / 2);
+                if (isPrimary) {
+                    ctx.fillStyle = this.COLORS.tagPrimary;
+                    ctx.fill();
+                    this.drawTextLine(ctx, tag, tagX + this.LAYOUT.tagPadX, y + 7, tagFont, this.COLORS.tagPrimaryText);
+                } else {
+                    ctx.fillStyle = this.COLORS.tagGhost;
+                    ctx.fill();
+                    ctx.strokeStyle = this.COLORS.tagGhostBorder;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    this.drawTextLine(ctx, tag, tagX + this.LAYOUT.tagPadX, y + 7, tagFont, this.COLORS.white);
+                }
+                tagX += tw + this.LAYOUT.tagGap;
+            });
+        }
+    },
+
+    drawFooter(ctx, data) {
+        const y = this.HEIGHT - this.LAYOUT.footerBottom;
+        const loc = this.shortLocation(data.location);
+        const tags = data.hashtags || "#HIRONOMATCH";
+        const line = `${loc}  ·  ${tags}`;
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = this.COLORS.footer;
+        ctx.font = this.font(500, this.TYPOGRAPHY.footer);
+        ctx.fillText(line, this.WIDTH / 2, y);
+    },
+
+    shortLocation(location) {
+        if (!location) return "Hirono, Iwate";
+        return location.replace(" Japan JP", "").replace(" JP", "");
     },
 
     font(weight, size) {
         return `${weight} ${size}px ${this.FONT}`;
+    },
+
+    drawTrackedText(ctx, text, x, baselineY, tracking) {
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+        let cursorX = x;
+        [...text].forEach((char) => {
+            ctx.fillText(char, cursorX, baselineY);
+            cursorX += ctx.measureText(char).width + tracking;
+        });
     },
 
     getMetrics(ctx, text, font) {
@@ -233,12 +341,7 @@ const ResultShare = {
         const metrics = ctx.measureText(text);
         const ascent = metrics.actualBoundingBoxAscent ?? size * 0.85;
         const descent = metrics.actualBoundingBoxDescent ?? size * 0.15;
-        return {
-            width: metrics.width,
-            ascent,
-            descent,
-            height: ascent + descent,
-        };
+        return { width: metrics.width, ascent, descent, height: ascent + descent };
     },
 
     drawTextLine(ctx, text, x, topY, font, color) {
@@ -251,200 +354,22 @@ const ResultShare = {
         return metrics.height;
     },
 
-    buildContentBlocks(ctx, data, maxWidth) {
-        const subtitleFont = this.font(600, this.TYPOGRAPHY.subtitle);
-        const titleFont = this.font(600, this.TYPOGRAPHY.title);
-        const taglineFont = this.font(500, this.TYPOGRAPHY.tagline);
-        const descFont = this.font(400, this.TYPOGRAPHY.desc);
-        const tagFont = this.font(600, this.TYPOGRAPHY.tag);
-        const tagHeight = this.LAYOUT.tagHeight;
-        const lineGap = this.LAYOUT.mainLineGap;
-        const blocks = [];
-
-        blocks.push({
-            height: this.getMetrics(ctx, data.appSubtitle.toUpperCase(), subtitleFont).height,
-            gapBefore: 0,
-            draw: (x, topY) => {
-                this.drawTextLine(
-                    ctx,
-                    data.appSubtitle.toUpperCase(),
-                    x,
-                    topY,
-                    subtitleFont,
-                    this.COLORS.category,
-                );
-            },
-        });
-
-        ctx.font = titleFont;
-        const titleLines = this.splitTypeNameLines(ctx, data.typeName, maxWidth, data.lang);
-        let titleHeight = 0;
-        titleLines.forEach((line, index) => {
-            titleHeight += this.getMetrics(ctx, line, titleFont).height;
-            if (index > 0) titleHeight += lineGap;
-        });
-        blocks.push({
-            height: titleHeight,
-            gapBefore: this.LAYOUT.mainGapAfterSubtitle,
-            draw: (x, topY) => {
-                let y = topY;
-                titleLines.forEach((line, index) => {
-                    if (index > 0) y += lineGap;
-                    y += this.drawTextLine(ctx, line, x, y, titleFont, this.COLORS.white);
-                });
-            },
-        });
-
-        if (data.tagline) {
-            ctx.font = taglineFont;
-            const tagLines = this.wrapText(ctx, data.tagline, maxWidth, 2, data.lang === "en");
-            let taglineHeight = 0;
-            tagLines.forEach((line, index) => {
-                taglineHeight += this.getMetrics(ctx, line, taglineFont).height;
-                if (index > 0) taglineHeight += lineGap;
-            });
-            blocks.push({
-                height: taglineHeight,
-                gapBefore: this.LAYOUT.mainGapAfterTitle,
-                draw: (x, topY) => {
-                    let y = topY;
-                    tagLines.forEach((line, index) => {
-                        if (index > 0) y += lineGap;
-                        y += this.drawTextLine(ctx, line, x, y, taglineFont, this.COLORS.tagline);
-                    });
-                },
-            });
-        }
-
-        ctx.font = descFont;
-        const descLines = this.wrapText(ctx, data.description || "", maxWidth, 3, data.lang === "en");
-        let descHeight = 0;
-        descLines.forEach((line, index) => {
-            descHeight += this.getMetrics(ctx, line, descFont).height;
-            if (index > 0) descHeight += lineGap;
-        });
-        blocks.push({
-            height: descHeight,
-            gapBefore: data.tagline ? this.LAYOUT.mainGapAfterTagline : this.LAYOUT.mainGapAfterTitle,
-            draw: (x, topY) => {
-                let y = topY;
-                descLines.forEach((line, index) => {
-                    if (index > 0) y += lineGap;
-                    y += this.drawTextLine(ctx, line, x, y, descFont, this.COLORS.desc);
-                });
-            },
-        });
-
-        const tags = Array.isArray(data.tags) ? data.tags.slice(0, 3) : [];
-        if (tags.length) {
-            blocks.push({
-                height: tagHeight,
-                gapBefore: this.LAYOUT.mainGapAfterDesc,
-                draw: (x, topY) => {
-                    let tagX = x;
-                    tags.forEach((tag) => {
-                        const metrics = this.getMetrics(ctx, tag, tagFont);
-                        const tw = metrics.width + this.LAYOUT.tagPadX * 2;
-                        if (tagX + tw > x + maxWidth) return;
-
-                        ctx.fillStyle = this.COLORS.tagFill;
-                        ctx.strokeStyle = this.COLORS.tagBorder;
-                        ctx.lineWidth = 2;
-                        this.roundRect(ctx, tagX, topY, tw, tagHeight, 24);
-                        ctx.fill();
-                        ctx.stroke();
-
-                        this.drawTextLine(
-                            ctx,
-                            tag,
-                            tagX + this.LAYOUT.tagPadX,
-                            topY + 8,
-                            tagFont,
-                            this.COLORS.white,
-                        );
-                        tagX += tw + this.LAYOUT.tagGap;
-                    });
-                },
-            });
-        }
-
-        return blocks;
-    },
-
-    measureBlocks(blocks) {
-        let totalHeight = 0;
-        blocks.forEach((block) => {
-            totalHeight += block.gapBefore + block.height;
-        });
-        return totalHeight;
-    },
-
-    drawContent(ctx, data, card) {
-        const inner = this.getCardInner(card);
-        const inset = this.LAYOUT.panelInset;
-        const pad = this.LAYOUT.panelPad;
-        const panelX = inner.x + inset;
-        const panelW = inner.w - inset * 2;
-        const maxWidth = panelW - pad * 2;
-        const panelBottom = inner.y + inner.h - inset;
-
-        const blocks = this.buildContentBlocks(ctx, data, maxWidth);
-        const contentHeight = this.measureBlocks(blocks);
-        const panelH = contentHeight + pad * 2;
-        const photoH = Math.round(inner.h * this.LAYOUT.cardPhotoRatio);
-        let panelY = inner.y + photoH - this.LAYOUT.panelPhotoOverlap;
-
-        const minPanelY = inner.y + photoH - 120;
-        if (panelY < minPanelY) panelY = minPanelY;
-        if (panelY + panelH > panelBottom) {
-            panelY = panelBottom - panelH;
-        }
+    drawGlowText(ctx, text, x, topY, font, color, blur) {
+        const metrics = this.getMetrics(ctx, text, font);
+        ctx.font = font;
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+        const baseline = topY + metrics.ascent;
 
         ctx.save();
-        this.roundRect(ctx, panelX, panelY, panelW, panelH, this.LAYOUT.panelRadius);
-        ctx.fillStyle = this.COLORS.panelFill;
-        ctx.fill();
-        ctx.strokeStyle = this.COLORS.panelStroke;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+        ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+        ctx.shadowBlur = blur;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = color;
+        ctx.fillText(text, x, baseline);
         ctx.restore();
 
-        let y = panelY + pad;
-        blocks.forEach((block) => {
-            y += block.gapBefore;
-            block.draw(panelX + pad, y);
-            y += block.height;
-        });
-    },
-
-    drawFooter(ctx, data, card) {
-        const pad = this.LAYOUT.cardMarginX;
-        const centerX = this.WIDTH / 2;
-        const bottomPad = this.LAYOUT.footerBottomPad;
-        const footerTop = this.getFooterTop(card);
-
-        ctx.strokeStyle = this.COLORS.divider;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(pad, footerTop);
-        ctx.lineTo(this.WIDTH - pad, footerTop);
-        ctx.stroke();
-
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-
-        const brandY = footerTop + 38;
-        ctx.fillStyle = this.COLORS.white;
-        ctx.font = this.font(700, this.TYPOGRAPHY.footerBrand);
-        ctx.fillText(this.APP_NAME, centerX, brandY);
-
-        ctx.fillStyle = this.COLORS.footerLoc;
-        ctx.font = this.font(500, this.TYPOGRAPHY.footerLoc);
-        ctx.fillText(data.location, centerX, brandY + 32);
-
-        ctx.fillStyle = this.COLORS.footerTags;
-        ctx.font = this.font(600, this.TYPOGRAPHY.footerTags);
-        ctx.fillText(data.hashtags, centerX, this.HEIGHT - bottomPad);
+        return metrics.height;
     },
 
     splitTypeNameLines(ctx, typeName, maxWidth, lang) {
