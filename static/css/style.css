@@ -962,6 +962,35 @@ a:hover {
     padding: 0.875rem 1.25rem 1.5rem;
 }
 
+.diagnosis-home-link {
+    position: sticky;
+    top: calc(var(--header-height) + 0.5rem);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.875rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(26, 107, 138, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.diagnosis-home-link:hover {
+    color: var(--color-primary);
+    border-color: rgba(26, 107, 138, 0.25);
+    background: #fff;
+    text-decoration: none;
+}
+
 .diagnosis-header {
     text-align: center;
     margin-bottom: 1rem;

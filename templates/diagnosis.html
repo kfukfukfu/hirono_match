@@ -4,6 +4,13 @@
 
 {% block content %}
 <section class="diagnosis-mobile">
+    <a href="{{ url_for('index') }}" class="diagnosis-home-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 10.5L12 4L20 10.5V19C20 19.5523 19.5523 20 19 20H15V14H9V20H5C4.44772 20 4 19.5523 4 19V10.5Z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+        </svg>
+        {{ _('diagnosis.back_home') }}
+    </a>
+
     <header class="diagnosis-header">
         <h1 class="diagnosis-title">{{ _('diagnosis.title') }}</h1>
         <p class="diagnosis-progress">Q<span id="current-num">1</span> / {{ questions|length }}</p>
