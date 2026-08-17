@@ -32,9 +32,11 @@
     "picks_title": "For You",
     "picks_lead_suffix": " picks for you",
     "type_ratio_lead": "Your travel types",
-    "view_spot": "View details",
-    "type_ratio": "Type breakdown",
-    "type_ratio_other": "Other",
+    "type_rank": {
+      "1": "🥇 1st",
+      "2": "🥈 2nd",
+      "3": "🥉 3rd"
+    },
     "recommended_spots": "Recommended Spots",
     "spots_lead": "Places in Hirono Town for you, in recommended order.",
     "spot_recommendation": "Recommended",

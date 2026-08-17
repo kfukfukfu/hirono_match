@@ -139,13 +139,6 @@ def save_diagnosis_result(choice_ids):
     session.modified = True
 
 
-def build_type_breakdown_for_display(ranked):
-    """8タイプ全体を100%とした割合のうち、上位3タイプとその他を返す"""
-    top3 = ranked[:3]
-    other_percentage = sum(t["percentage"] for t in ranked[3:])
-    return top3, other_percentage
-
-
 def build_result_context():
     """診断結果画面用のデータを、現在の表示言語で組み立てる"""
     diagnosis = get_diagnosis_result()
@@ -158,11 +151,9 @@ def build_result_context():
 
     main_type = ranked[0]
     recommended_spots = fetch_recommended_spots_for_result(ranked)
-    type_percentages, type_ratio_other_percentage = build_type_breakdown_for_display(ranked)
     return {
         "main_type": main_type,
-        "type_percentages": type_percentages,
-        "type_ratio_other_percentage": type_ratio_other_percentage,
+        "type_rankings": ranked[:3],
         "recommended_spots": recommended_spots,
     }
 

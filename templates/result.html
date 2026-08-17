@@ -25,22 +25,16 @@
         <p>{{ main_type.description }}</p>
     </section>
 
-    {% if type_percentages %}
-    <section class="result-percentages-mobile">
+    {% if type_rankings %}
+    <section class="result-type-ranks">
         <h2 class="section-title-mobile">{{ _('result.type_ratio_lead') }}</h2>
-        <ul class="percentage-simple-list">
-            {% for item in type_percentages %}
-            <li class="percentage-simple-item">
-                <span class="percentage-simple-name">{{ item.name }}</span>
-                <span class="percentage-simple-value">{{ item.percentage }}%</span>
+        <ul class="type-rank-list">
+            {% for item in type_rankings %}
+            <li class="type-rank-item">
+                <span class="type-rank-label">{{ tv('result.type_rank.' ~ loop.index) }}</span>
+                <span class="type-rank-name">{{ item.name }}</span>
             </li>
             {% endfor %}
-            {% if type_ratio_other_percentage %}
-            <li class="percentage-simple-item percentage-simple-item-other">
-                <span class="percentage-simple-name">{{ _('result.type_ratio_other') }}</span>
-                <span class="percentage-simple-value">{{ type_ratio_other_percentage }}%</span>
-            </li>
-            {% endif %}
         </ul>
     </section>
     {% endif %}

@@ -2,7 +2,7 @@
 from collections import Counter
 from itertools import product
 
-from app import app, build_type_breakdown_for_display, calculate_scores
+from app import app, calculate_scores
 from database import get_db
 
 EXPECTED_WIN_RATES = {
@@ -33,15 +33,7 @@ def q5_scores_for(choice_ids):
     return q5
 
 
-def test_display_percentages_show_top3_and_other_on_eight_type_basis():
-    ranked = calculate_scores([1, 6, 12, 15, 18])
-    top3, other = build_type_breakdown_for_display(ranked)
-    assert [t["percentage"] for t in top3] == [19, 19, 19]
-    assert other == 44
-    assert sum(t["percentage"] for t in top3) + other == sum(t["percentage"] for t in ranked)
-
-
-def test_result_page_shows_type_breakdown_in_ja_and_en():
+def test_result_page_shows_type_rankings_in_ja_and_en():
     with app.test_client() as client:
         client.post(
             "/result",
@@ -49,15 +41,18 @@ def test_result_page_shows_type_breakdown_in_ja_and_en():
             follow_redirects=True,
         )
         ja = client.get("/result").get_data(as_text=True)
-        assert "その他" in ja
-        assert "その他のタイプ" not in ja
-        assert "19%" in ja
+        assert "🥇 1位" in ja
+        assert "🥈 2位" in ja
+        assert "🥉 3位" in ja
+        assert "19%" not in ja
+        assert "その他" not in ja
 
         with client.session_transaction() as sess:
             sess["lang"] = "en"
         en = client.get("/result").get_data(as_text=True)
-        assert "Other types" not in en
-        assert "Other" in en
+        assert "🥇 1st" in en
+        assert "🥈 2nd" in en
+        assert "🥉 3rd" in en
 
 
 def simulate():
@@ -84,8 +79,7 @@ def simulate():
 
 
 def main():
-    test_display_percentages_show_top3_and_other_on_eight_type_basis()
-    test_result_page_shows_type_breakdown_in_ja_and_en()
+    test_result_page_shows_type_rankings_in_ja_and_en()
     winners, score_ties, q5_also_tied = simulate()
 
     print("=== Implementation verification ===")

@@ -10,7 +10,7 @@ with app.test_client() as client:
     assert "result-mobile" in text
     assert "result-label" in text
     assert "result-type-name" in text
-    assert "percentage-simple-list" in text
+    assert "type-rank-list" in text
     assert "result-spots" in text
     assert "result-lodging" not in text
     assert "近くに泊まるなら" not in text
@@ -18,5 +18,5 @@ with app.test_client() as client:
     assert "●" in text or "○" in text
     assert text.index("result-spots") < text.index("result-actions-mobile")
     assert "data-share-action" in text
-    assert text.index("result-type-desc") < text.index("percentage-simple-list") < text.index("result-actions-mobile")
+    assert text.index("result-type-desc") < text.index("type-rank-list") < text.index("result-actions-mobile")
     print("Share flow checks passed")
