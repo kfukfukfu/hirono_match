@@ -130,7 +130,7 @@
     "conditions": {
       "page_title": "Trip conditions — Hirono Match",
       "title": "Enter your trip details",
-      "lead": "Based on your quiz result, we'll build a realistic Hirono Town itinerary for you.",
+      "lead": "Based on your quiz result and travel conditions, we'll create <strong>a sample model plan for your trip in Hirono Town (for reference)</strong>.",
       "diagnosis_label": "Your quiz result",
       "departure_label": "Departure area",
       "transport_label": "Transport",
@@ -189,6 +189,7 @@
       "page_title": "Model plan — Hirono Match",
       "title": "A model plan for you",
       "lead": "A sample trip based on your quiz result and travel conditions.",
+      "reference_note": "※This plan is a reference based on your quiz result and entered conditions. Please check opening hours, transport, weather, and adjust to your own schedule.",
       "closing": "Pick the spots that catch your eye and shape a trip that feels like you.",
       "notes_label": "Access tips",
       "warnings_label": "Please note",

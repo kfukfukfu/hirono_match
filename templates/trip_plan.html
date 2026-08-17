@@ -20,6 +20,9 @@
         <h1 class="trip-title">{{ _('trip.plan.title') }}</h1>
         <p class="trip-lead">{{ _('trip.plan.lead') }}</p>
         <p class="trip-plan-summary">{{ plan.summary }}</p>
+        {% if plan.ok %}
+        <p class="trip-plan-reference-note">{{ _('trip.plan.reference_note') }}</p>
+        {% endif %}
     </header>
 
     {% if plan.travel_notes %}

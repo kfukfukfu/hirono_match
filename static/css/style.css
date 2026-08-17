@@ -2173,6 +2173,13 @@ a:hover {
     line-height: 1.7;
 }
 
+.trip-plan-reference-note {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+}
+
 .trip-plan-closing {
     margin-top: 1.25rem;
 }
