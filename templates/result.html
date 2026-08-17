@@ -51,6 +51,12 @@
                     <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
                 </a>
                 <div class="result-spot-body">
+                    {% if spot.recommendation_stars_display is defined %}
+                    <p class="result-spot-stars">
+                        <span class="result-spot-stars-label">{{ _('result.spot_recommendation') }}</span>
+                        <span class="result-spot-stars-icons" aria-hidden="true">{{ spot.recommendation_stars_display }}</span>
+                    </p>
+                    {% endif %}
                     <span class="spot-category">{{ spot.category }}</span>
                     <h3 class="result-spot-name">
                         <a href="{{ url_for('spot_detail', spot_id=spot.id) }}">{{ spot.name }}</a>

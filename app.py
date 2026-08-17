@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
 init_basic_auth(app)
 
-RECOMMENDED_SPOT_LIMIT = 3
+RECOMMENDED_SPOT_LIMIT = 5
 QUESTION_COUNT = 5
 
 TRIP_DEPARTURES = frozenset({"tokyo", "morioka", "hachinohe", "hanamaki", "nearby", "other"})
@@ -153,7 +153,7 @@ def build_result_context():
     return {
         "main_type": main_type,
         "type_percentages": ranked[:3],
-        "recommended_spots": fetch_recommended_spots(main_type["id"]),
+        "recommended_spots": fetch_recommended_spots_for_result(ranked),
     }
 
 
@@ -366,23 +366,51 @@ def calculate_scores(choice_ids):
     return ranked
 
 
-def fetch_recommended_spots(type_id, limit=RECOMMENDED_SPOT_LIMIT):
-    """診断タイプに関連するおすすめスポットを取得する（最大3件）"""
+def _format_recommendation_stars(star_count: int) -> str:
+    """1〜5のおすすめ度を星5段階の文字列に変換する"""
+    count = max(1, min(5, star_count))
+    return "⭐" * count + "☆" * (5 - count)
+
+
+def fetch_recommended_spots_for_result(ranked, limit=RECOMMENDED_SPOT_LIMIT):
+    """
+    診断結果のタイプ順位に基づき、おすすめスポットを返す。
+    各スポットは紐づくタイプのうち最も順位の高いタイプを基準に並べ、⭐1〜5で表示する。
+    """
+    type_rank = {t["id"]: index for index, t in enumerate(ranked)}
     db = get_db()
-    spots = db.execute(
-        """SELECT s.*
-           FROM spots s
-           JOIN spot_types st ON st.spot_id = s.id
-           WHERE st.type_id = ?
-           ORDER BY s.id
-           LIMIT ?""",
-        (type_id, limit),
-    ).fetchall()
+    spots = db.execute("SELECT * FROM spots ORDER BY id").fetchall()
+    type_rows = db.execute("SELECT spot_id, type_id FROM spot_types").fetchall()
     db.close()
-    return [
-        localize_row(spot, ("name", "category", "genre", "description"))
-        for spot in spots
-    ]
+
+    types_by_spot = {}
+    for row in type_rows:
+        types_by_spot.setdefault(row["spot_id"], []).append(row["type_id"])
+
+    recommendations = []
+    for spot in spots:
+        linked_type_ids = types_by_spot.get(spot["id"], [])
+        linked_ranks = [
+            type_rank[type_id]
+            for type_id in linked_type_ids
+            if type_id in type_rank
+        ]
+        if not linked_ranks:
+            continue
+
+        best_rank = min(linked_ranks)
+        star_count = max(1, 5 - best_rank)
+
+        item = localize_row(spot, ("name", "category", "genre", "description"))
+        item["recommendation_stars"] = star_count
+        item["recommendation_stars_display"] = _format_recommendation_stars(star_count)
+        item["_best_type_rank"] = best_rank
+        recommendations.append(item)
+
+    recommendations.sort(key=lambda s: (s["_best_type_rank"], s["id"]))
+    for item in recommendations:
+        item.pop("_best_type_rank", None)
+    return recommendations[:limit]
 
 
 def fetch_spot(spot_id):

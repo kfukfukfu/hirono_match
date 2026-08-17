@@ -1589,6 +1589,25 @@ a:hover {
     padding: 1rem 1.25rem 1.25rem;
 }
 
+.result-spot-stars {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    margin: 0 0 0.35rem;
+}
+
+.result-spot-stars-label {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.result-spot-stars-icons {
+    letter-spacing: 0.05em;
+    line-height: 1;
+}
+
 .result-spot-actions {
     display: flex;
     flex-wrap: wrap;
