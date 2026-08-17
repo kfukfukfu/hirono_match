@@ -95,6 +95,8 @@
             </a>
         </section>
 
+        <a href="{{ url_for('diagnosis') }}" class="btn btn-outline btn-block">{{ _('result.retry') }}</a>
+
         <div class="result-share">
             <button type="button" class="result-share-card" data-share-action>
                 <span class="result-share-card-bg" aria-hidden="true"></span>
@@ -126,8 +128,6 @@
             <p class="result-share-optional">{{ _('result.share.optional') }}</p>
             <p class="result-share-status" data-share-status hidden></p>
         </div>
-
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-outline btn-block">{{ _('result.retry') }}</a>
     </div>
 
     <script id="result-share-data" type="application/json">
