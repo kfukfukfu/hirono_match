@@ -1,6 +1,10 @@
 {% macro external_link_tip(href, label, notice, class_name='btn btn-outline btn-spot-link') %}
 <span class="external-link-tip">
     <a href="{{ href }}" class="{{ class_name }}" target="_blank" rel="noopener noreferrer">{{ label }}</a>
+    <button type="button"
+            class="link-tip-info"
+            aria-label="{{ _('spot.tip_info_label') }}"
+            aria-expanded="false">ⓘ</button>
     <span class="link-tooltip" role="tooltip">{{ notice }}</span>
 </span>
 {% endmacro %}

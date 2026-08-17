@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros/external_link.html" import external_link_tip %}
+{% from "macros/external_link.html" import external_link_tip with context %}
 
 {% block title %}{{ spot.name }}{{ _('spot.page_title_suffix') }}{% endblock %}
 

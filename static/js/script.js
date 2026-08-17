@@ -106,7 +106,54 @@ const Favorites = {
     },
 };
 
+function closeExternalLinkTips(except) {
+    document.querySelectorAll(".external-link-tip.is-tip-open").forEach((wrap) => {
+        if (except && wrap === except) {
+            return;
+        }
+        wrap.classList.remove("is-tip-open");
+        const btn = wrap.querySelector(".link-tip-info");
+        if (btn) {
+            btn.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+function initExternalLinkTips() {
+    const touchLike = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    if (!touchLike) {
+        return;
+    }
+
+    document.querySelectorAll(".external-link-tip").forEach((wrap) => {
+        const btn = wrap.querySelector(".link-tip-info");
+        if (!btn) {
+            return;
+        }
+
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const willOpen = !wrap.classList.contains("is-tip-open");
+            closeExternalLinkTips();
+            if (willOpen) {
+                wrap.classList.add("is-tip-open");
+                btn.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+    document.addEventListener("click", (e) => {
+        if (e.target.closest(".external-link-tip")) {
+            return;
+        }
+        closeExternalLinkTips();
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    initExternalLinkTips();
+
     document.querySelectorAll(".btn-favorite").forEach((btn) => {
         const id = btn.dataset.spotId;
 

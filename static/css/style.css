@@ -2357,11 +2357,47 @@ a:hover {
 .external-link-tip {
     position: relative;
     display: flex;
+    align-items: stretch;
+    gap: 0.375rem;
     width: 100%;
 }
 
 .external-link-tip > .btn {
-    width: 100%;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+}
+
+.link-tip-info {
+    display: none;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-white);
+    color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.link-tip-info:hover,
+.link-tip-info:focus-visible {
+    border-color: var(--color-primary);
+    background: rgba(45, 90, 74, 0.08);
+    outline: none;
+}
+
+.link-tip-info[aria-expanded="true"] {
+    border-color: var(--color-primary);
+    background: rgba(45, 90, 74, 0.12);
+    color: var(--color-primary-dark);
 }
 
 .link-tooltip {
@@ -2422,6 +2458,34 @@ a:hover {
 .result-spot-actions .link-tooltip::after {
     left: 1.5rem;
     transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .link-tip-info {
+        display: none;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .link-tip-info {
+        display: flex;
+    }
+
+    .external-link-tip:hover .link-tooltip,
+    .external-link-tip:focus-within .link-tooltip {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .external-link-tip.is-tip-open .link-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .result-spot-actions .external-link-tip.is-tip-open .link-tooltip {
+        transform: translateY(0);
+    }
 }
 
 .spot-disclaimer {
