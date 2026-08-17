@@ -87,6 +87,14 @@
     {% endif %}
 
     <div class="result-actions-mobile">
+        <section class="result-trip-block">
+            <h2 class="section-title-mobile">{{ _('result.trip_title') }}</h2>
+            <p class="result-trip-lead">{{ _('result.trip_lead') }}</p>
+            <a href="{{ url_for('trip_conditions') }}" class="btn btn-primary btn-block btn-trip-cta">
+                {{ _('result.trip_cta') }}
+            </a>
+        </section>
+
         <div class="result-share">
             <button type="button" class="result-share-card" data-share-action>
                 <span class="result-share-card-bg" aria-hidden="true"></span>
@@ -118,10 +126,7 @@
             <p class="result-share-optional">{{ _('result.share.optional') }}</p>
             <p class="result-share-status" data-share-status hidden></p>
         </div>
-        <a href="{{ url_for('trip_conditions') }}" class="btn btn-primary btn-block btn-trip-cta">
-            {{ _('result.trip_cta') }}
-        </a>
-        <p class="result-trip-lead">{{ _('result.trip_lead') }}</p>
+
         <a href="{{ url_for('diagnosis') }}" class="btn btn-outline btn-block">{{ _('result.retry') }}</a>
     </div>
 

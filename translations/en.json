@@ -53,8 +53,9 @@
     "map": "Map",
     "favorite_add": "Add to favorites",
     "retry": "Take the quiz again",
-    "trip_cta": "Build your Hirono trip plan",
-    "trip_lead": "Enter departure, transport, and more—we'll suggest a realistic itinerary using registered spots only.",
+    "trip_title": "See your sample itinerary next",
+    "trip_lead": "Choose departure, transport, and stay length—we'll show a day-by-day itinerary (including lodging) based on your recommended spots.",
+    "trip_cta": "Enter details & view itinerary",
     "types": {
       "1": {
         "tagline": "Under quiet stars, find your calm",
@@ -137,7 +138,7 @@
       "companions_label": "Travel companions",
       "season_label": "Season (optional)",
       "budget_label": "Budget (optional)",
-      "submit": "View trip plan",
+      "submit": "View itinerary",
       "back_result": "← Back to quiz",
       "note": "Your travel preferences come from the quiz. Here you only enter practical details like departure and transport.",
       "need_diagnosis": "Please complete the quiz before creating a trip plan.",
@@ -184,7 +185,7 @@
     },
     "plan": {
       "page_title": "Trip plan — Hirono Match",
-      "title": "Your Hirono trip model",
+      "title": "Your sample itinerary",
       "notes_label": "Access tips",
       "warnings_label": "Please note",
       "disclaimer_label": "About this information",
