@@ -185,8 +185,10 @@
       }
     },
     "plan": {
-      "page_title": "Trip plan — Hirono Match",
-      "title": "Your sample itinerary",
+      "page_title": "Model plan — Hirono Match",
+      "title": "A model plan for you",
+      "lead": "A sample trip based on your quiz result and travel conditions.",
+      "closing": "Pick the spots that catch your eye and shape a trip that feels like you.",
       "notes_label": "Access tips",
       "warnings_label": "Please note",
       "disclaimer_label": "About this information",

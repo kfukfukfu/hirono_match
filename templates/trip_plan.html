@@ -18,6 +18,7 @@
 
     <header class="trip-header">
         <h1 class="trip-title">{{ _('trip.plan.title') }}</h1>
+        <p class="trip-lead">{{ _('trip.plan.lead') }}</p>
         <p class="trip-plan-summary">{{ plan.summary }}</p>
     </header>
 
@@ -90,6 +91,7 @@
         </ol>
     </section>
     {% endfor %}
+    <p class="trip-plan-closing">{{ _('trip.plan.closing') }}</p>
     {% endif %}
 
     {% if plan.disclaimer %}

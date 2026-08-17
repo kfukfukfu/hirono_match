@@ -2123,10 +2123,15 @@ a:hover {
 
 .trip-lead,
 .trip-form-note,
-.trip-plan-summary {
+.trip-plan-summary,
+.trip-plan-closing {
     font-size: 0.9375rem;
     color: var(--color-text-light);
     line-height: 1.7;
+}
+
+.trip-plan-closing {
+    margin-top: 1.25rem;
 }
 
 .trip-diagnosis-badge {
