@@ -8,7 +8,7 @@
 
     <article class="spot-detail-card">
         <div class="spot-detail-image">
-            <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}">
+            <img src="{{ url_for('static', filename=spot.image_url) }}" alt="{{ spot.name }}" loading="lazy">
         </div>
         <div class="spot-detail-body">
             <span class="spot-category">{{ spot.category }}</span>
@@ -17,15 +17,35 @@
             <p class="spot-description">{{ spot.description }}</p>
 
             <dl class="spot-info">
+                {% if spot.address %}
                 <dt>{{ _('spot.address') }}</dt>
                 <dd>{{ spot.address }}</dd>
-                <dt>{{ _('spot.official_site') }}</dt>
-                <dd>
-                    <a href="{{ spot.official_url }}" target="_blank" rel="noopener noreferrer">
-                        {{ _('spot.official_link') }}
-                    </a>
-                </dd>
+                {% endif %}
+                {% if spot.info_updated_at %}
+                <dt>{{ _('spot.info_updated') }}</dt>
+                <dd>{{ spot.info_updated_at }}</dd>
+                {% endif %}
             </dl>
+
+            <div class="spot-external-links">
+                {% if spot_website %}
+                <a href="{{ spot_website }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
+                    {{ _('spot.official_link') }}
+                </a>
+                {% endif %}
+                {% if spot_sns %}
+                <a href="{{ spot_sns }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
+                    {{ _('spot.sns_link') }}
+                </a>
+                {% endif %}
+                {% if spot_map %}
+                <a href="{{ spot_map }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
+                    {{ _('spot.map_link') }}
+                </a>
+                {% endif %}
+            </div>
+
+            <p class="spot-disclaimer">{{ _('spot.disclaimer') }}</p>
 
             <button type="button" class="btn btn-primary btn-favorite-detail"
                     data-spot-id="{{ spot.id }}"

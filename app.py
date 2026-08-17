@@ -14,6 +14,7 @@ from database import get_db
 from contact import is_valid_email, save_inquiry
 from i18n import get_lang, translate, translate_value, localize_row, SUPPORTED_LANGS
 from basic_auth import init_basic_auth
+from trip_planner import TripConditions, build_trip_plan
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
@@ -21,6 +22,13 @@ init_basic_auth(app)
 
 RECOMMENDED_SPOT_LIMIT = 3
 QUESTION_COUNT = 5
+
+TRIP_DEPARTURES = frozenset({"tokyo", "morioka", "hachinohe", "hanamaki", "nearby", "other"})
+TRIP_TRANSPORTS = frozenset({"car", "rental", "public", "other"})
+TRIP_DURATIONS = frozenset({"day_trip", "1night", "2plus"})
+TRIP_COMPANIONS = frozenset({"solo", "couple", "family", "friends", "group"})
+TRIP_SEASONS = frozenset({"spring", "summer", "autumn", "winter", "undecided", ""})
+TRIP_BUDGETS = frozenset({"low", "medium", "high", "undecided", ""})
 
 
 @app.context_processor
@@ -53,6 +61,124 @@ def set_language(lang_code):
 def map_url_filter(address):
     """住所から Google マップ検索 URL を生成する"""
     return f"https://www.google.com/maps/search/?api=1&query={quote(address)}"
+
+
+@app.template_filter("is_instagram_url")
+def is_instagram_url_filter(url):
+    return bool(url) and "instagram.com" in url.lower()
+
+
+def get_diagnosis_result():
+    """セッションに保存された診断結果を返す"""
+    data = session.get("diagnosis_result")
+    if not data or not data.get("main_type_id"):
+        return None
+    return data
+
+
+def save_diagnosis_result(main_type):
+    session["diagnosis_result"] = {
+        "main_type_id": main_type["id"],
+        "main_type_name": main_type["name"],
+        "main_type_description": main_type["description"],
+        "main_type_icon": main_type["icon"],
+    }
+
+
+def fetch_travel_type(type_id):
+    db = get_db()
+    row = db.execute("SELECT * FROM travel_types WHERE id = ?", (type_id,)).fetchone()
+    db.close()
+    if row is None:
+        return None
+    return localize_row(row, ("name", "description"))
+
+
+def fetch_spots_for_type(type_id):
+    """診断タイプに紐づく登録スポットをすべて取得"""
+    db = get_db()
+    spots = db.execute(
+        """SELECT s.*
+           FROM spots s
+           JOIN spot_types st ON st.spot_id = s.id
+           WHERE st.type_id = ?
+           ORDER BY s.id""",
+        (type_id,),
+    ).fetchall()
+    db.close()
+    return [
+        localize_row(spot, ("name", "category", "genre", "description"))
+        for spot in spots
+    ]
+
+
+def spot_website_url(spot):
+    url = spot.get("official_url", "")
+    if url and "instagram.com" not in url.lower():
+        return url
+    return ""
+
+
+def spot_sns_url(spot):
+    sns = spot.get("official_sns_url", "")
+    if sns:
+        return sns
+    url = spot.get("official_url", "")
+    if url and "instagram.com" in url.lower():
+        return url
+    return ""
+
+
+def spot_map_url(spot):
+    if spot.get("map_url"):
+        return spot["map_url"]
+    if spot.get("address"):
+        return map_url_filter(spot["address"])
+    return ""
+
+
+def parse_trip_conditions(form):
+    departure = form.get("departure", "").strip()
+    transport = form.get("transport", "").strip()
+    duration = form.get("duration", "").strip()
+    companions = form.get("companions", "").strip()
+    season = form.get("season", "").strip()
+    budget = form.get("budget", "").strip()
+
+    try:
+        party_size = int(form.get("party_size", "0"))
+    except ValueError:
+        party_size = 0
+
+    if departure not in TRIP_DEPARTURES:
+        return None
+    if transport not in TRIP_TRANSPORTS:
+        return None
+    if duration not in TRIP_DURATIONS:
+        return None
+    if companions not in TRIP_COMPANIONS:
+        return None
+    if season not in TRIP_SEASONS:
+        return None
+    if budget not in TRIP_BUDGETS:
+        return None
+    if party_size < 1 or party_size > 10:
+        return None
+
+    return TripConditions(
+        departure=departure,
+        transport=transport,
+        duration=duration,
+        party_size=party_size,
+        companions=companions,
+        season=season,
+        budget=budget,
+    )
+
+
+def get_trip_planner_labels():
+    labels = translate_value("trip.planner")
+    return labels if isinstance(labels, dict) else {}
 
 
 def fetch_questions_with_choices():
@@ -223,6 +349,7 @@ def result():
 
     main_type = ranked[0]
     type_percentages = ranked[:3]
+    save_diagnosis_result(main_type)
 
     return render_template(
         "result.html",
@@ -238,7 +365,95 @@ def spot_detail(spot_id):
     spot = fetch_spot(spot_id)
     if spot is None:
         abort(404)
-    return render_template("spot_detail.html", spot=spot)
+    return render_template(
+        "spot_detail.html",
+        spot=spot,
+        spot_website=spot_website_url(spot),
+        spot_sns=spot_sns_url(spot),
+        spot_map=spot_map_url(spot),
+    )
+
+
+@app.route("/trip/conditions", methods=["GET", "POST"])
+def trip_conditions():
+    """旅行条件入力（診断結果を持つユーザーのみ）"""
+    diagnosis = get_diagnosis_result()
+    if diagnosis is None:
+        flash(translate("trip.conditions.need_diagnosis"), "error")
+        return redirect(url_for("diagnosis"))
+
+    default_form = {
+        "departure": "tokyo",
+        "transport": "rental",
+        "duration": "1night",
+        "party_size": "2",
+        "companions": "couple",
+        "season": "undecided",
+        "budget": "undecided",
+    }
+
+    if request.method == "POST":
+        conditions = parse_trip_conditions(request.form)
+        if conditions is None:
+            flash(translate("trip.conditions.error_invalid"), "error")
+            return render_template(
+                "trip_conditions.html",
+                diagnosis=diagnosis,
+                form=request.form.to_dict(),
+            )
+
+        session["trip_conditions"] = {
+            "departure": conditions.departure,
+            "transport": conditions.transport,
+            "duration": conditions.duration,
+            "party_size": conditions.party_size,
+            "companions": conditions.companions,
+            "season": conditions.season,
+            "budget": conditions.budget,
+        }
+        return redirect(url_for("trip_plan"))
+
+    return render_template(
+        "trip_conditions.html",
+        diagnosis=diagnosis,
+        form=default_form,
+    )
+
+
+@app.route("/trip/plan")
+def trip_plan():
+    """旅行モデル表示"""
+    diagnosis = get_diagnosis_result()
+    raw_conditions = session.get("trip_conditions")
+    if diagnosis is None or not raw_conditions:
+        flash(translate("trip.plan.need_conditions"), "error")
+        return redirect(url_for("diagnosis"))
+
+    conditions = TripConditions(
+        departure=raw_conditions["departure"],
+        transport=raw_conditions["transport"],
+        duration=raw_conditions["duration"],
+        party_size=int(raw_conditions["party_size"]),
+        companions=raw_conditions["companions"],
+        season=raw_conditions.get("season", ""),
+        budget=raw_conditions.get("budget", ""),
+    )
+
+    main_type = fetch_travel_type(diagnosis["main_type_id"])
+    if main_type is None:
+        flash(translate("trip.plan.error_type"), "error")
+        return redirect(url_for("diagnosis"))
+
+    spots = fetch_spots_for_type(diagnosis["main_type_id"])
+    plan = build_trip_plan(main_type, spots, conditions, get_trip_planner_labels())
+
+    return render_template(
+        "trip_plan.html",
+        diagnosis=diagnosis,
+        main_type=main_type,
+        conditions=conditions,
+        plan=plan,
+    )
 
 
 @app.route("/api/spots")

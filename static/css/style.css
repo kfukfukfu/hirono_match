@@ -2054,3 +2054,318 @@ a:hover {
         min-height: 220px;
     }
 }
+
+/* --- 旅行プラン --- */
+.trip-page {
+    max-width: var(--mobile-max);
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+}
+
+.trip-header {
+    margin-bottom: 1.5rem;
+}
+
+.trip-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+.trip-lead,
+.trip-form-note,
+.trip-plan-summary {
+    font-size: 0.9375rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+}
+
+.trip-diagnosis-badge {
+    background: linear-gradient(135deg, rgba(45, 90, 74, 0.08), rgba(232, 168, 56, 0.12));
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.trip-diagnosis-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.25rem;
+}
+
+.trip-diagnosis-type {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+.trip-fieldset {
+    border: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+}
+
+.trip-fieldset legend {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.625rem;
+}
+
+.trip-fieldset-optional legend {
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.trip-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+}
+
+.trip-choice-grid-3 {
+    grid-template-columns: 1fr;
+}
+
+.trip-choice {
+    display: block;
+    cursor: pointer;
+}
+
+.trip-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.trip-choice span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.75rem 0.875rem;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-white);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-align: center;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.trip-choice input:checked + span {
+    border-color: var(--color-primary);
+    background: rgba(45, 90, 74, 0.08);
+    color: var(--color-primary-dark);
+}
+
+.trip-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.btn-trip-submit {
+    min-height: 52px;
+    font-size: 1.0625rem;
+    margin-top: 0.5rem;
+}
+
+.trip-alerts {
+    margin-bottom: 1rem;
+}
+
+.trip-alert {
+    padding: 0.875rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.trip-alert-error {
+    background: #fdecea;
+    color: #b42318;
+}
+
+.trip-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.625rem;
+}
+
+.trip-notes,
+.trip-warnings,
+.trip-disclaimer {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.125rem;
+    border-radius: var(--radius);
+    background: var(--color-white);
+    box-shadow: var(--shadow);
+}
+
+.trip-note-list,
+.trip-warning-list {
+    margin: 0;
+    padding-left: 1.125rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-text-light);
+}
+
+.trip-warnings {
+    border-left: 4px solid #e8a838;
+}
+
+.trip-day {
+    margin-bottom: 1.75rem;
+}
+
+.trip-day-label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.875rem;
+}
+
+.trip-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.trip-timeline-item {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0.75rem;
+    padding-bottom: 1.125rem;
+    margin-bottom: 1.125rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.trip-timeline-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.trip-timeline-time {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    padding-top: 0.125rem;
+}
+
+.trip-item-kind {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    margin-bottom: 0.25rem;
+}
+
+.trip-item-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin: 0 0 0.375rem;
+}
+
+.trip-item-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.trip-item-desc,
+.trip-item-note {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin: 0.375rem 0 0;
+}
+
+.trip-item-image {
+    margin: 0.625rem 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.trip-item-image img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.trip-item-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.trip-error-panel {
+    background: var(--color-white);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.trip-error-actions,
+.trip-plan-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.trip-disclaimer {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+}
+
+.btn-trip-cta {
+    min-height: 52px;
+    font-size: 1.0625rem;
+}
+
+.result-trip-lead {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    text-align: center;
+    line-height: 1.6;
+    margin: -0.25rem 0 0;
+}
+
+.spot-external-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+}
+
+.btn-spot-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spot-disclaimer {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 0.875rem;
+    background: var(--color-bg);
+    border-radius: 10px;
+}
+
+@media (min-width: 480px) {
+    .trip-choice-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

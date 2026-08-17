@@ -61,7 +61,12 @@ CREATE TABLE IF NOT EXISTS spots (
     name_en TEXT NOT NULL DEFAULT '',
     category_en TEXT NOT NULL DEFAULT '',
     genre_en TEXT NOT NULL DEFAULT '',
-    description_en TEXT NOT NULL DEFAULT ''
+    description_en TEXT NOT NULL DEFAULT '',
+    area TEXT NOT NULL DEFAULT 'taneichi',
+    public_transport_access TEXT NOT NULL DEFAULT 'good',
+    visit_duration_min INTEGER NOT NULL DEFAULT 60,
+    official_sns_url TEXT NOT NULL DEFAULT '',
+    info_updated_at TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS spot_types (
@@ -473,6 +478,30 @@ SPOT_TYPES = {
 }
 
 
+# area, public_transport_access, visit_duration_min, official_sns_url, info_updated_at
+SPOT_EXTRA = [
+    ("ohno", "car_recommended", 90, "", "2026-03-01"),
+    ("taneichi", "good", 120, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("ohno", "limited", 90, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("taneichi", "good", 90, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("ohno", "limited", 480, "", "2026-03-01"),
+    ("taneichi", "car_recommended", 180, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("taneichi", "good", 60, "https://www.instagram.com/kamefuku_official0730/", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("taneichi", "good", 60, "", "2026-03-01"),
+    ("taneichi", "good", 45, "", "2026-03-01"),
+    ("ohno", "car_recommended", 120, "", "2026-03-01"),
+    ("ohno", "limited", 60, "https://www.instagram.com/cafe.cocoyo", "2026-03-01"),
+    ("yoke", "car_recommended", 60, "", "2026-03-01"),
+    ("ohno", "car_recommended", 120, "", "2026-03-01"),
+]
+
+
 def init_db():
     """テーブル作成と初期データ投入"""
     if DB_PATH.exists():
@@ -515,13 +544,15 @@ def init_db():
                     (choice_id, type_id, score),
                 )
 
-    for spot in SPOTS:
+    for spot_idx, spot in enumerate(SPOTS):
+        area, access, duration, sns_url, updated = SPOT_EXTRA[spot_idx]
         cursor.execute(
             """INSERT INTO spots
                (name, category, genre, description, image_url, address, official_url, map_url,
-                name_en, category_en, genre_en, description_en)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            spot,
+                name_en, category_en, genre_en, description_en,
+                area, public_transport_access, visit_duration_min, official_sns_url, info_updated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (*spot, area, access, duration, sns_url, updated),
         )
 
     for spot_idx, type_ids in SPOT_TYPES.items():
