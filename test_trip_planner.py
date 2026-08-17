@@ -109,7 +109,11 @@ def test_trip_flow_with_session():
         assert r.status_code == 302
         assert "/diagnosis" in r.headers["Location"]
 
-        client.post("/result", data={"choice_id": ["1", "5", "9", "13", "17"]})
+        client.post(
+            "/result",
+            data={"choice_id": ["1", "5", "9", "13", "17"]},
+            follow_redirects=True,
+        )
 
         r = client.get("/trip/conditions")
         assert r.status_code == 200
@@ -138,10 +142,43 @@ def test_trip_flow_with_session():
 
 def test_result_has_trip_cta():
     with app.test_client() as client:
-        r = client.post("/result", data={"choice_id": ["1", "5", "9", "13", "17"]})
+        r = client.post(
+            "/result",
+            data={"choice_id": ["1", "5", "9", "13", "17"]},
+            follow_redirects=True,
+        )
         text = r.get_data(as_text=True)
         assert "btn-trip-cta" in text
         assert "/trip/conditions" in text
+
+
+def test_language_switch_on_result():
+    with app.test_client() as client:
+        client.post(
+            "/result",
+            data={"choice_id": ["1", "5", "9", "13", "17"]},
+            follow_redirects=True,
+        )
+
+        r = client.get("/result")
+        ja_text = r.get_data(as_text=True)
+        assert "あなたの洋野旅タイプ" in ja_text
+
+        r = client.get(
+            "/set-language/en",
+            headers={"Referer": "http://localhost/result"},
+            follow_redirects=True,
+        )
+        en_text = r.get_data(as_text=True)
+        assert "Your Hirono travel type" in en_text or "Recommended" in en_text
+
+        r = client.get(
+            "/set-language/ja",
+            headers={"Referer": "http://127.0.0.1/result"},
+            follow_redirects=True,
+        )
+        ja_again = r.get_data(as_text=True)
+        assert "あなたの洋野旅タイプ" in ja_again
 
 
 if __name__ == "__main__":
@@ -149,4 +186,5 @@ if __name__ == "__main__":
     test_build_trip_plan_public_transport()
     test_trip_flow_with_session()
     test_result_has_trip_cta()
+    test_language_switch_on_result()
     print("Trip planner tests passed")

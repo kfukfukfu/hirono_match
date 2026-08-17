@@ -6,7 +6,7 @@ URL ルーティング、診断スコア計算、テンプレートへのデー�
 """
 
 import os
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, flash
 
@@ -56,10 +56,45 @@ def set_language(lang_code):
     """ヘッダーの言語切替ボタン用。選択を session に保存して元のページへ戻る。"""
     if lang_code in SUPPORTED_LANGS:
         session["lang"] = lang_code
+        session.modified = True
+    return redirect(language_redirect_target())
+
+
+def language_redirect_target():
+    """言語切替後の遷移先。POST専用URLや外部サイトへのリダイレクトを避ける。"""
     referrer = request.referrer
-    if referrer:
-        return redirect(referrer)
-    return redirect(url_for("index"))
+    if not referrer:
+        return url_for("index")
+
+    ref = urlparse(referrer)
+    if ref.netloc and not _referrer_host_matches(ref.netloc):
+        return url_for("index")
+
+    path = ref.path or "/"
+    if path == "/result":
+        if get_diagnosis_result():
+            return url_for("result")
+        return url_for("diagnosis")
+
+    if ref.query:
+        return f"{path}?{ref.query}"
+    return path
+
+
+def _referrer_host_matches(referrer_netloc: str) -> bool:
+    """同一サイトからの言語切替か判定（localhost / 127.0.0.1 の差異も許容）"""
+    def host_only(netloc: str) -> str:
+        if netloc.startswith("["):
+            return netloc.split("]")[0] + "]"
+        return netloc.rsplit(":", 1)[0].lower()
+
+    ref_host = host_only(referrer_netloc)
+    req_host = host_only(request.host)
+    if ref_host == req_host:
+        return True
+
+    local_hosts = {"localhost", "127.0.0.1", "::1"}
+    return ref_host in local_hosts and req_host in local_hosts
 
 
 @app.template_filter("map_url")
@@ -74,19 +109,51 @@ def is_instagram_url_filter(url):
 
 
 def get_diagnosis_result():
-    """セッションに保存された診断結果を返す"""
+    """セッションに保存された診断結果を、現在の表示言語で返す"""
     data = session.get("diagnosis_result")
-    if not data or not data.get("main_type_id"):
+    if not data:
         return None
-    return data
 
+    choice_ids = data.get("choice_ids")
+    if not choice_ids:
+        return None
 
-def save_diagnosis_result(main_type):
-    session["diagnosis_result"] = {
+    ranked = calculate_scores(choice_ids)
+    if not ranked:
+        return None
+
+    main_type = ranked[0]
+    return {
         "main_type_id": main_type["id"],
         "main_type_name": main_type["name"],
         "main_type_description": main_type["description"],
         "main_type_icon": main_type["icon"],
+        "choice_ids": choice_ids,
+    }
+
+
+def save_diagnosis_result(choice_ids):
+    session["diagnosis_result"] = {
+        "choice_ids": [int(c) for c in choice_ids],
+    }
+    session.modified = True
+
+
+def build_result_context():
+    """診断結果画面用のデータを、現在の表示言語で組み立てる"""
+    diagnosis = get_diagnosis_result()
+    if diagnosis is None:
+        return None
+
+    ranked = calculate_scores(diagnosis["choice_ids"])
+    if not ranked:
+        return None
+
+    main_type = ranked[0]
+    return {
+        "main_type": main_type,
+        "type_percentages": ranked[:3],
+        "recommended_spots": fetch_recommended_spots(main_type["id"]),
     }
 
 
@@ -338,30 +405,23 @@ def diagnosis():
     return render_template("diagnosis.html", questions=questions)
 
 
-@app.route("/result", methods=["POST"])
+@app.route("/result", methods=["GET", "POST"])
 def result():
-    """診断結果画面"""
-    choice_ids = request.form.getlist("choice_id")
+    """診断結果画面（GET: 表示 / POST: 回答送信 → GETへリダイレクト）"""
+    if request.method == "POST":
+        choice_ids = request.form.getlist("choice_id")
 
-    if not validate_answers(choice_ids):
+        if not validate_answers(choice_ids):
+            return redirect(url_for("diagnosis"))
+
+        save_diagnosis_result([int(c) for c in choice_ids])
+        return redirect(url_for("result"))
+
+    context = build_result_context()
+    if context is None:
         return redirect(url_for("diagnosis"))
 
-    choice_ids = [int(c) for c in choice_ids]
-    ranked = calculate_scores(choice_ids)
-
-    if not ranked:
-        return redirect(url_for("diagnosis"))
-
-    main_type = ranked[0]
-    type_percentages = ranked[:3]
-    save_diagnosis_result(main_type)
-
-    return render_template(
-        "result.html",
-        main_type=main_type,
-        type_percentages=type_percentages,
-        recommended_spots=fetch_recommended_spots(main_type["id"]),
-    )
+    return render_template("result.html", **context)
 
 
 @app.route("/spot/<int:spot_id>")
