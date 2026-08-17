@@ -86,36 +86,6 @@
     </section>
     {% endif %}
 
-    {% if nearby_lodging %}
-    <section class="result-spots result-lodging">
-        <h2 class="section-title-mobile">{{ _('result.lodging.title') }}</h2>
-
-        <div class="result-spot-list">
-            {% for lodging in nearby_lodging %}
-            <article class="result-spot-card" data-spot-id="{{ lodging.id }}">
-                <a href="{{ url_for('spot_detail', spot_id=lodging.id) }}" class="result-spot-image-link">
-                    <img src="{{ url_for('static', filename=lodging.image_url) }}" alt="{{ lodging.name }}">
-                </a>
-                <div class="result-spot-body">
-                    <p class="result-lodging-proximity">{{ _('result.lodging.proximity.' ~ lodging.proximity) }}</p>
-                    <span class="spot-category">{{ lodging.genre }}</span>
-                    <span class="result-lodging-area">{{ _('result.lodging.areas.' ~ lodging.area) }}</span>
-                    <h3 class="result-spot-name">
-                        <a href="{{ url_for('spot_detail', spot_id=lodging.id) }}">{{ lodging.name }}</a>
-                    </h3>
-                    <p class="result-spot-desc">{{ lodging.description[:70] }}{% if lodging.description|length > 70 %}…{% endif %}</p>
-                    <div class="result-spot-actions">
-                        <a href="{{ url_for('spot_detail', spot_id=lodging.id) }}" class="btn btn-outline btn-small">
-                            {{ _('result.view_spot') }}
-                        </a>
-                    </div>
-                </div>
-            </article>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
-
     <div class="result-actions-mobile">
         <div class="result-share">
             <button type="button" class="result-share-card" data-share-action>
