@@ -5,8 +5,15 @@
   },
   "nav": {
     "diagnosis": "Diagnosis",
+    "lodging": "Lodging",
     "favorites": "Favorites",
     "contact": "Contact"
+  },
+  "lodging": {
+    "page_title": "Lodging — Hirono Match",
+    "title": "Lodging",
+    "lead": "Places to stay in Hirono Town. Tap a card for details and official links.",
+    "empty": "No lodging is registered yet."
   },
   "footer": {
     "copyright": "© 2026 Hirono Match — Discover your trip in Hirono Town, Iwate",

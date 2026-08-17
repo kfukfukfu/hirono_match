@@ -184,6 +184,88 @@ def fetch_spots_for_type(type_id):
     ]
 
 
+def fetch_lodging_spots():
+    """category が宿泊施設の登録スポットをすべて取得"""
+    db = get_db()
+    spots = db.execute(
+        """SELECT * FROM spots
+           WHERE category = ?
+           ORDER BY id""",
+        ("宿泊施設",),
+    ).fetchall()
+    db.close()
+    return [
+        localize_row(spot, ("name", "category", "genre", "description"))
+        for spot in spots
+    ]
+
+
+LODGING_NEAR_SAME_ADDRESS = "same_address"
+LODGING_NEAR_SAME_AREA = "same_area"
+_LODGING_NEAR_PRIORITY = {
+    LODGING_NEAR_SAME_ADDRESS: 0,
+    LODGING_NEAR_SAME_AREA: 1,
+}
+
+
+def fetch_lodging_near_recommended_spots(recommended_spots):
+    """
+    おすすめスポットに近い宿泊施設を返す。
+
+    優先順位: ①同一住所 → ②同一 area。いずれにも該当しない宿泊は含めない。
+    同一宿泊が複数スポットに該当する場合は1件にまとめ、最も近い関係を proximity に残す。
+    """
+    if not recommended_spots:
+        return []
+
+    lodging_list = fetch_lodging_spots()
+    by_id: dict[int, dict] = {}
+
+    for rec in recommended_spots:
+        rec_id = rec["id"]
+        rec_name = rec["name"]
+        rec_address = rec.get("address", "")
+        rec_area = rec.get("area", "")
+
+        for lodging in lodging_list:
+            relation = None
+            if rec_address and lodging.get("address") == rec_address:
+                relation = LODGING_NEAR_SAME_ADDRESS
+            elif rec_area and lodging.get("area") == rec_area:
+                relation = LODGING_NEAR_SAME_AREA
+            if relation is None:
+                continue
+
+            lid = lodging["id"]
+            if lid not in by_id:
+                by_id[lid] = {
+                    "id": lodging["id"],
+                    "name": lodging["name"],
+                    "area": lodging["area"],
+                    "address": lodging["address"],
+                    "proximity": relation,
+                    "related_spots": [],
+                }
+
+            entry = by_id[lid]
+            if relation == LODGING_NEAR_SAME_ADDRESS:
+                entry["proximity"] = LODGING_NEAR_SAME_ADDRESS
+            elif entry["proximity"] != LODGING_NEAR_SAME_ADDRESS:
+                entry["proximity"] = LODGING_NEAR_SAME_AREA
+
+            if not any(r["spot_id"] == rec_id for r in entry["related_spots"]):
+                entry["related_spots"].append({
+                    "spot_id": rec_id,
+                    "spot_name": rec_name,
+                    "relation": relation,
+                })
+
+    return sorted(
+        by_id.values(),
+        key=lambda item: (_LODGING_NEAR_PRIORITY[item["proximity"]], item["id"]),
+    )
+
+
 def spot_website_url(spot):
     url = spot.get("official_url", "")
     if url and "instagram.com" not in url.lower():
@@ -589,6 +671,12 @@ def api_spots():
 def favorites():
     """お気に入り一覧画面（localStorage で管理）"""
     return render_template("favorites.html")
+
+
+@app.route("/lodging")
+def lodging():
+    """宿泊施設一覧画面"""
+    return render_template("lodging.html", lodging_spots=fetch_lodging_spots())
 
 
 @app.route("/contact", methods=["GET", "POST"])
