@@ -47,7 +47,7 @@
         <h2 class="section-title">{{ _('index.location.title') }}</h2>
         <p class="section-lead">{{ _('index.location.lead') }}</p>
         <figure class="location-map-figure">
-            <img src="{{ url_for('static', filename='images/hirono-location-map.png') }}"
+            <img src="{{ url_for('static', filename=location_map_image) }}"
                  alt="{{ _('index.location.alt') }}"
                  class="location-map-image"
                  loading="lazy">

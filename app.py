@@ -43,6 +43,11 @@ def inject_i18n():
         "tv": translate_value,
         "lang": get_lang(),
         "supported_langs": SUPPORTED_LANGS,
+        "location_map_image": (
+            "images/hirono-location-map-en.png"
+            if get_lang() == "en"
+            else "images/hirono-location-map.png"
+        ),
     }
 
 

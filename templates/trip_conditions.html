@@ -30,7 +30,7 @@
         <summary>{{ _('index.location.title') }}</summary>
         <p class="trip-location-lead">{{ _('index.location.lead') }}</p>
         <figure class="location-map-figure location-map-figure-compact">
-            <img src="{{ url_for('static', filename='images/hirono-location-map.png') }}"
+            <img src="{{ url_for('static', filename=location_map_image) }}"
                  alt="{{ _('index.location.alt') }}"
                  class="location-map-image"
                  loading="lazy">
