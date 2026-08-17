@@ -55,8 +55,8 @@
     "favorite_add": "Add to favorites",
     "retry": "Take the quiz again",
     "trip_title": "See your sample itinerary next",
-    "trip_lead": "Choose departure, transport, and stay length—we'll show a day-by-day itinerary (including lodging) based on your recommended spots.",
-    "trip_cta": "Enter details & view itinerary",
+    "trip_lead": "Add a few more details and we'll put together a travel plan just for you.",
+    "trip_cta": "Plan your trip from this quiz",
     "types": {
       "1": {
         "tagline": "Under quiet stars, find your calm",
