@@ -256,7 +256,7 @@
       "free_explore": "Free exploration",
       "free_explore_note": "Time to enjoy nearby views and spots",
       "lodging_check": "Lodging",
-      "lodging_check_note": "See registered accommodation details",
+      "lodging_check_note": "Please find accommodation on your own",
       "morning_free": "Morning free time",
       "morning_free_note": "Before or after checkout",
       "slow_morning": "Relaxed morning",
@@ -265,8 +265,8 @@
       "day2": "Day 2",
       "day3": "Day 3",
       "warning_public_excluded": "Excluded {count} spot(s) that are hard to reach by public transport alone.",
-      "warning_no_lodging": "No registered lodging found. Please arrange accommodation on your own.",
-      "error_no_spots": "No registered spots match your conditions. Try changing transport or duration.",
+      "warning_no_lodging": "We couldn't suggest lodging. Please arrange accommodation on your own.",
+      "error_no_spots": "No spots match your conditions. Try changing transport or duration.",
       "disclaimer": "※Reference only. Check official sources for hours and transport."
     }
   },

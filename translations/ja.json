@@ -253,7 +253,7 @@
       "free_explore": "自由散策",
       "free_explore_note": "近くのスポットや景色を楽しむ時間",
       "lodging_check": "宿泊",
-      "lodging_check_note": "登録済みの宿泊施設情報をご確認ください",
+      "lodging_check_note": "宿泊施設をご自身でお探しください",
       "morning_free": "朝の自由時間",
       "morning_free_note": "チェックアウト前後の準備・散策",
       "slow_morning": "ゆっくり朝食",
@@ -262,8 +262,8 @@
       "day2": "2日目",
       "day3": "3日目",
       "warning_public_excluded": "公共交通ではアクセスが難しいスポット {count} 件を行程から除外しました。",
-      "warning_no_lodging": "登録されている宿泊施設がありません。宿は各自でご手配ください。",
-      "error_no_spots": "条件に合う登録スポットが見つかりませんでした。移動手段や泊数を変更してお試しください。",
+      "warning_no_lodging": "宿泊施設を提案できませんでした。宿は各自でご手配ください。",
+      "error_no_spots": "条件に合うスポットが見つかりませんでした。移動手段や泊数を変更してお試しください。",
       "disclaimer": "※参考案です。営業時間・交通等は各施設の公式情報でご確認ください。"
     }
   },
