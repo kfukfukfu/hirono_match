@@ -1,85 +1,99 @@
-{% extends "base.html" %}
-
-{% block title %}{{ _('trip.plan.page_title') }}{% endblock %}
-
-{% block content %}
-<section class="trip-page trip-plan">
-    <a href="{{ url_for('trip_conditions') }}" class="back-link">{{ _('trip.plan.edit_conditions') }}</a>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="trip-alerts">
-        {% for category, message in messages %}
-        <p class="trip-alert trip-alert-{{ category }}" role="alert">{{ message }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-
-    <header class="trip-header">
-        <h1 class="trip-title">{{ _('trip.plan.title') }}</h1>
-        <p class="trip-plan-summary">{{ plan.summary }}</p>
-    </header>
-
-    {% if plan.warnings %}
-    <section class="trip-warnings">
-        <h2 class="trip-section-title">{{ _('trip.plan.warnings_label') }}</h2>
-        <ul class="trip-warning-list">
-            {% for warning in plan.warnings %}
-            <li>{{ warning }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
-
-    {% if not plan.ok %}
-    <section class="trip-error-panel">
-        <h2 class="trip-section-title">{{ _('trip.plan.error_title') }}</h2>
-        <p>{{ plan.error }}</p>
-        <div class="trip-error-actions">
-            <a href="{{ url_for('trip_conditions') }}" class="btn btn-primary">{{ _('trip.plan.error_action_conditions') }}</a>
-            <a href="{{ url_for('diagnosis') }}" class="btn btn-outline">{{ _('trip.plan.error_action_diagnosis') }}</a>
-        </div>
-    </section>
-    {% else %}
-    {% for day in plan.days %}
-    <section class="trip-day">
-        <h2 class="trip-day-label">{{ day.label }}</h2>
-        <ol class="trip-timeline">
-            {% for item in day['items'] %}
-            <li class="trip-timeline-item trip-kind-{{ item.kind }}">
-                <div class="trip-timeline-time">{{ item.time }}</div>
-                <div class="trip-timeline-body">
-                    <span class="trip-item-kind">{{ tv('trip.plan.kind.' ~ item.kind) }}</span>
-                    {% if item.spot_id %}
-                    <h3 class="trip-item-title">
-                        <a href="{{ url_for('spot_detail', spot_id=item.spot_id) }}">{{ item.title }}</a>
-                    </h3>
-                    {% if item.image_url %}
-                    <div class="trip-item-image">
-                        <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.title }}" loading="lazy">
-                    </div>
-                    {% endif %}
-                    {% if item.note %}
-                    <p class="trip-item-note">{{ item.note }}</p>
-                    {% endif %}
-                    {% else %}
-                    <h3 class="trip-item-title">{{ item.title }}</h3>
-                    {% endif %}
-                </div>
-            </li>
-            {% endfor %}
-        </ol>
-    </section>
-    {% endfor %}
-    {% if plan.disclaimer %}
-    <p class="trip-plan-footnote">{{ plan.disclaimer }}</p>
-    {% endif %}
-    {% endif %}
-
-    <div class="trip-plan-actions">
-        <a href="{{ url_for('trip_conditions') }}" class="btn btn-outline btn-block">{{ _('trip.plan.edit_conditions') }}</a>
-        <a href="{{ url_for('diagnosis') }}" class="btn btn-primary btn-block">{{ _('trip.plan.error_action_diagnosis') }}</a>
-    </div>
-</section>
-{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}{{ _('trip.plan.page_title') }}{% endblock %}
+
+{% block content %}
+<section class="trip-page trip-plan">
+    <a href="{{ url_for('trip_conditions') }}" class="back-link">{{ _('trip.plan.edit_conditions') }}</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="trip-alerts">
+        {% for category, message in messages %}
+        <p class="trip-alert trip-alert-{{ category }}" role="alert">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <header class="trip-plan-hero">
+        <p class="trip-plan-kicker">{{ _('trip.plan.kicker') }}</p>
+        <h1 class="trip-plan-type">{{ main_type.name }}</h1>
+        {% set type_key = main_type.id | string %}
+        <p class="trip-plan-tagline">{{ tv('result.types.' ~ type_key ~ '.tagline') }}</p>
+        <p class="trip-plan-lead">{{ _('trip.plan.lead') }}</p>
+        {% if plan.ok %}
+        <p class="trip-plan-meta">{{ plan.summary }}</p>
+        {% endif %}
+    </header>
+
+    {% if plan.warnings %}
+    <section class="trip-warnings">
+        <h2 class="trip-section-title">{{ _('trip.plan.warnings_label') }}</h2>
+        <ul class="trip-warning-list">
+            {% for warning in plan.warnings %}
+            <li>{{ warning }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if not plan.ok %}
+    <section class="trip-error-panel">
+        <h2 class="trip-section-title">{{ _('trip.plan.error_title') }}</h2>
+        <p>{{ plan.error }}</p>
+        <div class="trip-error-actions">
+            <a href="{{ url_for('trip_conditions') }}" class="btn btn-primary">{{ _('trip.plan.error_action_conditions') }}</a>
+            <a href="{{ url_for('diagnosis') }}" class="btn btn-outline">{{ _('trip.plan.error_action_diagnosis') }}</a>
+        </div>
+    </section>
+    {% else %}
+    <p class="trip-timeline-intro">{{ _('trip.plan.timeline_intro') }}</p>
+    {% for day in plan.days %}
+    <section class="trip-day">
+        <h2 class="trip-day-label">{{ day.label }}</h2>
+        <ol class="trip-timeline">
+            {% for item in day['items'] %}
+            <li class="trip-timeline-item trip-kind-{{ item.kind }}{% if not item.spot_id %} trip-timeline-item-meta{% endif %}">
+                <div class="trip-timeline-time" aria-label="{{ _('trip.plan.time_prefix') }} {{ item.time }}">
+                    <span class="trip-time-prefix">{{ _('trip.plan.time_prefix') }}</span>
+                    <span class="trip-time-value">{{ item.time }}</span>
+                </div>
+                <div class="trip-timeline-body">
+                    {% if item.spot_id %}
+                    <span class="trip-item-kind">{{ tv('trip.plan.kind.' ~ item.kind) }}</span>
+                    <h3 class="trip-item-title">
+                        <a href="{{ url_for('spot_detail', spot_id=item.spot_id) }}">{{ item.title }}</a>
+                    </h3>
+                    {% if item.image_url %}
+                    <div class="trip-item-image">
+                        <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.title }}" loading="lazy">
+                    </div>
+                    {% endif %}
+                    {% if item.note and item.kind in ['spot', 'meal', 'experience'] %}
+                    <p class="trip-item-note">{{ item.note }}</p>
+                    {% endif %}
+                    {% else %}
+                    <h3 class="trip-item-title trip-item-title-meta">{{ item.title }}</h3>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endfor %}
+
+    <div class="trip-plan-outro">
+        <p class="trip-plan-closing">{{ _('trip.plan.closing') }}</p>
+        {% if plan.disclaimer %}
+        <p class="trip-plan-footnote">{{ plan.disclaimer }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="trip-plan-actions">
+        <a href="{{ url_for('trip_conditions') }}" class="btn btn-primary btn-block">{{ _('trip.plan.edit_conditions') }}</a>
+        <a href="{{ url_for('result') }}" class="btn btn-outline btn-block">{{ _('trip.plan.back_result') }}</a>
+    </div>
+</section>
+{% endblock %}

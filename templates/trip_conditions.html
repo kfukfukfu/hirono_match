@@ -84,7 +84,7 @@
             </select>
         </div>
 
-        <fieldset class="trip-fieldset">
+        <fieldset class="trip-fieldset trip-fieldset-optional">
             <legend>{{ _('trip.conditions.companions_label') }}</legend>
             <div class="trip-choice-grid">
                 {% for key in ['solo', 'couple', 'family', 'friends', 'group'] %}
@@ -96,31 +96,33 @@
             </div>
         </fieldset>
 
-        <fieldset class="trip-fieldset trip-fieldset-optional">
-            <legend>{{ _('trip.conditions.season_label') }}</legend>
-            <div class="trip-choice-grid">
-                {% for key in ['spring', 'summer', 'autumn', 'winter', 'undecided'] %}
-                <label class="trip-choice">
-                    <input type="radio" name="season" value="{{ key }}"{% if form.season == key %} checked{% endif %}>
-                    <span>{{ tv('trip.conditions.season.' ~ key) }}</span>
-                </label>
-                {% endfor %}
-            </div>
-        </fieldset>
+        <details class="trip-optional-details">
+            <summary>{{ _('trip.conditions.optional_summary') }}</summary>
+            <p class="trip-optional-note">{{ _('trip.conditions.optional_note') }}</p>
+            <fieldset class="trip-fieldset trip-fieldset-optional">
+                <legend>{{ _('trip.conditions.season_label') }}</legend>
+                <div class="trip-choice-grid">
+                    {% for key in ['spring', 'summer', 'autumn', 'winter', 'undecided'] %}
+                    <label class="trip-choice">
+                        <input type="radio" name="season" value="{{ key }}"{% if form.season == key %} checked{% endif %}>
+                        <span>{{ tv('trip.conditions.season.' ~ key) }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </fieldset>
 
-        <fieldset class="trip-fieldset trip-fieldset-optional">
-            <legend>{{ _('trip.conditions.budget_label') }}</legend>
-            <div class="trip-choice-grid">
-                {% for key in ['low', 'medium', 'high', 'undecided'] %}
-                <label class="trip-choice">
-                    <input type="radio" name="budget" value="{{ key }}"{% if form.budget == key %} checked{% endif %}>
-                    <span>{{ tv('trip.conditions.budget.' ~ key) }}</span>
-                </label>
-                {% endfor %}
-            </div>
-        </fieldset>
-
-        <p class="trip-form-note">{{ _('trip.conditions.note') }}</p>
+            <fieldset class="trip-fieldset trip-fieldset-optional">
+                <legend>{{ _('trip.conditions.budget_label') }}</legend>
+                <div class="trip-choice-grid">
+                    {% for key in ['low', 'medium', 'high', 'undecided'] %}
+                    <label class="trip-choice">
+                        <input type="radio" name="budget" value="{{ key }}"{% if form.budget == key %} checked{% endif %}>
+                        <span>{{ tv('trip.conditions.budget.' ~ key) }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </fieldset>
+        </details>
 
         <button type="submit" class="btn btn-primary btn-block btn-trip-submit">{{ _('trip.conditions.submit') }}</button>
     </form>

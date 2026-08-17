@@ -2157,6 +2157,90 @@ a:hover {
     margin-bottom: 1.5rem;
 }
 
+.trip-plan-hero {
+    margin-bottom: 1.25rem;
+    padding: 1.25rem 1.125rem;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, rgba(26, 107, 138, 0.1), rgba(244, 162, 97, 0.12));
+}
+
+.trip-plan-kicker {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.35rem;
+}
+
+.trip-plan-type {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary-dark);
+    line-height: 1.3;
+    margin: 0 0 0.35rem;
+}
+
+.trip-plan-tagline {
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+}
+
+.trip-plan-lead {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.trip-plan-meta {
+    display: inline-block;
+    margin-top: 0.875rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-primary-dark);
+}
+
+.trip-timeline-intro {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin: 0 0 1rem;
+}
+
+.trip-plan-outro {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.trip-optional-details {
+    margin-bottom: 1.25rem;
+    padding: 0.875rem 1rem;
+    border: 1px dashed var(--color-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.trip-optional-details summary {
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-text-light);
+}
+
+.trip-optional-note {
+    margin: 0.75rem 0 1rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+}
+
 .trip-title {
     font-size: 1.375rem;
     font-weight: 700;
@@ -2166,7 +2250,6 @@ a:hover {
 
 .trip-lead,
 .trip-form-note,
-.trip-plan-summary,
 .trip-plan-closing {
     font-size: 0.9375rem;
     color: var(--color-text-light);
@@ -2178,11 +2261,13 @@ a:hover {
     font-size: 0.8125rem;
     color: var(--color-text-light);
     line-height: 1.6;
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
 }
 
 .trip-plan-closing {
-    margin-top: 1.25rem;
+    margin: 0;
+    color: var(--color-text);
+    font-weight: 600;
 }
 
 .trip-diagnosis-badge {
@@ -2353,10 +2438,34 @@ a:hover {
 }
 
 .trip-timeline-time {
-    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: var(--color-primary);
     padding-top: 0.125rem;
+}
+
+.trip-time-prefix {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-text-light);
+}
+
+.trip-time-value {
+    font-size: 0.875rem;
+}
+
+.trip-timeline-item-meta .trip-timeline-time {
+    opacity: 0.72;
+}
+
+.trip-item-title-meta {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-light);
 }
 
 .trip-item-kind {
@@ -2364,8 +2473,7 @@ a:hover {
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-text-light);
+    color: var(--color-primary);
     margin-bottom: 0.25rem;
 }
 
