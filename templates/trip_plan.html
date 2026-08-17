@@ -55,6 +55,11 @@
                     <h3 class="trip-item-title">
                         <a href="{{ url_for('spot_detail', spot_id=item.spot_id) }}">{{ item.title }}</a>
                     </h3>
+                    {% if item.image_url %}
+                    <div class="trip-item-image">
+                        <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.title }}" loading="lazy">
+                    </div>
+                    {% endif %}
                     {% if item.note %}
                     <p class="trip-item-note">{{ item.note }}</p>
                     {% endif %}
