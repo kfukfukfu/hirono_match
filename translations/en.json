@@ -261,6 +261,12 @@
     "hero_copy": "A 30-second quiz to find the Hirono Town experience that's perfect for you.",
     "start_diagnosis": "Start the quiz",
     "scroll_hint": "Scroll",
+    "location": {
+      "title": "Where is Hirono Town?",
+      "lead": "At the northern tip of Iwate Prefecture, on the Pacific coast bordering Aomori. About 1.5 hours by car from Morioka, or 1 hour from Hachinohe.",
+      "caption": "Hirono Town, Kuji area, Iwate Prefecture",
+      "alt": "Map of northern Tohoku showing Hirono Town in the Kuji area of Iwate Prefecture."
+    },
     "empathy": {
       "title": "Perfect for travelers who…",
       "lead": "We suggest ways to enjoy Hirono Town based on your travel style.",

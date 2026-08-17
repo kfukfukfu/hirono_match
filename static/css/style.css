@@ -2369,3 +2369,69 @@ a:hover {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* --- 洋野町の位置 --- */
+.location-section {
+    padding-top: 2.5rem;
+}
+
+.location-map-figure {
+    margin: 0;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.location-map-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.location-map-caption {
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+}
+
+.location-map-figure-compact {
+    margin-top: 0.75rem;
+}
+
+.trip-location-hint {
+    margin-bottom: 1.25rem;
+    padding: 0.875rem 1rem;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.trip-location-hint summary {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    cursor: pointer;
+    list-style: none;
+}
+
+.trip-location-hint summary::-webkit-details-marker {
+    display: none;
+}
+
+.trip-location-hint summary::before {
+    content: "▸ ";
+}
+
+.trip-location-hint[open] summary::before {
+    content: "▾ ";
+}
+
+.trip-location-lead {
+    margin: 0.75rem 0 0;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+}

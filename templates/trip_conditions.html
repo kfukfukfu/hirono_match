@@ -26,6 +26,18 @@
         <p class="trip-diagnosis-type">{{ diagnosis.main_type_name }}</p>
     </div>
 
+    <details class="trip-location-hint">
+        <summary>{{ _('index.location.title') }}</summary>
+        <p class="trip-location-lead">{{ _('index.location.lead') }}</p>
+        <figure class="location-map-figure location-map-figure-compact">
+            <img src="{{ url_for('static', filename='images/hirono-location-map.png') }}"
+                 alt="{{ _('index.location.alt') }}"
+                 class="location-map-image"
+                 loading="lazy">
+            <figcaption class="location-map-caption">{{ _('index.location.caption') }}</figcaption>
+        </figure>
+    </details>
+
     <form class="trip-form" method="POST" action="{{ url_for('trip_conditions') }}" novalidate>
         <fieldset class="trip-fieldset">
             <legend>{{ _('trip.conditions.departure_label') }}</legend>

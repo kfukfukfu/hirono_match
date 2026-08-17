@@ -43,6 +43,18 @@
 </section>
 
 <div class="features-panel">
+    <section class="lp-section container location-section">
+        <h2 class="section-title">{{ _('index.location.title') }}</h2>
+        <p class="section-lead">{{ _('index.location.lead') }}</p>
+        <figure class="location-map-figure">
+            <img src="{{ url_for('static', filename='images/hirono-location-map.png') }}"
+                 alt="{{ _('index.location.alt') }}"
+                 class="location-map-image"
+                 loading="lazy">
+            <figcaption class="location-map-caption">{{ _('index.location.caption') }}</figcaption>
+        </figure>
+    </section>
+
     <section class="lp-section container">
         <h2 class="section-title">{{ _('index.empathy.title') }}</h2>
         <p class="section-lead">{{ _('index.empathy.lead') }}</p>
