@@ -2,7 +2,7 @@
 from collections import Counter
 from itertools import product
 
-from app import calculate_scores, normalize_top_type_percentages_for_display
+from app import app, build_type_breakdown_for_display, calculate_scores
 from database import get_db
 
 EXPECTED_WIN_RATES = {
@@ -33,11 +33,29 @@ def q5_scores_for(choice_ids):
     return q5
 
 
-def test_display_percentages_for_top3_sum_to_100():
+def test_display_percentages_show_top3_and_other_on_eight_type_basis():
     ranked = calculate_scores([1, 6, 12, 15, 18])
-    displayed = normalize_top_type_percentages_for_display(ranked[:3])
-    assert sum(item["percentage"] for item in displayed) == 100
-    assert [item["percentage"] for item in displayed] == [33, 33, 34]
+    top3, other = build_type_breakdown_for_display(ranked)
+    assert [t["percentage"] for t in top3] == [19, 19, 19]
+    assert other == 44
+    assert sum(t["percentage"] for t in top3) + other == sum(t["percentage"] for t in ranked)
+
+
+def test_result_page_shows_type_breakdown_in_ja_and_en():
+    with app.test_client() as client:
+        client.post(
+            "/result",
+            data={"choice_id": ["1", "6", "12", "15", "18"]},
+            follow_redirects=True,
+        )
+        ja = client.get("/result").get_data(as_text=True)
+        assert "その他のタイプ" in ja
+        assert "19%" in ja
+
+        with client.session_transaction() as sess:
+            sess["lang"] = "en"
+        en = client.get("/result").get_data(as_text=True)
+        assert "Other types" in en
 
 
 def simulate():
@@ -64,7 +82,8 @@ def simulate():
 
 
 def main():
-    test_display_percentages_for_top3_sum_to_100()
+    test_display_percentages_show_top3_and_other_on_eight_type_basis()
+    test_result_page_shows_type_breakdown_in_ja_and_en()
     winners, score_ties, q5_also_tied = simulate()
 
     print("=== Implementation verification ===")
