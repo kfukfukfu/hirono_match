@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NE2204Q3YV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NE2204Q3YV');
+</script>
+	
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,minimal-ui">
+<meta name="format-detection" content="telephone=no">
+<title>ゲストハウスはまなす亭【公式サイト】</title>
+
+<meta name="keywords" content="ゲストハウスはまなす亭,岩手,洋野町,種市,三陸,宿,食事処,ウニめし,海の幸,ホヤ,番屋,リーズナブル,ビジネス,長期滞在,旅行,観光,宿泊,予約">
+<meta name="description" content="海と味わいに出会う、三陸の小さな宿と食事処 ゲストハウスはまなす亭。雄大な三陸の海を望み、地元で水揚げされた新鮮な魚介を楽しむ。穏やかな潮騒に包まれる夜は、ゆっくりと流れる時間を感じられることでしょう。観光はもちろん、ビジネスでのご利用や長期滞在にも、気軽にご利用いただけます。洋野町産の木材を使ったアットホームな雰囲気の当館で、リーズナブルな海辺ステイをお楽しみください。">
+<meta property="og:title" content="ゲストハウスはまなす亭【公式サイト】" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://uninosato-hamanasutei.com/" />
+<meta property="og:image" content="https://uninosato-hamanasutei.com/common/img/index/pick01.jpg" />
+<meta property="og:site_name" content="ゲストハウスはまなす亭【公式サイト】" />
+<meta property="og:description" content="海と味わいに出会う、三陸の小さな宿と食事処 ゲストハウスはまなす亭。雄大な三陸の海を望み、地元で水揚げされた新鮮な魚介を楽しむ。穏やかな潮騒に包まれる夜は、ゆっくりと流れる時間を感じられることでしょう。観光はもちろん、ビジネスでのご利用や長期滞在にも、気軽にご利用いただけます。洋野町産の木材を使ったアットホームな雰囲気の当館で、リーズナブルな海辺ステイをお楽しみください。" />
+<meta property="og:locale" content="ja_JP">
+
+<link rel="canonical" href="https://uninosato-hamanasutei.com/">
+	
+<link href="common/css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+<script type="text/javascript" src="common/js/header.js"></script> 
+<script type="text/javascript" src="common/js/general.js"></script>
+<link href="movie/css/video-js.css" rel="stylesheet" type="text/css">
+<script src="movie/js/video.js"></script>
+<link rel="stylesheet" type="text/css" href="rss/rss.css" media="all" />
+<!--font-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&display=swap" rel="stylesheet">
+<!--/font-->
+<link href="common/css/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="common/css/animations.css">
+</head>
+<body id="index">
+<script src="common/js/aos.js"></script> 
+<script>
+        AOS.init({
+            offset: 20,
+            delay: 20,
+            duration: 800,
+            easing: 'ease-in',
+            once: true,
+        });
+
+    </script>
+<header>
+  <div class="flexbox">
+    <h1><a href="https://uninosato-hamanasutei.com/"><img src="common/img/logo.svg" alt="ゲストハウスはまなす亭【公式サイト】"></a></h1>
+    <nav class="pc">
+      <ul>
+        <li><a href="about.html">ゲストハウスについて</a></li>
+        <li><a href="cuisine.html">お食事</a></li>
+        <li> <a href="https://site.reservation.liberty-service.com/cc5f559e549f4f2fac443b9673014a37/facility-f66c3637-f120-4f4f-a138-aa80b7361a37/search" target="_blank">ご予約</a></li>
+        <li><a href="access.html">アクセス＆周辺</a></li>
+        <!--<li><a href="#">オンラインショップ</a></li>-->
+      </ul>
+    </nav>
+    <div id="toggle"><a href="" class="menu-trigger"><span></span><span></span><span></span></a>
+      <p>menu</p>
+    </div>
+  </div>
+</header>
+<div id="mainVisual">
+  <video autoplay loop muted playsinline width="auto" height="100%" poster="movie/top/movie.jpg" class="index_video">
+    <source src="movie/top/movie.mp4" type="video/mp4">
+    <div id="tablet"> <img src="movie/top/movie.jpg" width="100%" height="autos" alt=""> </div>
+  </video>
+</div>
+<div class="sp_movie">
+  <video autoplay muted playsinline loop preload="none" width="100%" height="auto" poster="movie/top/movie.jpg">
+    <source src="movie/top/movie.mp4" type="video/mp4" />
+    <p class="vjs-no-js">javascriptを有効にして下さい</p>
+  </video>
+</div>
+
+<!--フルvideo-->
+
+<main>
+  <section class="index_lead">
+    <div class="inner flexbox">
+      <div class="w50 item1" data-aos="fade-right">
+        <h2 class="m_b20">海と味わいに出会う、<br>
+          三陸の小さな宿と食事処。</h2>
+        <p>雄大な三陸の海を望み、地元で水揚げされた新鮮な魚介を楽しむ。<br>
+          穏やかな潮騒に包まれる夜は、ゆっくりと流れる時間を感じられることでしょう。<br>
+          まるで“もうひとつの我が家”のように、くつろげる場所として。<br>
+          皆さまのお越しを心よりお待ちしております。</p>
+      </div>
+      <div class="w45 item2" data-aos="fade-left">
+        <figure><img src="common/img/index/lead.png" alt="海と味わいに出会う、三陸の小さな宿と食事処。"></figure>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="flexbox pickup01">
+      <div class="w60 item1 image_wrap01" data-aos="fade-right">
+        <figure><img src="common/img/index/pick01.jpg" alt="ゲストハウスはまなす亭"></figure>
+      </div>
+      <div class="w40 item2 com_wrap" data-aos="fade-left">
+        <p class="eng">Guesthouse</p>
+        <h3 class="m_b20">ゲストハウスはまなす亭</h3>
+        <p class="m_b40">観光はもちろん、ビジネスでのご利用や長期滞在にも、気軽にご利用いただけます。洋野町産の木材を使ったアットホームな雰囲気の当館で、リーズナブルな海辺ステイをお楽しみください。</p>
+        <p class="link_btn"><a href="about.html">ゲストハウス</a></p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="flexbox pickup02">
+      <div class="w45 item2 com_wrap" data-aos="fade-right">
+        <p class="eng">Cuisine</p>
+        <h3 class="m_b20">お食事　はまなす亭</h3>
+        <p class="m_b40">地元で水揚げされた、新鮮な海の幸を使った料理を提供しております。中でも洋野町・種市の名物であるウニやホヤはぜひ味わっていただきたい一品。旬を生かした三陸の恵みをご堪能ください。</p>
+        <p class="link_btn"><a href="cuisine.html#hamanasutei">はまなす亭</a></p>
+      </div>
+      <div class="w60 item1 image_wrap02" data-aos="fade-left">
+        <figure><img src="common/img/index/pick02.jpg" alt="お食事　はまなす亭"></figure>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="flexbox pickup01">
+      <div class="w60 item1 image_wrap01" data-aos="fade-right">
+        <figure><img src="common/img/index/pick03.jpg" alt="はまなす亭　番屋"></figure>
+      </div>
+      <div class="w40 item2 com_wrap" data-aos="fade-left">
+        <p class="eng">Dining</p>
+        <h3 class="m_b20">はまなす亭　番屋</h3>
+        <p class="m_b40">はまなす亭の裏手にある、隠れ家のような食事処「番屋」。店内には宴会場をご用意し、夏はBBQ、冬は忘年会、そのほか会食や宴会、打ち上げなど、さまざまなシーンにご利用いただけます。</p>
+        <p class="link_btn"><a href="cuisine.html#banya">番屋</a></p>
+      </div>
+    </div>
+  </section>
+	
+	<!--	
+  <section class="plan_rss_wrap" data-aos="fade-up">
+    <h2 class="m_b40 center">宿泊プラン</h2>
+    <div class="plan_rss">
+  
+    </div>
+  </section>-->
+	
+<!--
+  <section class="search">
+    <div class="plan_form">
+      <h2>空室検索</h2>
+     
+    </div>
+  </section>
+-->
+	
+	
+  <section>
+    <div class="center bn_plan">
+      <p class="fuwafuwa" data-aos="fade-up"><a href="https://site.reservation.liberty-service.com/cc5f559e549f4f2fac443b9673014a37/facility-f66c3637-f120-4f4f-a138-aa80b7361a37/search" target="_blank"><img src="common/img/plan.png" alt="宿泊プラン　ご予約"></a></p>
+    </div>
+  </section>
+</main>
+<p class="pagetop"><a href="#"><img src="common/img/pagetop.png" alt="pagetop"></a></p>
+<footer>
+  <div class="flexbox02 inner">
+    <div class="f_logo"> <a href="https://uninosato-hamanasutei.com/"><img src="common/img/logo.svg" alt="ゲストハウスはまなす亭"></a> </div>
+    <div class="flexbox02">
+      <div class="w45">
+        <p class="m_b40">〒028-7914<br>
+          岩手県九戸郡洋野町種市第22地割131-3<br>
+          <strong><a href="tel:0194652981">TEL：0194-65-2981</a><br>
+          FAX：0194-66-8761</strong><br>
+          チェックイン：15:00〜<br>
+          チェックアウト：〜10:00</p>
+        <address class="clearfix">
+        &copy;2026 Liberty. All Rights Reserved.　<a href="https://yado-sagashi.com/" target="_blank"><img src="common/img/libertybn04_ss.gif" alt="宿さがし.com"></a>
+        </address>
+      </div>
+      <div class="w45 pc f_nav">
+        <ul>
+          <li><a href="https://uninosato-hamanasutei.com/">HOME</a></li>
+          <li><a href="about.html">ゲストハウスについて</a></li>
+          <li><a href="cuisine.html">お食事</a></li>
+        </ul>
+        <ul>
+          <li> <a href="https://site.reservation.liberty-service.com/cc5f559e549f4f2fac443b9673014a37/facility-f66c3637-f120-4f4f-a138-aa80b7361a37/search" target="_blank">ご予約</a></li>
+          <li><a href="access.html">アクセス＆周辺</a></li>
+          <!--<li><a href="#">オンラインショップ</a></li>-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="menu">
+  <nav>
+    <ul>
+      <li><a href="https://uninosato-hamanasutei.com/">HOME</a></li>
+      <li><a href="about.html">ゲストハウスに<br>ついて</a></li>
+      <li><a href="cuisine.html">お食事</a></li>
+      <li> <a href="https://site.reservation.liberty-service.com/cc5f559e549f4f2fac443b9673014a37/facility-f66c3637-f120-4f4f-a138-aa80b7361a37/search" target="_blank">ご予約</a></li>
+      <li><a href="access.html">アクセス＆周辺</a></li>
+      <!--<li><a href="#">オンラインショップ</a></li>-->
+    </ul>
+  </nav>
+  <p class="tel m_b20"><a href="tel:0194652981"><img src="common/img/tel.svg" alt="">0194-65-2981</a></p>
+  <p class="link_btn"><a href="https://site.reservation.liberty-service.com/cc5f559e549f4f2fac443b9673014a37/facility-f66c3637-f120-4f4f-a138-aa80b7361a37/search" target="_blank">プラン一覧</a></p>
+</div>
+
+<!------以下空室検索に関する記述------> 
+<script src="https://www.yado-sagashi.net/yoyaku/lib/serv.js" type="text/JavaScript"></script> 
+<script type="text/javascript">
+        <!--
+        function open1(y, p, op) {
+            location.href = "yosan.jsp?y=" + y + "&p=" + p + op;
+        }
+
+        function open2(y, p, op, ind) {
+            location.href = "plcal.jsp?y=" + y + "&p=" + p + op + "&in=" + ind;
+        }
+
+        function DateEnable() {
+            document.frmplist.checkinday.disabled = document.frmplist.fixed.checked;
+        }
+        //
+
+        -->
+    </script> 
+<!--空室検索用カレンダーjQueryUI-->
+<link rel="stylesheet" href="rss/jquery-ui.css">
+<script src="rss/jquery-ui.min.js"></script> 
+<script src="rss/jquery.ui.datepicker-ja.min.js"></script> 
+<script>
+        $(function() {
+            $('#datepicker').datepicker({
+                'showButtonPanel': true
+            });
+        });
+
+    </script> 
+<script>
+        $(window).on('load', function() {
+            $('.slick-cloned a').removeAttr('data-lightbox');
+        });
+
+    </script> 
+<!-- Events -->
+</body>
+</html>
