@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/external_link.html" import external_link_tip %}
 
 {% block title %}{{ _('result.page_title') }}{% endblock %}
 
@@ -42,9 +43,6 @@
     <section class="result-spots">
         <h2 class="section-title-mobile">{{ _('result.recommended_spots') }}</h2>
         <p class="section-lead-mobile">{{ _('result.spots_lead') }}</p>
-        {% if lang == 'en' %}
-        <p class="map-service-notice map-service-notice-inline">{{ _('spot.map_notice') }}</p>
-        {% endif %}
 
         <div class="result-spot-list">
             {% for spot in recommended_spots %}
@@ -59,12 +57,17 @@
                     </h3>
                     <p class="result-spot-desc">{{ spot.description[:70] }}…</p>
                     <div class="result-spot-actions">
+                        {% if lang == 'en' %}
+                        {{ external_link_tip(spot.official_url, _('result.official_site'), _('spot.website_notice'), 'btn btn-outline btn-small') }}
+                        {{ external_link_tip(spot.map_url if spot.map_url else (spot.address | map_url), _('result.map'), _('spot.map_notice'), 'btn btn-outline btn-small') }}
+                        {% else %}
                         <a href="{{ spot.official_url }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
                             {{ _('result.official_site') }}
                         </a>
                         <a href="{{ spot.map_url if spot.map_url else (spot.address | map_url) }}" class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer">
                             {{ _('result.map') }}
                         </a>
+                        {% endif %}
                         <button type="button"
                                 class="btn-favorite-mobile"
                                 data-spot-id="{{ spot.id }}"

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/external_link.html" import external_link_tip %}
 
 {% block title %}{{ spot.name }}{{ _('spot.page_title_suffix') }}{% endblock %}
 
@@ -29,9 +30,13 @@
 
             <div class="spot-external-links">
                 {% if spot_website %}
+                {% if lang == 'en' %}
+                {{ external_link_tip(spot_website, _('spot.official_link'), _('spot.website_notice')) }}
+                {% else %}
                 <a href="{{ spot_website }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
                     {{ _('spot.official_link') }}
                 </a>
+                {% endif %}
                 {% endif %}
                 {% if spot_sns %}
                 <a href="{{ spot_sns }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
@@ -39,15 +44,15 @@
                 </a>
                 {% endif %}
                 {% if spot_map %}
+                {% if lang == 'en' %}
+                {{ external_link_tip(spot_map, _('spot.map_link'), _('spot.map_notice')) }}
+                {% else %}
                 <a href="{{ spot_map }}" class="btn btn-outline btn-spot-link" target="_blank" rel="noopener noreferrer">
                     {{ _('spot.map_link') }}
                 </a>
                 {% endif %}
+                {% endif %}
             </div>
-
-            {% if lang == 'en' and spot_map %}
-            <p class="map-service-notice">{{ _('spot.map_notice') }}</p>
-            {% endif %}
 
             <p class="spot-disclaimer">{{ _('spot.disclaimer') }}</p>
 

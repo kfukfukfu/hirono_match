@@ -2354,6 +2354,76 @@ a:hover {
     justify-content: center;
 }
 
+.external-link-tip {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.external-link-tip > .btn {
+    width: 100%;
+}
+
+.link-tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    z-index: 20;
+    width: max(12rem, 200px);
+    max-width: min(18rem, calc(100vw - 2rem));
+    padding: 0.625rem 0.75rem;
+    border-radius: 10px;
+    background: #1f2933;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.link-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1f2933;
+}
+
+.external-link-tip:hover .link-tooltip,
+.external-link-tip:focus-within .link-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.result-spot-actions .external-link-tip {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+}
+
+.result-spot-actions .link-tooltip {
+    left: 0;
+    transform: translateY(4px);
+}
+
+.result-spot-actions .external-link-tip:hover .link-tooltip,
+.result-spot-actions .external-link-tip:focus-within .link-tooltip {
+    transform: translateY(0);
+}
+
+.result-spot-actions .link-tooltip::after {
+    left: 1.5rem;
+    transform: none;
+}
+
 .spot-disclaimer {
     font-size: 0.8125rem;
     color: var(--color-text-light);
@@ -2362,21 +2432,6 @@ a:hover {
     padding: 0.875rem;
     background: var(--color-bg);
     border-radius: 10px;
-}
-
-.map-service-notice {
-    font-size: 0.8125rem;
-    color: var(--color-text-light);
-    line-height: 1.6;
-    margin: 0 0 1rem;
-    padding: 0.75rem 0.875rem;
-    background: #f4f8fb;
-    border-radius: 10px;
-    border-left: 3px solid var(--color-primary);
-}
-
-.map-service-notice-inline {
-    margin-bottom: 1rem;
 }
 
 @media (min-width: 480px) {

@@ -1,0 +1,6 @@
+{% macro external_link_tip(href, label, notice, class_name='btn btn-outline btn-spot-link') %}
+<span class="external-link-tip">
+    <a href="{{ href }}" class="{{ class_name }}" target="_blank" rel="noopener noreferrer">{{ label }}</a>
+    <span class="link-tooltip" role="tooltip">{{ notice }}</span>
+</span>
+{% endmacro %}
