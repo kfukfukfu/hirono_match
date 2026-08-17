@@ -49,13 +49,15 @@ def test_result_page_shows_type_breakdown_in_ja_and_en():
             follow_redirects=True,
         )
         ja = client.get("/result").get_data(as_text=True)
-        assert "その他のタイプ" in ja
+        assert "その他" in ja
+        assert "その他のタイプ" not in ja
         assert "19%" in ja
 
         with client.session_transaction() as sess:
             sess["lang"] = "en"
         en = client.get("/result").get_data(as_text=True)
-        assert "Other types" in en
+        assert "Other types" not in en
+        assert "Other" in en
 
 
 def simulate():
