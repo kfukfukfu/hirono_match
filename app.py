@@ -139,6 +139,29 @@ def save_diagnosis_result(choice_ids):
     session.modified = True
 
 
+def normalize_top_type_percentages_for_display(top_types):
+    """上位タイプのスコアを、表示用に100%合計になるよう再正規化する"""
+    if not top_types:
+        return []
+
+    total = sum(t["score"] for t in top_types) or 1
+    raw = [t["score"] / total * 100 for t in top_types]
+    floors = [int(value) for value in raw]
+    remainder = 100 - sum(floors)
+    fractional_ranks = sorted(
+        ((raw[i] - floors[i], i) for i in range(len(top_types))),
+        reverse=True,
+    )
+    percentages = floors[:]
+    for offset in range(remainder):
+        percentages[fractional_ranks[offset][1]] += 1
+
+    return [
+        {**top_type, "percentage": percentage}
+        for top_type, percentage in zip(top_types, percentages)
+    ]
+
+
 def build_result_context():
     """診断結果画面用のデータを、現在の表示言語で組み立てる"""
     diagnosis = get_diagnosis_result()
@@ -153,7 +176,7 @@ def build_result_context():
     recommended_spots = fetch_recommended_spots_for_result(ranked)
     return {
         "main_type": main_type,
-        "type_percentages": ranked[:3],
+        "type_percentages": normalize_top_type_percentages_for_display(ranked[:3]),
         "recommended_spots": recommended_spots,
     }
 

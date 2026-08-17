@@ -2,7 +2,7 @@
 from collections import Counter
 from itertools import product
 
-from app import calculate_scores
+from app import calculate_scores, normalize_top_type_percentages_for_display
 from database import get_db
 
 EXPECTED_WIN_RATES = {
@@ -33,6 +33,13 @@ def q5_scores_for(choice_ids):
     return q5
 
 
+def test_display_percentages_for_top3_sum_to_100():
+    ranked = calculate_scores([1, 6, 12, 15, 18])
+    displayed = normalize_top_type_percentages_for_display(ranked[:3])
+    assert sum(item["percentage"] for item in displayed) == 100
+    assert [item["percentage"] for item in displayed] == [33, 33, 34]
+
+
 def simulate():
     winners = Counter()
     score_ties = 0
@@ -57,6 +64,7 @@ def simulate():
 
 
 def main():
+    test_display_percentages_for_top3_sum_to_100()
     winners, score_ties, q5_also_tied = simulate()
 
     print("=== Implementation verification ===")
