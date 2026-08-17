@@ -2173,11 +2173,12 @@ a:hover {
     line-height: 1.7;
 }
 
-.trip-plan-reference-note {
+.trip-plan-reference-note,
+.trip-plan-footnote {
     font-size: 0.8125rem;
     color: var(--color-text-light);
-    line-height: 1.7;
-    margin-top: 0.75rem;
+    line-height: 1.6;
+    margin-top: 1.25rem;
 }
 
 .trip-plan-closing {
@@ -2473,31 +2474,36 @@ a:hover {
 
 .external-link-tip {
     position: relative;
-    display: flex;
-    align-items: stretch;
+    display: inline-flex;
+    align-items: center;
     gap: 0.375rem;
     width: 100%;
+    min-width: 0;
 }
 
 .external-link-tip > .btn {
     flex: 1 1 auto;
     width: auto;
     min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .link-tip-info {
     display: none;
-    flex: 0 0 44px;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    min-height: 44px;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
+    border: 2px solid var(--color-primary);
+    border-radius: 999px;
     background: var(--color-white);
     color: var(--color-primary);
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 700;
     line-height: 1;
     cursor: pointer;
@@ -2559,7 +2565,19 @@ a:hover {
 
 .result-spot-actions .external-link-tip {
     flex: 1 1 calc(50% - 0.25rem);
+    width: auto;
+    min-width: calc(50% - 0.25rem);
+}
+
+.result-spot-actions .external-link-tip > .btn-outline {
+    flex: 1 1 0;
     min-width: 0;
+}
+
+.result-spot-actions .link-tip-info {
+    width: 2.375rem;
+    height: 2.375rem;
+    font-size: 0.8125rem;
 }
 
 .result-spot-actions .link-tooltip {

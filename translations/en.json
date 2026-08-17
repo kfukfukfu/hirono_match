@@ -267,7 +267,7 @@
       "warning_public_excluded": "Excluded {count} spot(s) that are hard to reach by public transport alone.",
       "warning_no_lodging": "No registered lodging found. Please arrange accommodation on your own.",
       "error_no_spots": "No registered spots match your conditions. Try changing transport or duration.",
-      "disclaimer": "This plan is auto-generated from registered spot data only. Always verify hours, prices, and transport times on official sources."
+      "disclaimer": "※Reference only. Check official sources for hours and transport."
     }
   },
   "favorites": {

@@ -18,23 +18,8 @@
 
     <header class="trip-header">
         <h1 class="trip-title">{{ _('trip.plan.title') }}</h1>
-        <p class="trip-lead">{{ _('trip.plan.lead') }}</p>
         <p class="trip-plan-summary">{{ plan.summary }}</p>
-        {% if plan.ok %}
-        <p class="trip-plan-reference-note">{{ _('trip.plan.reference_note') }}</p>
-        {% endif %}
     </header>
-
-    {% if plan.travel_notes %}
-    <section class="trip-notes">
-        <h2 class="trip-section-title">{{ _('trip.plan.notes_label') }}</h2>
-        <ul class="trip-note-list">
-            {% for note in plan.travel_notes %}
-            <li>{{ note }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
 
     {% if plan.warnings %}
     <section class="trip-warnings">
@@ -70,23 +55,11 @@
                     <h3 class="trip-item-title">
                         <a href="{{ url_for('spot_detail', spot_id=item.spot_id) }}">{{ item.title }}</a>
                     </h3>
-                    {% if item.category %}
-                    <span class="spot-category">{{ item.category }}</span>
-                    {% endif %}
-                    {% if item.description %}
-                    <p class="trip-item-desc">{{ item.description[:100] }}{% if item.description|length > 100 %}…{% endif %}</p>
-                    {% endif %}
-                    {% if item.image_url %}
-                    <div class="trip-item-image">
-                        <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.title }}" loading="lazy">
-                    </div>
-                    {% endif %}
-                    <a href="{{ url_for('spot_detail', spot_id=item.spot_id) }}" class="trip-item-link">{{ _('trip.plan.view_spot') }}</a>
-                    {% else %}
-                    <h3 class="trip-item-title">{{ item.title }}</h3>
-                    {% endif %}
                     {% if item.note %}
                     <p class="trip-item-note">{{ item.note }}</p>
+                    {% endif %}
+                    {% else %}
+                    <h3 class="trip-item-title">{{ item.title }}</h3>
                     {% endif %}
                 </div>
             </li>
@@ -94,14 +67,9 @@
         </ol>
     </section>
     {% endfor %}
-    <p class="trip-plan-closing">{{ _('trip.plan.closing') }}</p>
-    {% endif %}
-
     {% if plan.disclaimer %}
-    <aside class="trip-disclaimer">
-        <h2 class="trip-section-title">{{ _('trip.plan.disclaimer_label') }}</h2>
-        <p>{{ plan.disclaimer }}</p>
-    </aside>
+    <p class="trip-plan-footnote">{{ plan.disclaimer }}</p>
+    {% endif %}
     {% endif %}
 
     <div class="trip-plan-actions">
