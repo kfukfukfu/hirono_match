@@ -369,7 +369,7 @@ def calculate_scores(choice_ids):
 def _format_recommendation_stars(star_count: int) -> str:
     """1〜5のおすすめ度を星5段階の文字列に変換する"""
     count = max(1, min(5, star_count))
-    return "⭐" * count + "☆" * (5 - count)
+    return "●" * count + "○" * (5 - count)
 
 
 def fetch_recommended_spots_for_result(ranked, limit=RECOMMENDED_SPOT_LIMIT):
