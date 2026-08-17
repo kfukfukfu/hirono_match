@@ -311,12 +311,14 @@ def validate_answers(choice_ids):
 def calculate_scores(choice_ids):
     """
     選択された choice_id のリストから、旅行タイプごとのスコアを計算する。
+    同点時は Q5（最終回答）の得点優先、それでも同点なら type_id 昇順。
     返り値: スコア降順のリスト（name, description, icon, score, percentage を含む）
     """
     db = get_db()
     scores = {}
+    q5_scores = {}
 
-    for choice_id in choice_ids:
+    for i, choice_id in enumerate(choice_ids):
         rows = db.execute(
             """SELECT cs.type_id, cs.score, tt.name, tt.description, tt.icon,
                       tt.name_en, tt.description_en
@@ -326,6 +328,7 @@ def calculate_scores(choice_ids):
             (choice_id,),
         ).fetchall()
 
+        is_q5 = i == len(choice_ids) - 1
         for row in rows:
             type_id = row["type_id"]
             localized = localize_row(row, ("name", "description"))
@@ -338,6 +341,8 @@ def calculate_scores(choice_ids):
                     "score": 0,
                 }
             scores[type_id]["score"] += row["score"]
+            if is_q5:
+                q5_scores[type_id] = q5_scores.get(type_id, 0) + row["score"]
 
     db.close()
 
@@ -351,7 +356,13 @@ def calculate_scores(choice_ids):
             }
         )
 
-    ranked.sort(key=lambda x: x["score"], reverse=True)
+    ranked.sort(
+        key=lambda x: (
+            -x["score"],
+            -q5_scores.get(x["id"], 0),
+            x["id"],
+        )
+    )
     return ranked
 
 
