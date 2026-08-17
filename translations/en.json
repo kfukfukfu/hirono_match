@@ -44,6 +44,18 @@
     "recommended_spots": "Recommended Spots",
     "spots_lead": "Places in Hirono Town for you, in recommended order.",
     "spot_recommendation": "Recommended",
+    "lodging": {
+      "title": "Stay Nearby",
+      "proximity": {
+        "same_address": "Same location as a recommended spot",
+        "same_area": "Same area as a recommended spot"
+      },
+      "areas": {
+        "taneichi": "Taneichi area",
+        "ohno": "Ohno area",
+        "yoke": "Yoke area"
+      }
+    },
     "official_site": "Official Site",
     "map": "Map",
     "favorite_add": "Add to favorites",

@@ -150,10 +150,14 @@ def build_result_context():
         return None
 
     main_type = ranked[0]
+    recommended_spots = fetch_recommended_spots_for_result(ranked)
     return {
         "main_type": main_type,
         "type_percentages": ranked[:3],
-        "recommended_spots": fetch_recommended_spots_for_result(ranked),
+        "recommended_spots": recommended_spots,
+        "nearby_lodging": enrich_nearby_lodging_for_display(
+            fetch_lodging_near_recommended_spots(recommended_spots)
+        ),
     }
 
 
@@ -264,6 +268,22 @@ def fetch_lodging_near_recommended_spots(recommended_spots):
         by_id.values(),
         key=lambda item: (_LODGING_NEAR_PRIORITY[item["proximity"]], item["id"]),
     )
+
+
+def enrich_nearby_lodging_for_display(nearby_lodging):
+    """近傍宿泊データに、結果画面表示用のスポット情報を付与する"""
+    enriched = []
+    for item in nearby_lodging:
+        spot = fetch_spot(item["id"])
+        if spot is None:
+            continue
+        enriched.append({
+            **item,
+            "image_url": spot["image_url"],
+            "genre": spot["genre"],
+            "description": spot["description"],
+        })
+    return enriched
 
 
 def spot_website_url(spot):

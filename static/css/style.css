@@ -1608,6 +1608,21 @@ a:hover {
     line-height: 1;
 }
 
+.result-lodging-proximity {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 0.35rem;
+    line-height: 1.5;
+}
+
+.result-lodging-area {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    margin: 0.15rem 0 0.35rem;
+}
+
 .result-spot-actions {
     display: flex;
     flex-wrap: wrap;

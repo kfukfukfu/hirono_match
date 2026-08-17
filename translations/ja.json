@@ -44,6 +44,18 @@
     "recommended_spots": "おすすめスポット",
     "spots_lead": "診断結果に合う洋野町のスポットを、おすすめ順にご紹介します。",
     "spot_recommendation": "おすすめ度",
+    "lodging": {
+      "title": "近くに泊まるなら",
+      "proximity": {
+        "same_address": "おすすめスポットと同じ場所",
+        "same_area": "おすすめスポットと同じエリア"
+      },
+      "areas": {
+        "taneichi": "種市エリア",
+        "ohno": "大野エリア",
+        "yoke": "有家エリア"
+      }
+    },
     "official_site": "公式サイト",
     "map": "地図",
     "favorite_add": "お気に入りに追加",
