@@ -180,10 +180,13 @@ def build_overnight_day1(
     groups: dict[str, list[dict[str, Any]]],
     labels: dict[str, str],
     used_ids: set[int],
+    lodging_candidates: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     attractions = pick_unique(sort_by_area(groups["attractions"]), 2, used_ids)
     restaurants = pick_unique(sort_by_area(groups["restaurants"]), 1, used_ids)
-    lodging_list = pick_unique(groups["lodging"], 1, used_ids)
+    lodging_list = pick_unique(lodging_candidates or [], 1, used_ids)
+    if not lodging_list:
+        lodging_list = pick_unique(groups["lodging"], 1, used_ids)
     items: list[dict[str, Any]] = []
     items.append(travel_item("09:30", labels["depart_home"], labels.get("morning_travel_note", "")))
     items.append(travel_item("11:30", labels["arrive_hirono"]))
@@ -244,8 +247,10 @@ def build_trip_plan(
     spots: list[dict[str, Any]],
     conditions: TripConditions,
     labels: dict[str, str],
+    lodging_candidates: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     filtered = filter_spots_for_transport(spots, conditions.transport)
+    filtered_lodging = filter_spots_for_transport(lodging_candidates or [], conditions.transport)
     warnings: list[str] = []
 
     if is_public_transport_mode(conditions.transport):
@@ -270,7 +275,7 @@ def build_trip_plan(
             "error": labels["error_no_spots"],
         }
 
-    if conditions.duration in ("1night", "2plus") and not groups["lodging"]:
+    if conditions.duration in ("1night", "2plus") and not filtered_lodging and not groups["lodging"]:
         warnings.append(labels["warning_no_lodging"])
 
     used_ids: set[int] = set()
@@ -284,7 +289,9 @@ def build_trip_plan(
     elif conditions.duration == "1night":
         days.append({
             "label": labels["day1"],
-            "items": build_overnight_day1(conditions, groups, labels, used_ids),
+            "items": build_overnight_day1(
+                conditions, groups, labels, used_ids, filtered_lodging
+            ),
         })
         days.append({
             "label": labels["day2"],
@@ -293,7 +300,9 @@ def build_trip_plan(
     else:
         days.append({
             "label": labels["day1"],
-            "items": build_overnight_day1(conditions, groups, labels, used_ids),
+            "items": build_overnight_day1(
+                conditions, groups, labels, used_ids, filtered_lodging
+            ),
         })
         days.append({
             "label": labels["day2"],

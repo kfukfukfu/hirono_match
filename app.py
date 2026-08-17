@@ -286,6 +286,24 @@ def enrich_nearby_lodging_for_display(nearby_lodging):
     return enriched
 
 
+def fetch_lodging_candidates_for_trip_plan(choice_ids):
+    """
+    旅行プラン用の宿泊候補を、診断結果画面と同じ流れで取得する。
+    fetch_lodging_near_recommended_spots() の並び（same_address → same_area）を維持する。
+    """
+    ranked = calculate_scores(choice_ids)
+    if not ranked:
+        return []
+    recommended = fetch_recommended_spots_for_result(ranked)
+    nearby = fetch_lodging_near_recommended_spots(recommended)
+    candidates = []
+    for item in nearby:
+        spot = fetch_spot(item["id"])
+        if spot is not None:
+            candidates.append(spot)
+    return candidates
+
+
 def spot_website_url(spot):
     url = spot.get("official_url", "")
     if url and "instagram.com" not in url.lower():
@@ -651,7 +669,14 @@ def trip_plan():
         return redirect(url_for("diagnosis"))
 
     spots = fetch_spots_for_type(diagnosis["main_type_id"])
-    plan = build_trip_plan(main_type, spots, conditions, get_trip_planner_labels())
+    lodging_candidates = fetch_lodging_candidates_for_trip_plan(diagnosis["choice_ids"])
+    plan = build_trip_plan(
+        main_type,
+        spots,
+        conditions,
+        get_trip_planner_labels(),
+        lodging_candidates=lodging_candidates,
+    )
 
     return render_template(
         "trip_plan.html",
@@ -692,11 +717,6 @@ def favorites():
     """お気に入り一覧画面（localStorage で管理）"""
     return render_template("favorites.html")
 
-
-@app.route("/lodging")
-def lodging():
-    """宿泊施設一覧画面"""
-    return render_template("lodging.html", lodging_spots=fetch_lodging_spots())
 
 
 @app.route("/contact", methods=["GET", "POST"])
