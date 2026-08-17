@@ -45,6 +45,10 @@
                 {% endif %}
             </div>
 
+            {% if lang == 'en' and spot_map %}
+            <p class="map-service-notice">{{ _('spot.map_notice') }}</p>
+            {% endif %}
+
             <p class="spot-disclaimer">{{ _('spot.disclaimer') }}</p>
 
             <button type="button" class="btn btn-primary btn-favorite-detail"

@@ -42,6 +42,9 @@
     <section class="result-spots">
         <h2 class="section-title-mobile">{{ _('result.recommended_spots') }}</h2>
         <p class="section-lead-mobile">{{ _('result.spots_lead') }}</p>
+        {% if lang == 'en' %}
+        <p class="map-service-notice map-service-notice-inline">{{ _('spot.map_notice') }}</p>
+        {% endif %}
 
         <div class="result-spot-list">
             {% for spot in recommended_spots %}

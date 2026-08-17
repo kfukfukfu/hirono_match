@@ -2364,6 +2364,21 @@ a:hover {
     border-radius: 10px;
 }
 
+.map-service-notice {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    padding: 0.75rem 0.875rem;
+    background: #f4f8fb;
+    border-radius: 10px;
+    border-left: 3px solid var(--color-primary);
+}
+
+.map-service-notice-inline {
+    margin-bottom: 1rem;
+}
+
 @media (min-width: 480px) {
     .trip-choice-grid-3 {
         grid-template-columns: repeat(3, 1fr);
