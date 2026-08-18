@@ -30,6 +30,16 @@ TRIP_COMPANIONS = frozenset({"solo", "couple", "family", "friends", "group"})
 TRIP_SEASONS = frozenset({"spring", "summer", "autumn", "winter", "undecided", ""})
 TRIP_BUDGETS = frozenset({"low", "medium", "high", "undecided", ""})
 
+TRIP_CONDITION_DEFAULTS = {
+    "departure": "morioka",
+    "transport": "rental",
+    "duration": "1night",
+    "party_size": 2,
+    "companions": "couple",
+    "season": "undecided",
+    "budget": "undecided",
+}
+
 
 @app.context_processor
 def inject_i18n():
@@ -311,17 +321,22 @@ def spot_map_url(spot):
 
 
 def parse_trip_conditions(form):
-    departure = form.get("departure", "").strip()
-    transport = form.get("transport", "").strip()
-    duration = form.get("duration", "").strip()
-    companions = form.get("companions", "").strip()
-    season = form.get("season", "").strip()
-    budget = form.get("budget", "").strip()
+    defaults = TRIP_CONDITION_DEFAULTS
+    departure = form.get("departure", defaults["departure"]).strip()
+    transport = form.get("transport", defaults["transport"]).strip()
+    duration = form.get("duration", defaults["duration"]).strip()
+    companions = form.get("companions", defaults["companions"]).strip()
+    season = form.get("season", defaults["season"]).strip()
+    budget = form.get("budget", defaults["budget"]).strip()
 
-    try:
-        party_size = int(form.get("party_size", "0"))
-    except ValueError:
-        party_size = 0
+    party_size_raw = form.get("party_size")
+    if party_size_raw in (None, ""):
+        party_size = defaults["party_size"]
+    else:
+        try:
+            party_size = int(party_size_raw)
+        except ValueError:
+            party_size = 0
 
     if departure not in TRIP_DEPARTURES:
         return None
@@ -588,13 +603,8 @@ def trip_conditions():
         return redirect(url_for("diagnosis"))
 
     default_form = {
-        "departure": "tokyo",
-        "transport": "rental",
-        "duration": "1night",
-        "party_size": "2",
-        "companions": "couple",
-        "season": "undecided",
-        "budget": "undecided",
+        "transport": TRIP_CONDITION_DEFAULTS["transport"],
+        "duration": TRIP_CONDITION_DEFAULTS["duration"],
     }
 
     if request.method == "POST":

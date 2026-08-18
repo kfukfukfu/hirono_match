@@ -126,21 +126,14 @@
   "trip": {
     "conditions": {
       "page_title": "旅行条件 — ひろのまっち",
-      "title": "旅の条件",
-      "lead": "あなたのタイプに合う、洋野町の参考プランを見るために前提を選んでください。",
+      "title": "参考プランを見る",
+      "lead": "2つ選ぶだけ。あとから条件は変更できます。",
       "diagnosis_label": "あなたの診断タイプ",
-      "departure_label": "出発地",
       "transport_label": "移動手段",
       "duration_label": "日帰り / 泊数",
-      "party_size_label": "人数",
-      "party_size_unit": "人",
-      "companions_label": "同行者",
-      "season_label": "旅行時期",
-      "budget_label": "予算",
-      "optional_summary": "任意の条件",
-      "optional_note": "※旅行時期・予算は、現時点ではプラン内容に反映されません。",
       "submit": "参考プランを見る",
       "back_result": "← 診断結果に戻る",
+      "note": "初期設定：盛岡発 · 2人 · カップル。変更できるのは上の2項目だけです。",
       "need_diagnosis": "参考プランを見るには、先に診断を完了してください。",
       "error_invalid": "入力内容に誤りがあります。もう一度ご確認ください。",
       "departure": {
@@ -156,6 +149,10 @@
         "rental": "レンタカー",
         "public": "公共交通",
         "other": "その他 / 未定"
+      },
+      "transport_simple": {
+        "rental": "車（自家用・レンタカー）",
+        "public": "公共交通"
       },
       "duration": {
         "day_trip": "日帰り",

@@ -4,7 +4,7 @@
 
 {% block content %}
 <section class="trip-page trip-conditions">
-    <a href="{{ url_for('diagnosis') }}" class="back-link">{{ _('trip.conditions.back_result') }}</a>
+    <a href="{{ url_for('result') }}" class="back-link">{{ _('trip.conditions.back_result') }}</a>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -18,7 +18,7 @@
 
     <header class="trip-header">
         <h1 class="trip-title">{{ _('trip.conditions.title') }}</h1>
-        <p class="trip-lead">{{ _('trip.conditions.lead') | safe }}</p>
+        <p class="trip-lead">{{ _('trip.conditions.lead') }}</p>
     </header>
 
     <div class="trip-diagnosis-badge">
@@ -26,43 +26,7 @@
         <p class="trip-diagnosis-type">{{ diagnosis.main_type_name }}</p>
     </div>
 
-    <details class="trip-location-hint">
-        <summary>{{ _('index.location.title') }}</summary>
-        <p class="trip-location-lead">{{ _('index.location.lead') }}</p>
-        <figure class="location-map-figure location-map-figure-compact">
-            <img src="{{ url_for('static', filename=location_map_image) }}"
-                 alt="{{ _('index.location.alt') }}"
-                 class="location-map-image"
-                 loading="lazy">
-            <figcaption class="location-map-caption">{{ _('index.location.caption') }}</figcaption>
-        </figure>
-    </details>
-
-    <form class="trip-form" method="POST" action="{{ url_for('trip_conditions') }}" novalidate>
-        <fieldset class="trip-fieldset">
-            <legend>{{ _('trip.conditions.departure_label') }}</legend>
-            <div class="trip-choice-grid">
-                {% for key in ['tokyo', 'morioka', 'hachinohe', 'hanamaki', 'nearby', 'other'] %}
-                <label class="trip-choice">
-                    <input type="radio" name="departure" value="{{ key }}"{% if form.departure == key %} checked{% endif %} required>
-                    <span>{{ tv('trip.conditions.departure.' ~ key) }}</span>
-                </label>
-                {% endfor %}
-            </div>
-        </fieldset>
-
-        <fieldset class="trip-fieldset">
-            <legend>{{ _('trip.conditions.transport_label') }}</legend>
-            <div class="trip-choice-grid">
-                {% for key in ['car', 'rental', 'public', 'other'] %}
-                <label class="trip-choice">
-                    <input type="radio" name="transport" value="{{ key }}"{% if form.transport == key %} checked{% endif %} required>
-                    <span>{{ tv('trip.conditions.transport.' ~ key) }}</span>
-                </label>
-                {% endfor %}
-            </div>
-        </fieldset>
-
+    <form class="trip-form trip-form-short" method="POST" action="{{ url_for('trip_conditions') }}" novalidate>
         <fieldset class="trip-fieldset">
             <legend>{{ _('trip.conditions.duration_label') }}</legend>
             <div class="trip-choice-grid trip-choice-grid-3">
@@ -75,54 +39,19 @@
             </div>
         </fieldset>
 
-        <div class="form-group">
-            <label for="party_size">{{ _('trip.conditions.party_size_label') }}</label>
-            <select id="party_size" name="party_size" class="form-input" required>
-                {% for n in range(1, 11) %}
-                <option value="{{ n }}"{% if form.party_size|string == n|string %} selected{% endif %}>{{ n }}{{ _('trip.conditions.party_size_unit') }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <fieldset class="trip-fieldset trip-fieldset-optional">
-            <legend>{{ _('trip.conditions.companions_label') }}</legend>
-            <div class="trip-choice-grid">
-                {% for key in ['solo', 'couple', 'family', 'friends', 'group'] %}
+        <fieldset class="trip-fieldset">
+            <legend>{{ _('trip.conditions.transport_label') }}</legend>
+            <div class="trip-choice-grid trip-choice-grid-2">
+                {% for key in ['rental', 'public'] %}
                 <label class="trip-choice">
-                    <input type="radio" name="companions" value="{{ key }}"{% if form.companions == key %} checked{% endif %} required>
-                    <span>{{ tv('trip.conditions.companions.' ~ key) }}</span>
+                    <input type="radio" name="transport" value="{{ key }}"{% if form.transport == key %} checked{% endif %} required>
+                    <span>{{ tv('trip.conditions.transport_simple.' ~ key) }}</span>
                 </label>
                 {% endfor %}
             </div>
         </fieldset>
 
-        <details class="trip-optional-details">
-            <summary>{{ _('trip.conditions.optional_summary') }}</summary>
-            <p class="trip-optional-note">{{ _('trip.conditions.optional_note') }}</p>
-            <fieldset class="trip-fieldset trip-fieldset-optional">
-                <legend>{{ _('trip.conditions.season_label') }}</legend>
-                <div class="trip-choice-grid">
-                    {% for key in ['spring', 'summer', 'autumn', 'winter', 'undecided'] %}
-                    <label class="trip-choice">
-                        <input type="radio" name="season" value="{{ key }}"{% if form.season == key %} checked{% endif %}>
-                        <span>{{ tv('trip.conditions.season.' ~ key) }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
-            </fieldset>
-
-            <fieldset class="trip-fieldset trip-fieldset-optional">
-                <legend>{{ _('trip.conditions.budget_label') }}</legend>
-                <div class="trip-choice-grid">
-                    {% for key in ['low', 'medium', 'high', 'undecided'] %}
-                    <label class="trip-choice">
-                        <input type="radio" name="budget" value="{{ key }}"{% if form.budget == key %} checked{% endif %}>
-                        <span>{{ tv('trip.conditions.budget.' ~ key) }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
-            </fieldset>
-        </details>
+        <p class="trip-form-note">{{ _('trip.conditions.note') }}</p>
 
         <button type="submit" class="btn btn-primary btn-block btn-trip-submit">{{ _('trip.conditions.submit') }}</button>
     </form>

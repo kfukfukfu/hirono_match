@@ -131,13 +131,8 @@ def test_trip_flow_with_session():
         r = client.post(
             "/trip/conditions",
             data={
-                "departure": "tokyo",
                 "transport": "rental",
                 "duration": "1night",
-                "party_size": "2",
-                "companions": "couple",
-                "season": "spring",
-                "budget": "medium",
             },
             follow_redirects=True,
         )
@@ -330,13 +325,8 @@ def test_trip_flow_includes_lodging_on_plan_page():
         client.post(
             "/trip/conditions",
             data={
-                "departure": "tokyo",
                 "transport": "rental",
                 "duration": "1night",
-                "party_size": "2",
-                "companions": "couple",
-                "season": "spring",
-                "budget": "medium",
             },
             follow_redirects=True,
         )

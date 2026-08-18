@@ -129,21 +129,14 @@
   "trip": {
     "conditions": {
       "page_title": "Trip details — Hirono Match",
-      "title": "Trip basics",
-      "lead": "Choose a few details to see a reference plan that fits your travel type.",
+      "title": "View reference plan",
+      "lead": "Just two choices. You can adjust details later.",
       "diagnosis_label": "Your travel type",
-      "departure_label": "Departure area",
       "transport_label": "Transport",
       "duration_label": "Day trip / nights",
-      "party_size_label": "Group size",
-      "party_size_unit": " people",
-      "companions_label": "Travel companions",
-      "season_label": "Season",
-      "budget_label": "Budget",
-      "optional_summary": "Optional details",
-      "optional_note": "Season and budget are not reflected in the plan itinerary at this time.",
       "submit": "View reference plan",
       "back_result": "← Back to your result",
+      "note": "Defaults: from Morioka · 2 people · couple. Only the two choices above can be changed here.",
       "need_diagnosis": "Please complete the quiz before viewing a reference plan.",
       "error_invalid": "Some fields are invalid. Please check and try again.",
       "departure": {
@@ -159,6 +152,10 @@
         "rental": "Rental car",
         "public": "Public transport",
         "other": "Other / undecided"
+      },
+      "transport_simple": {
+        "rental": "By car (own or rental)",
+        "public": "Public transport"
       },
       "duration": {
         "day_trip": "Day trip",

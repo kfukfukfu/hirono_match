@@ -2317,6 +2317,18 @@ a:hover {
     grid-template-columns: 1fr;
 }
 
+.trip-choice-grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.trip-form-short {
+    margin-top: 0.25rem;
+}
+
+.trip-form-short .trip-fieldset {
+    margin-bottom: 1.5rem;
+}
+
 .trip-choice {
     display: block;
     cursor: pointer;
