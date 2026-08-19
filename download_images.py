@@ -32,6 +32,18 @@ DOWNLOADS = [
     ("spots/minshuku.jpg", "Taneichi Seaside Park 1.jpg"),
     ("spots/hotel.jpg", "E45SANRIKU-EXP Hirono-Taneichi IC Hirono Iwate.jpg"),
     ("spots/trail.jpg", "091025中野白滝（秋） - panoramio.jpg"),
+    ("spots/chidori_shokudo.jpg", "Route 395 Ono By-Pass Iwate Prefecture Hirono Town 1.jpg"),
+    ("spots/umenoya_shokudo.jpg", "Hirono Town Hall Ono Government Building 1.jpg"),
+    ("spots/hatayashi.jpg", "Rikucyu-onoSta.jpg"),
+    (
+        "spots/unique.jpg",
+        "url:https://www.town.hirono.iwate.jp/doc/2015070700031/file_contents/2015070700031_docs_2015031000019_files_unique.jpg",
+    ),
+    (
+        "spots/oono_dam.jpg",
+        "url:https://www.town.hirono.iwate.jp/doc/2021091500031/file_contents/2021091500031_docs_2012111400028_files_20210915ohnodam.jpg",
+    ),
+    ("spots/kiriya.jpg", "url:https://www.nanbumoguri.com/image/menu_kiriya.jpg"),
     ("types/star.jpg", "Hironomakiba Astronomical Observatory.jpg"),
     ("types/food.jpg", "特製生ウニ丼と天然ほや刺（はまなす亭）.jpg"),
     ("types/sea.jpg", "Taneichi Seaside Park 1.jpg"),
@@ -74,17 +86,20 @@ def download_file(url: str, dest: Path) -> None:
 
 
 def main() -> None:
-    for rel_path, commons_name in DOWNLOADS:
+    for rel_path, source in DOWNLOADS:
         dest = BASE / rel_path
         dest.parent.mkdir(parents=True, exist_ok=True)
         if dest.exists() and dest.stat().st_size > 0:
             print(f"Skip existing: {rel_path}")
             continue
 
-        print(f"Downloading {commons_name} -> {rel_path}")
+        print(f"Downloading {source} -> {rel_path}")
         for attempt in range(5):
             try:
-                url = fetch_image_url(commons_name)
+                if source.startswith("url:"):
+                    url = source[4:]
+                else:
+                    url = fetch_image_url(source)
                 download_file(url, dest)
                 break
             except urllib.error.HTTPError as exc:
