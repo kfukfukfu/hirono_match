@@ -593,6 +593,20 @@ SPOTS = [
         "Park",
         "A forest park at 706m on Mt. Kuji-Hira with Pacific Ocean views and trailheads for mountain hiking.",
     ),
+    (
+        "居酒屋かくれんぼ",
+        "飲食店",
+        "居酒屋",
+        "種市駅近くの居酒屋。刺身や牛タンなど、地元の海の幸とお酒を楽しめるアットホームなお店です。",
+        "images/spots/cafe.jpg",
+        "岩手県九戸郡洋野町種市第23地割81-101",
+        "https://hirono-kankou.jp/gourmet/gourmet-227/",
+        "https://maps.app.goo.gl/D2PfVuZTuw79M1ab8",
+        "Izakaya Kakurenbo",
+        "Restaurant",
+        "Izakaya",
+        "A cozy izakaya near Taneichi Station, serving fresh sashimi, beef tongue, and local seafood with drinks.",
+    ),
 ]
 
 # 宿泊施設（既存スポットとは別レコード。おすすめスポット紐付け SPOT_TYPES には含めない）
@@ -743,6 +757,7 @@ SPOT_TYPES = {
     26: [1, 4, 5],
     27: [2, 7],
     28: [1, 4, 5],
+    29: [2, 7],
 }
 
 
@@ -777,6 +792,7 @@ SPOT_EXTRA = [
     ("ohno", "car_recommended", 90, "", "2026-08-19"),
     ("ohno", "car_recommended", 60, "", "2026-08-19"),
     ("taneichi", "car_recommended", 120, "", "2026-08-19"),
+    ("taneichi", "good", 90, "", "2026-08-20"),
 ]
 
 LODGING_SPOT_EXTRA = [
