@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-hirono-match-local")
 init_basic_auth(app)
 
-RECOMMENDED_SPOT_LIMIT = 5
+RECOMMENDED_SPOT_LIMIT = 8
 QUESTION_COUNT = 5
 
 TRIP_DEPARTURES = frozenset({"tokyo", "morioka", "hachinohe", "hanamaki", "nearby", "other"})
