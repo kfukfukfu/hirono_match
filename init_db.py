@@ -570,7 +570,7 @@ SPOTS = [
         "観光スポット",
         "物産",
         "大野木工、木炭、蜂蜜など地域特産品と新鮮野菜が並ぶ施設。食堂ではひっつみ定食やかあちゃんうどんなど郷土料理も楽しめます。",
-        "images/spots/souvenir.jpg",
+        "images/spots/hatayashi.jpg",
         "岩手県九戸郡洋野町大野8-83-4",
         "https://www.town.hirono.iwate.jp/doc/2006010101056/",
         "https://maps.app.goo.gl/SjoJAL3RKxteyvx2A",
