@@ -300,7 +300,7 @@ def test_trip_plan_lodging_fallback_when_no_candidates():
 
 def test_trip_plan_public_transport_filters_lodging_candidates():
     """公共交通では car_recommended 宿泊を除外する"""
-    car_lodging = fetch_spot(25)
+    car_lodging = fetch_spot(33)  # 大谷温泉（宿泊）
     assert car_lodging["public_transport_access"] == "car_recommended"
 
     main_type = {"id": 1, "name": "Test Type", "description": "", "icon": ""}

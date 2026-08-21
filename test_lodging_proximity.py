@@ -18,12 +18,12 @@ def _spot_item(spot_id):
 
 def test_same_address_pairs():
     pairs = [
-        (2, 24),   # 種市海浜公園 ↔ キャンプ場
-        (3, 23),   # はまなす亭 ↔ ゲストハウス
-        (7, 22),   # マリンサイドスパ種市 ↔ たねいち
-        (19, 25),  # 大谷温泉
-        (16, 26),  # アグリパーク
-        (8, 27),   # ヒロノット
+        (2, 32),   # 種市海浜公園 ↔ 種市海浜公園キャンプ場
+        (3, 31),   # はまなす亭 ↔ ゲストハウスはまなす亭
+        (7, 30),   # マリンサイドスパ種市 ↔ マリンサイドスパたねいち
+        (19, 33),  # 大谷温泉 ↔ 大谷温泉（宿泊）
+        (16, 34),  # アグリパークおおさわ ↔ アグリパークおおさわ（宿泊）
+        (8, 35),   # ヒロノット ↔ ヒロノット（宿泊）
         (4, 9),    # 大野木工 ↔ グリーンヒル大野
     ]
     for spot_id, lodging_id in pairs:
@@ -40,7 +40,7 @@ def test_same_area_without_same_address():
     result = fetch_lodging_near_recommended_spots([_spot_item(5)])
     assert result
     assert all(item["proximity"] == LODGING_NEAR_SAME_AREA for item in result)
-    assert all(item["id"] in {22, 23, 24, 27, 29} for item in result)
+    assert all(item["id"] in {30, 31, 32, 35, 37} for item in result)
 
 
 def test_deduplicate_and_sort_priority():
@@ -48,15 +48,15 @@ def test_deduplicate_and_sort_priority():
     recommended = [_spot_item(2), _spot_item(5), _spot_item(12)]
     result = fetch_lodging_near_recommended_spots(recommended)
     ids = [item["id"] for item in result]
-    assert ids.count(24) == 1
-    camp = next(item for item in result if item["id"] == 24)
+    assert ids.count(32) == 1
+    camp = next(item for item in result if item["id"] == 32)
     assert camp["proximity"] == LODGING_NEAR_SAME_ADDRESS
     relations = {r["spot_id"]: r["relation"] for r in camp["related_spots"]}
     assert relations[2] == LODGING_NEAR_SAME_ADDRESS
     assert relations[5] == LODGING_NEAR_SAME_AREA
     assert relations[12] == LODGING_NEAR_SAME_AREA
 
-    first_area_only = next(item for item in result if item["proximity"] == LODGING_NEAR_SAME_AREA and item["id"] != 24)
+    first_area_only = next(item for item in result if item["proximity"] == LODGING_NEAR_SAME_AREA and item["id"] != 32)
     first_address = next(item for item in result if item["proximity"] == LODGING_NEAR_SAME_ADDRESS)
     assert result.index(first_address) < result.index(first_area_only)
 
